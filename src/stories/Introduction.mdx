@@ -1,0 +1,63 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Introduction" />
+
+# Scouting America Design System
+
+A React + Tailwind component library for the Scouting America parent brand and
+its four program sub-brands: **Cub Scouts**, **Scouts BSA**, **Venturing**, and
+**Sea Scouts**.
+
+## How theming works
+
+Every component reads from CSS custom properties on the `[data-program]`
+attribute. Switch the toolbar above to see any story re-theme.
+
+```tsx
+import { ScoutThemeProvider, Button } from "@scouting-america/design-system";
+
+<ScoutThemeProvider program="venturing">
+  <Button variant="primary">Charge ahead</Button>
+</ScoutThemeProvider>
+```
+
+## What changes between programs
+
+Each program varies on five expressive axes while sharing the same structural
+grammar (spacing, type scale, component anatomy):
+
+- **Color**: primary, accent, surface, border, focus ring
+- **Typography weight & style**: Montserrat 900 (Cub) → 700 (Scouts BSA) →
+  800 + UPPERCASE + wide tracking (Venturing) → 600 italic (Sea Scouts)
+- **Radius**: 14px friendly (Cub) → 4px crisp (Scouts BSA) →
+  2px geometric (Venturing) → 1px hairline (Sea Scouts)
+- **Shadow**: soft blue-tinted (Cub) → matte (Scouts BSA) →
+  strong directional (Venturing) → minimal (Sea Scouts)
+- **Rule weight** (`--program-rule-weight`): 3px bold (Cub) → 2px traditional (Scouts BSA + Venturing) →
+  1px hairline (Sea Scouts). Controls the keylines on `CardEyebrow`, section heads, and agenda
+  separators via the `border-*-rule` Tailwind utility (bound in `tailwind.config.ts`).
+
+## Source of truth
+
+All tokens trace to the [Scouting America 2024 Brand
+Guidelines](https://pathwaytoadventure.org/wp-content/uploads/2024/05/Scouting-America-Brand-Guidelines-2024-BC.pdf).
+Page references appear in `src/styles/tokens.css`.
+
+## Accessibility
+
+- Focus rings use the program's accent color, always visible at 2px offset
+- Color combinations are chosen to meet WCAG AA contrast for body text
+- `prefers-reduced-motion` disables non-essential animation
+- Decorative SVG marks are marked `aria-hidden`
+- Program marks expose `aria-label`
+
+## Where to drop real assets
+
+`ProgramMark` auto-loads official marks from `/marks/{program}[-variant].{ext}`
+when those files are present, trying `svg`, `webp`, `png`, `jpg`, and `jpeg` in
+that order. Drop files into `public/marks/` and restart the dev server; no code
+change is required. When no asset is found, the component falls back to inline
+placeholder SVGs.
+
+See `public/marks/README.md` for the full filename convention, variant matrix
+(color / reversed / mono), and Brand Center download instructions.

@@ -1,0 +1,37 @@
+node_modules
+dist
+dist-ssr
+storybook-static
+.vite
+*.local
+*.tsbuildinfo
+.DS_Store
+*.log
+.env*
+!.env.example
+
+# Local editor/agent state, never shared.
+.claude/
+
+# The 2024 Brand Guidelines PDF (31 MB) is Scouting America's copyrighted
+# document; committing it would redistribute it with every clone. Download it
+# yourself via the link in README.md and place it here. brand-text.txt is
+# text extracted from that same PDF, so it stays out for the same reason.
+# See research/README.md.
+research/*
+!research/README.md
+
+# Brand assets are licensed individually by each user/unit/council through the
+# BSA Brand Center (https://scouting.webdamdb.com/bp/#/). They must NOT be
+# committed to the repository, because cloning the repo would redistribute the
+# trademarked assets outside the licensed audience (registered BSA volunteers
+# and council/national staff). See NOTICE.md.
+public/marks/*.svg
+public/marks/*.png
+public/marks/*.jpg
+public/marks/*.jpeg
+public/marks/*.pdf
+public/marks/*.eps
+public/marks/*.ai
+# README.md inside public/marks/ is allowed and tracked.
+!public/marks/README.md

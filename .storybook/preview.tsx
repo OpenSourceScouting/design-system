@@ -1,0 +1,74 @@
+import type { Preview, Decorator } from "@storybook/react";
+import { ScoutThemeProvider, type Program } from "../src/lib/theme/ScoutThemeProvider";
+import "../src/styles/globals.css";
+
+/**
+ * Every story renders inside <ScoutThemeProvider> so that:
+ *   1. The `data-program` attribute is set (CSS variable theming works).
+ *   2. The React context is populated (useScoutTheme() works in components
+ *      like ProgramHero, RegistrationCTA, ProgramMark, DecorativeBorder).
+ *
+ * The toolbar global `program` is read from context.globals; switching it from
+ * the Storybook top toolbar re-renders every story with the new theme.
+ */
+const withScoutTheme: Decorator = (Story, context) => {
+  const program = (context.globals.program ?? "cub") as Program;
+  const forcePlaceholderMarks = context.globals.forcePlaceholderMarks === "on";
+  return (
+    <ScoutThemeProvider
+      program={program}
+      forcePlaceholderMarks={forcePlaceholderMarks}
+      applyToDocument
+    >
+      <div className="p-6 min-h-[200px]">
+        <Story />
+      </div>
+    </ScoutThemeProvider>
+  );
+};
+
+const preview: Preview = {
+  parameters: {
+    layout: "padded",
+    backgrounds: { disable: true },
+    controls: { expanded: true },
+    options: {
+      storySort: {
+        order: ["Introduction", "Foundations", "Primitives", "Marketing", "Programs"],
+      },
+    },
+  },
+  globalTypes: {
+    program: {
+      name: "Program",
+      description: "Active Scouting America program theme",
+      defaultValue: "cub",
+      toolbar: {
+        icon: "paintbrush",
+        items: [
+          { value: "cub", title: "Cub Scouts" },
+          { value: "scoutsbsa", title: "Scouts BSA" },
+          { value: "venturing", title: "Venturing" },
+          { value: "seascouts", title: "Sea Scouts" },
+        ],
+        dynamicTitle: true,
+      },
+    },
+    forcePlaceholderMarks: {
+      name: "Marks",
+      description: "Force placeholder marks (hides real BSA assets)",
+      defaultValue: "off",
+      toolbar: {
+        icon: "photo",
+        items: [
+          { value: "off", title: "Real marks (when available)" },
+          { value: "on", title: "Force placeholders" },
+        ],
+        dynamicTitle: true,
+      },
+    },
+  },
+  decorators: [withScoutTheme],
+};
+
+export default preview;

@@ -1,0 +1,55 @@
+MIT License
+
+Copyright (c) 2026 Derek Murawsky
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+IMPORTANT BRAND ASSET NOTICE
+
+This MIT License covers the SOFTWARE in this repository — React components,
+TypeScript code, CSS tokens, Tailwind configuration, build scripts, and the
+abstract placeholder graphics drawn inline in `src/components/ProgramMark.tsx`
+and `src/components/DecorativeBorder.tsx`.
+
+This MIT License does NOT cover, and cannot relicense, the official Scouting
+America / Boy Scouts of America (BSA) trademarks, logos, fleur-de-lis,
+program marks, brand artwork, or any other assets distributed through the BSA
+Brand Center. Those assets remain the property of the BSA or its licensors and
+are governed by the BSA Brand Center asset license terms, which require:
+
+  • the downloader to be a National Council employee, local council employee,
+    or registered BSA volunteer;
+  • use solely to promote BSA and your local council's or unit's approved
+    programs and activities;
+  • no display except in channels approved by the BSA or your local council
+    or unit leadership;
+  • no editing or derivative works (no recoloring, no tinting, no cropping);
+  • no combination with the name, trademarks, or brand elements of any other
+    youth-serving organization;
+  • no commercial use, including reproduction on consumer products.
+
+If you incorporate any official BSA brand asset into a deployment of this
+software, you do so under your own BSA Brand Center license and assume all
+responsibility for compliance with those terms. See NOTICE.md for details and
+the recommended deployment workflow.
+
+Requests for permission to use BSA assets for purposes other than promoting
+approved BSA programs should be directed to amy.leslie@scouting.org.
