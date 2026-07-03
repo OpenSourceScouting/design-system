@@ -5,11 +5,11 @@
  *
  *   // tailwind.config.js
  *   module.exports = {
- *     presets: [require("@scouting-america/design-system/tailwind-preset")],
+ *     presets: [require("@openscouting/design-system/tailwind-preset")],
  *     content: [
  *       "./src/**\/*.{ts,tsx}",
  *       // scan the shipped components so their utility classes are generated:
- *       "./node_modules/@scouting-america/design-system/dist/**\/*.{js,cjs}",
+ *       "./node_modules/@openscouting/design-system/dist/**\/*.{js,cjs}",
  *     ],
  *   };
  *
@@ -24,7 +24,7 @@
  *   2. `program.*`: semantic tokens resolving to CSS custom properties that
  *                    ScoutThemeProvider re-binds per program via `data-program`.
  *                    These require the design system's CSS (import
- *                    "@scouting-america/design-system/styles") to be loaded so
+ *                    "@openscouting/design-system/styles") to be loaded so
  *                    the `--program-*` variables exist.
  */
 

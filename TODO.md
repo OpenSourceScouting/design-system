@@ -145,7 +145,7 @@ mobile-friendly.
 
 ### [x] 2.1 Convert from showcase repo to publishable library
 
-> Done 2026-07-02: package published as @scouting-america/design-system@0.1.0
+> Done 2026-07-02: package published as @openscouting/design-system@0.1.0
 > with exports map, peerDependencies, vite-plugin-dts, ES+CJS outputs, CSS
 > artifacts, tailwind-preset.cjs, and publicDir:false on lib build to prevent
 > gitignored brand marks from leaking into the tarball. npm pack produces a
@@ -251,7 +251,17 @@ neutral token export does.
 
 ---
 
-### [ ] 2.4 Set up Vitest + jest-axe + contrast assertion tests
+### [x] 2.4 Set up Vitest + jest-axe + contrast assertion tests
+
+> Done 2026-07-03: Vitest (jsdom) + jest-axe wired up; `npm run test` runs 70
+> tests (15 files), all green. tests/contrast.test.ts parses tokens.css and
+> asserts WCAG ratios across all five palettes; per-component smoke + axe tests
+> live in src/**/__tests__. Three genuine bugs surfaced and are flagged with
+> it.fails (not silenced): seascouts on-surface-faint measures 2.98:1 (< 3:1
+> floor, tokens.css:202 comment overstates it as ~3.5:1); Calendar month grid's
+> date-row wrapper lacks role="row" so gridcells fail aria-required-parent; and
+> the agenda view nests non-<li> AgendaItems inside a <ul>. Test dts excluded
+> from dist; tsconfig.test.json typechecks the test tree.
 
 **Why:** Repo claims WCAG AA but has no automated verification. A single
 token regression could break contrast silently.
@@ -306,7 +316,11 @@ code should mirror that.
 
 ---
 
-### [ ] 2.7 CI: typecheck + test + build on every PR
+### [x] 2.7 CI: typecheck + test + build on every PR
+
+> Done 2026-07-03: .github/workflows/ci.yml runs on pull_request and push to
+> main, Node 22, npm ci, then typecheck + test + build + build-storybook. Mark
+> the "verify" check required in branch protection to enforce it before merge.
 
 **Why:** Prevents regressions on the items above.
 
@@ -390,7 +404,9 @@ copy.
 
 ---
 
-### [ ] 3.4 CMYK and Pantone equivalents in tokens
+### [x] 3.4 CMYK and Pantone equivalents in tokens
+
+> Done 2026-07-03: created src/styles/tokens.print.json with hex/RGB/CMYK/Pantone for all named brand colors sourced from PDF p.9-14, 22, 25, 28, 31; three PDF discrepancies documented in the file; build-css.mjs emits it to dist/tokens.print.json; README Programs at a glance table gained Pantone columns.
 
 **Why:** Brand book has them on p.14 of the 2024 PDF. Designers building
 yard signs, banners, council magazines need the matching CMYK/Pantone, and

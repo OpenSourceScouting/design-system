@@ -27,7 +27,15 @@ export default defineConfig(({ command }) => ({
           dts({
             entryRoot: "src",
             include: ["src"],
-            exclude: ["src/**/*.stories.tsx", "src/App.tsx", "src/main.tsx"],
+            exclude: [
+              "src/**/*.stories.tsx",
+              "src/App.tsx",
+              "src/main.tsx",
+              // Keep test files out of the published type declarations.
+              "src/**/__tests__/**",
+              "src/**/*.test.ts",
+              "src/**/*.test.tsx",
+            ],
             insertTypesEntry: true,
           }),
         ]),

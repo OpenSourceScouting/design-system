@@ -1,5 +1,5 @@
 {
-  "name": "@scouting-america/design-system",
+  "name": "@openscouting/design-system",
   "version": "0.1.0",
   "type": "module",
   "description": "Reusable design system for Scouting America and its four program sub-brands: Cub Scouts, Scouts BSA, Venturing, Sea Scouts.",
@@ -42,9 +42,10 @@
     "build:css": "node scripts/build-css.mjs",
     "build:demo": "cross-env BUILD_TARGET=demo vite build",
     "preview": "vite preview",
+    "test": "vitest run",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json"
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.test.json"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -62,12 +63,17 @@
     "@storybook/blocks": "^8.4.7",
     "@storybook/react": "^8.4.7",
     "@storybook/react-vite": "^8.4.7",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/jest-axe": "^3.5.9",
     "@types/node": "^25.9.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "cross-env": "^10.1.0",
+    "jest-axe": "^10.0.0",
+    "jsdom": "^27.0.1",
     "postcss": "^8.4.49",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -75,6 +81,7 @@
     "tailwindcss": "^3.4.15",
     "typescript": "^5.6.3",
     "vite": "^5.4.11",
-    "vite-plugin-dts": "^5.0.3"
+    "vite-plugin-dts": "^5.0.3",
+    "vitest": "^3.2.6"
   }
 }

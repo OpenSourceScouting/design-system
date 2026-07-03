@@ -6,6 +6,13 @@ its four program sub-brands: **Cub Scouts**, **Scouts BSA**, **Venturing**, and
 
 Built directly from the [Scouting America 2024 Brand Guidelines](https://pathwaytoadventure.org/wp-content/uploads/2024/05/Scouting-America-Brand-Guidelines-2024-BC.pdf).
 
+> **Community project:** This library is built and maintained by registered
+> Scouting volunteers. It is not an official Scouting America product and is
+> not affiliated with, endorsed by, or sponsored by Scouting America or the
+> Boy Scouts of America. The `@openscouting` package scope reflects that
+> community status. Official BSA brand assets remain governed by the BSA
+> Brand Center license (see `NOTICE.md`).
+
 Not using React? [`BRAND-GUIDE.md`](./BRAND-GUIDE.md) is a self-contained
 brand reference (colors, type, voice, print values, trademark rules) that you
 or any AI tool can use to produce on-brand scouting materials without this
@@ -26,13 +33,13 @@ npm run storybook  # component explorer at http://localhost:6006
 From the npm registry (once published):
 
 ```bash
-npm install @scouting-america/design-system
+npm install @openscouting/design-system
 ```
 
 Or directly from a packed tarball during early adoption:
 
 ```bash
-npm install ./scouting-america-design-system-0.1.0.tgz
+npm install ./openscouting-design-system-0.1.0.tgz
 ```
 
 **Supported React versions:** React 18 and React 19 (peer dependency `react >= 18`).
@@ -45,14 +52,14 @@ color tokens, typography utilities, and shadow/radius/border tokens:
 
 ```ts
 // tailwind.config.ts
-import scoutingPreset from "@scouting-america/design-system/tailwind-preset";
+import scoutingPreset from "@openscouting/design-system/tailwind-preset";
 
 export default {
   presets: [scoutingPreset],
   content: [
     "./src/**/*.{ts,tsx}",
     // include the package's own components so Tailwind sees their class names
-    "./node_modules/@scouting-america/design-system/dist/**/*.js",
+    "./node_modules/@openscouting/design-system/dist/**/*.js",
   ],
 };
 ```
@@ -63,20 +70,20 @@ Import the compiled stylesheet once, at your app entry point:
 
 ```ts
 // main.tsx (or index.ts, _app.tsx, etc.)
-import "@scouting-america/design-system/styles";
+import "@openscouting/design-system/styles";
 ```
 
 If you need only the raw CSS custom property definitions without the Tailwind
 utilities (useful for non-Tailwind projects), import the tokens file instead:
 
 ```ts
-import "@scouting-america/design-system/tokens";
+import "@openscouting/design-system/tokens";
 ```
 
 ### Minimal working snippet
 
 ```tsx
-import { ScoutThemeProvider, Button } from "@scouting-america/design-system";
+import { ScoutThemeProvider, Button } from "@openscouting/design-system";
 
 export function App() {
   return (
@@ -137,7 +144,7 @@ you can drive navigation through your own router instead of
 
 ```tsx
 import { useNavigate } from "react-router-dom";
-import { EventCard } from "@scouting-america/design-system";
+import { EventCard } from "@openscouting/design-system";
 
 function MyPage() {
   const navigate = useNavigate();
@@ -205,12 +212,14 @@ You can nest providers; a Venturing card on a Scouts BSA page is supported.
 
 ## Programs at a glance
 
-| Program     | Primary    | Accent     | Personality                              |
-| ----------- | ---------- | ---------- | ---------------------------------------- |
-| Cub Scouts  | `#003F87`  | `#FDC116`  | Rounded, bold, warm. Display weight 900. |
-| Scouts BSA  | `#243E2C`  | `#003F87`  | Crisp, traditional. Display weight 700.  |
-| Venturing   | `#006B3F`  | `#FCD116`  | Sharp, BOLD UPPERCASE. Display weight 800. |
-| Sea Scouts  | `#003366`  | `#FFCC00`  | Linear, italic editorial. Weight 600.    |
+| Program     | Primary    | Primary Pantone | Accent     | Accent Pantone | Personality                              |
+| ----------- | ---------- | --------------- | ---------- | -------------- | ---------------------------------------- |
+| Cub Scouts  | `#003F87`  | PMS 294         | `#FDC116`  | PMS 116        | Rounded, bold, warm. Display weight 900. |
+| Scouts BSA  | `#243E2C`  | none listed     | `#003F87`  | PMS 294        | Crisp, traditional. Display weight 700.  |
+| Venturing   | `#006B3F`  | PMS 349         | `#FCD116`  | PMS 116        | Sharp, BOLD UPPERCASE. Display weight 800. |
+| Sea Scouts  | `#003366`  | none listed     | `#FFCC00`  | none listed    | Linear, italic editorial. Weight 600.    |
+
+Full CMYK and Pantone data (including secondary tans, grays, and mark-reproduction colors) is in [`src/styles/tokens.print.json`](./src/styles/tokens.print.json) and ships in the package at `dist/tokens.print.json`.
 
 ## Configuring where assets are served from
 

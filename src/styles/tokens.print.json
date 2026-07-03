@@ -1,0 +1,256 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "_comment": "Machine-readable print equivalents for all named brand colors used in tokens.css. Values transcribed from the Scouting America Brand Guidelines 2024 (May 2024 edition). CMYK and Pantone apply to offset printing on coated stock unless noted. Where the PDF does not supply a value the field is null with an explanation in _note. This file is emitted to dist/tokens.print.json by scripts/build-css.mjs.",
+  "colors": [
+    {
+      "name": "sa-blue",
+      "label": "Scouting America Blue",
+      "program": "parent",
+      "role": "primary",
+      "hex": "#003F87",
+      "rgb": { "r": 0, "g": 63, "b": 135 },
+      "pantone": "PMS 294",
+      "cmyk": { "c": 100, "m": 58, "y": 0, "k": 21 },
+      "source": "p.9, p.14 — mark reproduction and primary palette swatch"
+    },
+    {
+      "name": "sa-red",
+      "label": "Scouting America Red",
+      "program": "parent",
+      "role": "accent",
+      "hex": "#CE1126",
+      "rgb": { "r": 206, "g": 17, "b": 38 },
+      "pantone": "PMS 186",
+      "cmyk": { "c": 0, "m": 100, "y": 81, "k": 4 },
+      "source": "p.9, p.14 — mark reproduction and primary palette swatch"
+    },
+    {
+      "name": "sa-dark-gray",
+      "label": "Scouting America Dark Gray",
+      "program": "parent",
+      "role": "on-surface",
+      "hex": "#232528",
+      "rgb": { "r": 35, "g": 37, "b": 40 },
+      "pantone": null,
+      "cmyk": null,
+      "_note": "Secondary support color. No Pantone or CMYK listed in the 2024 guidelines; convert hex with print vendor."
+    },
+    {
+      "name": "sa-gray",
+      "label": "Scouting America Gray",
+      "program": "parent",
+      "role": "on-surface-soft",
+      "hex": "#515354",
+      "rgb": { "r": 81, "g": 83, "b": 84 },
+      "pantone": null,
+      "cmyk": null,
+      "_note": "Secondary support color. No Pantone or CMYK listed in the 2024 guidelines; convert hex with print vendor."
+    },
+    {
+      "name": "sa-pale-gray",
+      "label": "Scouting America Pale Gray",
+      "program": "parent",
+      "role": "on-surface-faint",
+      "hex": "#858787",
+      "rgb": { "r": 133, "g": 135, "b": 135 },
+      "pantone": null,
+      "cmyk": null,
+      "_note": "Secondary support color. No Pantone or CMYK listed in the 2024 guidelines; convert hex with print vendor."
+    },
+    {
+      "name": "sa-tan",
+      "label": "Scouting America Tan",
+      "program": "parent",
+      "role": "border",
+      "hex": "#D6CEBD",
+      "rgb": { "r": 214, "g": 206, "b": 189 },
+      "pantone": null,
+      "cmyk": null,
+      "_note": "Secondary support color. No Pantone or CMYK listed in the 2024 guidelines; convert hex with print vendor."
+    },
+    {
+      "name": "sa-light-tan",
+      "label": "Scouting America Light Tan",
+      "program": "parent",
+      "role": "surface-muted",
+      "hex": "#E9E9E4",
+      "rgb": { "r": 233, "g": 233, "b": 228 },
+      "pantone": null,
+      "cmyk": null,
+      "_note": "Secondary support color. No Pantone or CMYK listed in the 2024 guidelines; convert hex with print vendor."
+    },
+    {
+      "name": "sa-dark-tan",
+      "label": "Scouting America Dark Tan",
+      "program": "parent",
+      "role": "decor",
+      "hex": "#AD9D7B",
+      "rgb": { "r": 173, "g": 157, "b": 123 },
+      "pantone": null,
+      "cmyk": null,
+      "_note": "Secondary support color. No Pantone or CMYK listed in the 2024 guidelines; convert hex with print vendor."
+    },
+    {
+      "name": "sa-pale-blue",
+      "label": "Scouting America Pale Blue",
+      "program": "parent",
+      "role": "secondary",
+      "hex": "#9AB3D5",
+      "rgb": { "r": 154, "g": 179, "b": 213 },
+      "pantone": null,
+      "cmyk": null,
+      "_note": "Secondary color listed on p.14. No Pantone or CMYK listed; convert hex with print vendor."
+    },
+    {
+      "name": "sa-dark-blue",
+      "label": "Scouting America Dark Blue",
+      "program": "parent",
+      "role": "secondary",
+      "hex": "#003366",
+      "rgb": { "r": 0, "g": 51, "b": 102 },
+      "pantone": null,
+      "cmyk": null,
+      "_note": "Secondary color listed on p.14. No Pantone or CMYK listed for the standalone swatch; CMYK for the Sea Scouts mark is 100/72/27/33 (different print context). Convert hex with print vendor for parent brand use."
+    },
+    {
+      "name": "cub-blue",
+      "label": "Cub Scouts Blue",
+      "program": "cub",
+      "role": "primary",
+      "hex": "#003F87",
+      "rgb": { "r": 0, "g": 63, "b": 135 },
+      "pantone": "PMS 294",
+      "cmyk": { "c": 100, "m": 48, "y": 0, "k": 44 },
+      "source": "p.22 — Cub Scouts mark reproduction. Note: the K value (44) differs from the parent SA Blue mark spec (K=21) on the same Pantone. Use K=44 for Cub Scouts materials.",
+      "_note": "Same Pantone as SA Blue but a noticeably different CMYK formula. Both values are verbatim from the PDF; the 2024 guidelines list them separately."
+    },
+    {
+      "name": "cub-gold",
+      "label": "Cub Scouts Gold",
+      "program": "cub",
+      "role": "accent",
+      "hex": "#FDC116",
+      "rgb": { "r": 253, "g": 193, "b": 22 },
+      "pantone": "PMS 116",
+      "cmyk": { "c": 0, "m": 10, "y": 100, "k": 0 },
+      "source": "p.22 — Cub Scouts mark reproduction"
+    },
+    {
+      "name": "scoutsbsa-olive",
+      "label": "Scouts BSA Olive",
+      "program": "scoutsbsa",
+      "role": "primary",
+      "hex": "#243E2C",
+      "rgb": { "r": 36, "g": 62, "b": 44 },
+      "pantone": null,
+      "cmyk": null,
+      "_note": "The 2024 guidelines list the hex and RGB on p.25 but no Pantone or CMYK for the olive swatch. The mark reproduction table (p.25) covers only the emblem colors (tan/gold, brown, blue, red), not the olive field. Convert hex with print vendor."
+    },
+    {
+      "name": "scoutsbsa-tan",
+      "label": "Scouts BSA Tan",
+      "program": "scoutsbsa",
+      "role": "surface-muted",
+      "hex": "#D6CEBD",
+      "rgb": { "r": 214, "g": 206, "b": 189 },
+      "pantone": null,
+      "cmyk": null,
+      "_note": "Listed on p.25 as a program color. No Pantone or CMYK in the guidelines; this swatch is shared with SA Tan. Convert hex with print vendor."
+    },
+    {
+      "name": "scoutsbsa-red",
+      "label": "Scouts BSA Red",
+      "program": "scoutsbsa",
+      "role": "accent-print",
+      "hex": "#CE1126",
+      "rgb": { "r": 206, "g": 17, "b": 38 },
+      "pantone": "PMS 186",
+      "cmyk": { "c": 0, "m": 100, "y": 81, "k": 4 },
+      "source": "p.25 — Scouts BSA mark reproduction (same spec as SA Red)",
+      "_note": "This is the print accent for Scouts BSA marks. The design system uses SA Blue (#003F87) as the digital accent for Scouts BSA to reduce aggressive red in UI; the red is preserved here for print mark fidelity."
+    },
+    {
+      "name": "scoutsbsa-emblem-brown",
+      "label": "Scouts BSA Emblem Brown",
+      "program": "scoutsbsa",
+      "role": "mark-only",
+      "hex": "#996633",
+      "rgb": { "r": 153, "g": 102, "b": 51 },
+      "pantone": "PMS 463",
+      "cmyk": { "c": 50, "m": 80, "y": 100, "k": 30 },
+      "source": "p.25 — Scouts BSA mark reproduction",
+      "_note": "Appears only in the BSA emblem mark. Not used as a UI token; included here for print-production completeness."
+    },
+    {
+      "name": "venturing-green",
+      "label": "Venturing Green",
+      "program": "venturing",
+      "role": "primary",
+      "hex": "#006B3F",
+      "rgb": { "r": 0, "g": 107, "b": 63 },
+      "pantone": "PMS 349",
+      "cmyk": { "c": 100, "m": 0, "y": 90, "k": 40 },
+      "source": "p.28 — Venturing mark reproduction"
+    },
+    {
+      "name": "venturing-yellow",
+      "label": "Venturing Yellow",
+      "program": "venturing",
+      "role": "accent",
+      "hex": "#FCD116",
+      "rgb": { "r": 252, "g": 209, "b": 22 },
+      "pantone": "PMS 116",
+      "cmyk": { "c": 0, "m": 10, "y": 100, "k": 0 },
+      "source": "p.28 — Venturing mark reproduction"
+    },
+    {
+      "name": "seascouts-dark-blue",
+      "label": "Sea Scouts Dark Blue",
+      "program": "seascouts",
+      "role": "primary",
+      "hex": "#003366",
+      "rgb": { "r": 0, "g": 51, "b": 102 },
+      "pantone": null,
+      "cmyk": { "c": 100, "m": 72, "y": 27, "k": 33 },
+      "source": "p.31 — Sea Scouts mark reproduction (dark blue component)",
+      "_note": "No Pantone is listed for Sea Scouts Dark Blue anywhere in the 2024 guidelines. The CMYK is from the mark reproduction table on p.31 where it appears as the 'Dark Blue' field."
+    },
+    {
+      "name": "seascouts-yellow",
+      "label": "Sea Scouts Yellow",
+      "program": "seascouts",
+      "role": "accent",
+      "hex": "#FFCC00",
+      "rgb": { "r": 255, "g": 204, "b": 0 },
+      "pantone": null,
+      "cmyk": null,
+      "_note": "No Pantone is listed for Sea Scouts Yellow in the 2024 guidelines. The mark reproduction table on p.31 contains a 'Dark Yellow' row with CMYK 0/25/100/100 and RGB 255/204/0 but the K=100 value contradicts a bright yellow at any press condition and is almost certainly a column-alignment artifact from the PDF text extraction. Do not use that CMYK for production. Convert hex with print vendor."
+    },
+    {
+      "name": "seascouts-light-blue",
+      "label": "Sea Scouts Light Blue",
+      "program": "seascouts",
+      "role": "surface-muted",
+      "hex": "#9AB3D5",
+      "rgb": { "r": 154, "g": 179, "b": 213 },
+      "pantone": null,
+      "cmyk": { "c": 34, "m": 17, "y": 0, "k": 7 },
+      "source": "p.31 — Sea Scouts mark reproduction (light blue component)",
+      "_note": "No Pantone listed. CMYK taken from the mark reproduction table; treat as a starting point and verify with print vendor."
+    }
+  ],
+  "_discrepancies": [
+    {
+      "item": "SA Blue vs Cub Blue CMYK",
+      "detail": "Both colors share hex #003F87 and Pantone PMS 294, but the PDF lists different CMYK formulas: SA Blue mark = C100/M58/Y0/K21 (p.9) vs Cub Scouts mark = C100/M48/Y0/K44 (p.22). This is not an extraction error: the SA Red CMYK is identical on both pages (0/100/81/4), confirming the Cub Blue value is intentionally different. Use the program-specific formula for each brand context."
+    },
+    {
+      "item": "Sea Scouts Yellow CMYK",
+      "detail": "The PDF mark reproduction table on p.31 lists 'Dark Yellow: 0, 25, 100, 100' with screen RGB 255/204/0 (#FFCC00). A K=100 channel (pure black) alongside zero ink channels is physically impossible for a bright yellow. The 100 value for K is almost certainly a column shift in the extracted text; the actual value is unknown. CMYK is marked null; convert hex with vendor."
+    },
+    {
+      "item": "Sea Scouts Dark Blue HEX typo in brand-text.txt",
+      "detail": "Page 32 of the brand text (line ~1039) shows 'Sea Scouts Dark Blue HEX: #FFCC00' but then RGB: 0, 51, 102 -- the hex label is a copy-paste error in the extracted text. The correct hex is #003366 as confirmed by the RGB triplet and the mark CMYK Dark Blue: 100/72/27/33 matching that value."
+    }
+  ]
+}
