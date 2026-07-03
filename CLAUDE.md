@@ -9,8 +9,9 @@ the official 2024 Brand Guidelines (`research/scouting-america-brand-guidelines-
 ```bash
 npm run dev           # Vite showcase at http://localhost:5173 (App.tsx demo)
 npm run storybook     # Storybook 8 at http://localhost:6006 (component lab)
-npm run typecheck     # tsc --noEmit, both project + node configs
-npm run build         # tsc -b && vite build (use to verify final correctness)
+npm run typecheck     # tsc --noEmit, three configs: project + node + test
+npm run test          # Vitest: contrast ratios, axe smoke tests, component unit tests
+npm run build         # tsc -b && vite build && npm run build:css (use to verify final correctness)
 npm run build-storybook
 ```
 
@@ -23,7 +24,7 @@ Theming is **CSS-variable-driven**, selected by the `data-program` attribute.
 Tailwind utilities like `bg-program-primary` resolve to `rgb(var(--program-primary))`.
 
 - Source of truth: `src/styles/tokens.css` (one `:root` + four `[data-program="..."]` blocks, plus a `forced-colors: active` block for Windows High Contrast)
-- Tailwind binding: `tailwind.config.ts` `theme.extend.colors.program.*`; `borderWidth.rule` maps `--program-rule-weight` to utilities like `border-b-rule`
+- Tailwind binding: `tailwind-preset.cjs` `theme.extend.colors.program.*`; `borderWidth.rule` maps `--program-rule-weight` to utilities like `border-b-rule`. `tailwind.config.ts` just consumes the preset and adds local content globs.
 - React wrapper: `ScoutThemeProvider` sets the `data-program` attribute **and**
   populates a context. Both are needed.
 

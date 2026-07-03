@@ -5,10 +5,11 @@ export type CardProps = HTMLAttributes<HTMLDivElement> & {
   /** Visual weight. `flat` is the lightest, `elevated` floats with shadow. */
   variant?: "flat" | "outlined" | "elevated";
   /**
-   * When true, promotes the card to a featured state: a raised surface with a
-   * full-edge inset hairline ring. Emphasis reads from tone and depth, not a
-   * directional accent bar. Pair with CardEyebrow or a DecorativeBorder motif
-   * for the strongest "lead story" treatment.
+   * When true, promotes the card to a featured state: applies the program
+   * shadow (shadow-program) and an inset hairline ring (ring-1 ring-inset
+   * ring-program-border/60) on top of the base variant styles. The effect
+   * reads as tonal depth, not a directional accent bar. Pair with CardEyebrow
+   * or a DecorativeBorder motif for the strongest "lead story" treatment.
    */
   featured?: boolean;
 };

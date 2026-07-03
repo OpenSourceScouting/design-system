@@ -24,7 +24,7 @@ Conventions for anyone picking up work here:
 > Done 2026-07-02: applyToDocument now runs in useEffect with a cleanup that
 > restores the previous data-program value on unmount or program change.
 
-**Why:** `src/lib/theme/ScoutThemeProvider.tsx:130-132` calls
+**Why:** `src/lib/theme/ScoutThemeProvider.tsx` (was lines 130-132, now the useEffect is at ~135-147) called
 `document.documentElement.setAttribute(...)` during render. React 18 strict
 mode invokes render twice; SSR has no `document`. Side effects belong in
 `useEffect`.
@@ -48,7 +48,7 @@ mode invokes render twice; SSR has no `document`. Side effects belong in
 > Done 2026-07-02: press translation is now motion-safe:active:translate-y-[1px].
 
 **Why:** `src/components/Button.tsx:19` has `active:translate-y-[1px]`. The
-reduced-motion CSS in `tokens.css:196-205` only zeroes `transition-duration`
+reduced-motion CSS in `tokens.css` (was lines 196-205, now the block starts at ~line 222) only zeroes `transition-duration`
 and `animation-duration`, not transforms. Users with `prefers-reduced-motion:
 reduce` still see the 1px jump.
 
@@ -96,7 +96,7 @@ spot-check `Button`, `Badge`, `Alert`, `Card`.
 > excludes size="sm" when variant="accent", plus a dev-mode console.warn for
 > untyped call sites. Button stories updated to satisfy the constraint.
 
-**Why:** `tokens.css:59` defines `--program-on-accent: 0 63 135` (blue on
+**Why:** `tokens.css` (was line 59, now ~line 81) defines `--program-on-accent: 0 63 135` (blue on
 gold). Comment notes "passes AA at 16pt+". `Button size="sm"` is `text-xs`
 (12px), which fails 4.5:1. Same risk applies to Venturing and Sea Scouts
 yellow accents.
@@ -257,11 +257,13 @@ neutral token export does.
 > tests (15 files), all green. tests/contrast.test.ts parses tokens.css and
 > asserts WCAG ratios across all five palettes; per-component smoke + axe tests
 > live in src/**/__tests__. Three genuine bugs surfaced and are flagged with
-> it.fails (not silenced): seascouts on-surface-faint measures 2.98:1 (< 3:1
-> floor, tokens.css:202 comment overstates it as ~3.5:1); Calendar month grid's
-> date-row wrapper lacks role="row" so gridcells fail aria-required-parent; and
-> the agenda view nests non-<li> AgendaItems inside a <ul>. Test dts excluded
-> from dist; tsconfig.test.json typechecks the test tree.
+> it.fails (not silenced): seascouts on-surface-faint originally measured 2.98:1
+> (< 3:1 floor) at the old value #7E8FA8; tokens.css:202 comment at the time
+> overstated it as ~3.5:1; the token has since been corrected to #7687A0, which
+> measures ~3.3:1; Calendar month grid's date-row wrapper lacks role="row" so
+> gridcells fail aria-required-parent; and the agenda view nests non-<li>
+> AgendaItems inside a <ul>. Test dts excluded from dist; tsconfig.test.json
+> typechecks the test tree.
 
 **Why:** Repo claims WCAG AA but has no automated verification. A single
 token regression could break contrast silently.
@@ -507,6 +509,66 @@ new `examples/email-template/index.html`.
 - Calendar week starts and weekday labels respect locale.
 
 **Effort:** 1 day.
+
+---
+
+### [ ] 3.10 ProgramMark asset-probe hardening
+
+**Why:** `ProgramMark` probes up to 15 URLs per render (3 variants x 5
+extensions: svg, webp, png, jpg, jpeg) to find a real asset. On SPA-fallback
+hosts (e.g. Netlify, Vercel, or any server configured to return 200 + HTML for
+missing files), every probe returns a 200 response with an HTML body, so the
+extension fallback logic never finds a non-file and keeps rendering the probe
+results as broken `<img>` tags instead of falling back to the placeholder.
+
+**Files:** `src/components/ProgramMark.tsx`, `public/marks/README.md`,
+`README.md` (deployment warning).
+
+**Acceptance:**
+- After fetching a candidate URL, validate the response `Content-Type` header
+  (or the image's natural dimensions) before treating it as a valid asset.
+  A `text/html` response must be treated as a miss, not a hit.
+- Alternatively (or additionally), expose an explicit `src` prop on `ProgramMark`
+  so consumers on SPA-fallback hosts can bypass probing entirely and supply the
+  resolved URL directly.
+- Probe count is reduced: try only the consumer-specified extension first (if a
+  `src` or `preferExtension` prop is provided), falling back to the full scan
+  only when nothing explicit is given.
+- `public/marks/README.md` and `README.md` each carry a warning explaining the
+  SPA-fallback behavior and the `forcePlaceholder` / explicit-`src` workarounds.
+- Typecheck passes; existing placeholder fallback is unchanged.
+
+**Effort:** 2-3 hours.
+
+---
+
+### [ ] 3.11 Calendar ergonomics
+
+**Why:** Three independent usability gaps in the `Calendar` component:
+1. The agenda view window is anchored to `defaultMonth`, not today, so a user
+   landing on the calendar in July sees July events even if `defaultMonth`
+   is January (from a stale prop). The window should default to today.
+2. When the agenda window is empty but events exist outside it (earlier or
+   later months), there is no affordance to help the user find them. A "Switch
+   to Month view" prompt would surface the navigation controls.
+3. `CalendarEvent` has no `allDay` field, so all-day events render with a
+   "12:00 AM" time label that misleads users.
+
+**Files:** `src/components/Calendar.tsx`, `src/lib/utils/date.ts`.
+
+**Acceptance:**
+- Agenda view defaults the visible window to today's date regardless of
+  `defaultMonth` (which should control only the initial month-grid view).
+- When the agenda window is empty and the `events` prop contains events outside
+  the window, render an inline prompt: "No upcoming events. Switch to Month
+  view to browse." Clicking it calls the existing `onViewChange` callback (or
+  sets internal view state if uncontrolled).
+- `CalendarEvent` gains an `allDay?: boolean` field. When `true`, the time
+  label is suppressed in agenda rows and event chips. Existing events without
+  the field render as before.
+- Typecheck passes; contrast tests still pass.
+
+**Effort:** 2-3 hours.
 
 ---
 

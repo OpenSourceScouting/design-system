@@ -18,6 +18,16 @@ brand reference (colors, type, voice, print values, trademark rules) that you
 or any AI tool can use to produce on-brand scouting materials without this
 codebase.
 
+## Which document do I need?
+
+| I am...                                      | Start here                          |
+| -------------------------------------------- | ----------------------------------- |
+| A developer installing the package           | This README (you are here)          |
+| A designer, marketer, or AI tool             | [`BRAND-GUIDE.md`](./BRAND-GUIDE.md) |
+| Checking trademark or asset license rules    | [`NOTICE.md`](./NOTICE.md)          |
+| Picking up a backlog task to contribute      | [`TODO.md`](./TODO.md)              |
+| A coding agent working inside this codebase  | [`CLAUDE.md`](./CLAUDE.md)          |
+
 ## Quick start
 
 ```bash
@@ -80,6 +90,29 @@ utilities (useful for non-Tailwind projects), import the tokens file instead:
 import "@openscouting/design-system/tokens";
 ```
 
+> **What `@openscouting/design-system/styles` contains (and does not contain):**
+> The published stylesheet includes only the Tailwind utility classes that the
+> design system's own components use internally. It does **not** run a full
+> Tailwind build over your project's source files. This means:
+>
+> - Utilities you write yourself (`bg-program-primary`, `font-display`,
+>   `text-program-on-surface`, etc.) will **not** be emitted by this stylesheet.
+> - You need a Tailwind build in your own project that loads the preset, with the
+>   standard `@tailwind base; @tailwind components; @tailwind utilities;`
+>   directives in your entry CSS.
+>
+> Example `src/index.css` for a consumer that writes its own Tailwind utilities:
+>
+> ```css
+> @tailwind base;
+> @tailwind components;
+> @tailwind utilities;
+> ```
+>
+> If you are using Tailwind only to render design system components (no custom
+> utilities in your own code), importing `@openscouting/design-system/styles` is
+> sufficient and you do not need a separate Tailwind build step.
+
 ### Minimal working snippet
 
 ```tsx
@@ -98,6 +131,20 @@ export function App() {
 provides program metadata through React context. Components that read program
 metadata (such as `ProgramHero`, `ProgramMark`, and `RegistrationCTA`) require
 a `ScoutThemeProvider` ancestor.
+
+Notable `ScoutThemeProvider` props:
+
+- **`applyToDocument`** (boolean, default `false`): applies `data-program` to
+  `<html>` via a `useEffect`, theming the entire document instead of just the
+  provider's subtree. Cleanup restores the previous attribute value when the
+  provider unmounts or `program` changes, so multiple providers and hot-reload
+  work correctly.
+- **`forcePlaceholderMarks`** (boolean, default `false`): forces every
+  `ProgramMark` in the subtree to render its inline placeholder SVG even when
+  a real asset file is present on the server. Use this for portfolio screenshots,
+  OSS preview builds, or any context where the licensed BSA marks cannot
+  lawfully be displayed. A per-instance `forcePlaceholder` prop on `ProgramMark`
+  takes precedence over this subtree-wide flag.
 
 ### Override colors for your council
 
@@ -207,8 +254,9 @@ src/
 Every theme-aware style resolves through a CSS custom property like
 `--program-primary`. Tailwind utilities (`bg-program-primary`,
 `text-program-on-surface`, etc.) are wired to those vars in
-`tailwind.config.ts`. The vars get re-bound by selecting an ancestor with the
-right `data-program="..."` attribute.
+`tailwind-preset.cjs` (the published preset). `tailwind.config.ts` in this
+repo just consumes that preset and adds the local content globs. The vars get
+re-bound by selecting an ancestor with the right `data-program="..."` attribute.
 
 ```tsx
 import { ScoutThemeProvider, Button } from "./src";
@@ -230,6 +278,18 @@ You can nest providers; a Venturing card on a Scouts BSA page is supported.
 | Sea Scouts  | `#003366`  | none listed     | `#FFCC00`  | none listed    | Linear, italic editorial. Weight 600.    |
 
 Full CMYK and Pantone data (including secondary tans, grays, and mark-reproduction colors) is in [`src/styles/tokens.print.json`](./src/styles/tokens.print.json) and ships in the package at `dist/tokens.print.json`.
+
+### The `sa-red` raw palette utility
+
+`tokens.css` defines a raw Tailwind color `sa-red` (`#CE1126`, Scouting America
+Red) as a standalone palette entry alongside the `program-*` token family.
+It is **reserved for true error and danger states only**, such as form validation
+errors, destructive action confirmations, and alert banners that signal failure.
+
+Do not use `sa-red` as a general accent or brand color on program pages: the
+parent brand red reads as either an error state or a broken theme (it is also the
+`:root` fallback when no `data-program` ancestor exists). If you need a
+program-appropriate accent, use `bg-program-accent` instead.
 
 ## Configuring where assets are served from
 
@@ -330,15 +390,16 @@ needs no change.
 
 ## Scripts
 
-| Command                   | Description                                                    |
-| ------------------------- | -------------------------------------------------------------- |
-| `npm run dev`             | Vite dev server, runs the App.tsx demo at port 5173.           |
-| `npm run storybook`       | Storybook 8 component explorer at port 6006.                   |
-| `npm run build`           | Type-check, build library dist (ES + CJS), emit CSS artifacts. |
-| `npm run build:demo`      | Build the SPA showcase (copies public assets; for deployment). |
-| `npm run build:css`       | Re-emit dist/styles.css and dist/tokens.css only.              |
-| `npm run typecheck`       | Type-check without emitting (both tsconfig.json configs).      |
-| `npm run build-storybook` | Static Storybook build for deployment.                         |
+| Command                   | Description                                                                   |
+| ------------------------- | ----------------------------------------------------------------------------- |
+| `npm run dev`             | Vite dev server, runs the App.tsx demo at port 5173.                          |
+| `npm run storybook`       | Storybook 8 component explorer at port 6006.                                  |
+| `npm run build`           | `tsc -b && vite build && npm run build:css` (library dist + CSS artifacts).   |
+| `npm run build:demo`      | Build the SPA showcase (copies public assets; for deployment).                |
+| `npm run build:css`       | Re-emit dist/styles.css and dist/tokens.css only.                             |
+| `npm run typecheck`       | `tsc --noEmit` across three configs (project, node, and test tsconfig files). |
+| `npm run test`            | Vitest: contrast-ratio assertions, axe smoke tests, component unit tests.     |
+| `npm run build-storybook` | Static Storybook build for deployment.                                        |
 
 ## License & trademark notice
 
