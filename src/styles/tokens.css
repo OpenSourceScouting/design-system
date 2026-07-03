@@ -199,7 +199,7 @@
   --program-surface: 240 244 248;       /* sea-foam paper */
   --program-on-surface: 0 26 51;
   --program-on-surface-soft: 71 90 120; /* #475A78, ~6.5:1 muted body text */
-  --program-on-surface-faint: 126 143 168; /* #7E8FA8, ~3.5:1 inactive dim */
+  --program-on-surface-faint: 118 135 160; /* #7687A0, ~3.3:1 inactive dim (the earlier #7E8FA8 measured 2.98:1, under the 3:1 floor) */
   --program-surface-muted: 154 179 213; /* Sea Scouts Light Blue #9AB3D5 */
   --program-on-surface-muted: 0 26 51;
   --program-border: 0 51 102;

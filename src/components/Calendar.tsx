@@ -332,6 +332,10 @@ function MonthGrid({
 }) {
   const firstCell = startOfWeek(startOfMonth(month), weekStartsOn);
   const cells = Array.from({ length: 42 }, (_, i) => addDays(firstCell, i));
+  // Chunked into weeks because every role="gridcell" needs a role="row"
+  // parent (axe: aria-required-parent). The row wrappers use display:contents
+  // so the cells stay direct grid items and the layout is unchanged.
+  const weeks = Array.from({ length: 6 }, (_, w) => cells.slice(w * 7, w * 7 + 7));
   const weekdayLabels = rotate(WEEKDAY_SHORT, weekStartsOn);
   const weekdayLong = rotate(WEEKDAY_LONG, weekStartsOn);
 
@@ -352,7 +356,9 @@ function MonthGrid({
         </div>
 
         <div className="grid grid-cols-7 gap-1">
-          {cells.map((day, i) => {
+          {weeks.map((week, w) => (
+          <div key={w} role="row" className="contents">
+          {week.map((day, i) => {
             const inMonth = isSameMonth(day, month);
             const isToday = isSameDay(day, today);
             const dayEvents = eventsOnDay(events, day);
@@ -412,6 +418,8 @@ function MonthGrid({
               </div>
             );
           })}
+          </div>
+          ))}
         </div>
       </div>
     </div>
@@ -502,7 +510,9 @@ function AgendaList({
           <DayStamp day={g.day} />
           <ul className="flex flex-col gap-3 min-w-0">
             {g.items.map((ev) => (
-              <AgendaItem key={ev.id} event={ev} onClick={onEventClick} />
+              <li key={ev.id} className="flex flex-col">
+                <AgendaItem event={ev} onClick={onEventClick} />
+              </li>
             ))}
           </ul>
         </li>
