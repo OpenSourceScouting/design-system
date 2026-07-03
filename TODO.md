@@ -574,10 +574,17 @@ results as broken `<img>` tags instead of falling back to the placeholder.
 
 ## Tier 4: nice-to-have
 
-### [ ] 4.1 Chromatic visual regression
-Free OSS tier. Catches per-program rendering regressions across the
-component × program matrix that no human reviewer will catch reliably.
-**Effort:** 2 hours.
+### [x] 4.1 Visual regression (done, substituted for Chromatic)
+Catches per-program rendering regressions across the component x program
+matrix that no human reviewer will catch reliably. Chose self-hosted
+Playwright via `@storybook/test-runner` + `jest-image-snapshot` over Chromatic
+to avoid SaaS snapshot limits and vendor lock-in. Every story is screenshotted
+at 375 / 768 / 1280 in a `postVisit` hook and diffed against committed
+baselines under `.storybook/__image_snapshots__/`. Determinism comes from
+running both baseline generation and CI inside the pinned Playwright container
+(`mcr.microsoft.com/playwright:v1.61.1-jammy`). See
+`.storybook/VISUAL_REGRESSION.md` and `.github/workflows/visual.yml`.
+**Effort:** done.
 
 ### [ ] 4.2 `examples/` directory with reference integrations
 Subdirectories: `nextjs-app/`, `vanilla-html/`, `wordpress-block-theme/`,

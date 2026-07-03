@@ -1,5 +1,12 @@
 import type { Preview, Decorator } from "@storybook/react";
 import { ScoutThemeProvider, type Program } from "../src/lib/theme/ScoutThemeProvider";
+// Self-hosted fonts (no runtime CDN). Loading them here means Storybook and the
+// Playwright test-runner render with locally bundled faces, which is required
+// for deterministic visual-regression screenshots.
+import "@fontsource-variable/montserrat";
+import "@fontsource-variable/montserrat/wght-italic.css";
+import "@fontsource-variable/source-serif-4";
+import "@fontsource-variable/source-serif-4/wght-italic.css";
 import "../src/styles/globals.css";
 
 /**

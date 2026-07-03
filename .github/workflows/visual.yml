@@ -1,0 +1,77 @@
+name: Visual regression
+
+# Self-hosted Playwright visual regression (the replacement for Chromatic).
+# Screenshots every story at 375 / 768 / 1280 via @storybook/test-runner and
+# diffs against committed baselines under .storybook/__image_snapshots__.
+#
+# DETERMINISM: this job runs inside the official Playwright container so that
+# font rendering and antialiasing match exactly what produced the baselines.
+# The image tag MUST match the `playwright` version resolved in
+# package-lock.json (currently v1.61.1). If you bump Playwright, bump this tag
+# AND regenerate baselines in the same image.
+#
+# HOW TO UPDATE BASELINES:
+#   Option A (local, recommended): run the identical container and commit the
+#   PNGs it writes. See .storybook/VISUAL_REGRESSION.md for the one-liner.
+#   Option B (CI): trigger this workflow via "Run workflow" (workflow_dispatch)
+#   with update_baselines=true; it regenerates and uploads the new baselines as
+#   an artifact for you to download and commit. (It does not auto-push.)
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      update_baselines:
+        description: "Regenerate baselines and upload as an artifact"
+        type: boolean
+        default: false
+
+jobs:
+  visual:
+    name: screenshot diff
+    runs-on: ubuntu-latest
+    container:
+      # Pinned to the resolved `playwright` version. Keep in sync with the lockfile.
+      image: mcr.microsoft.com/playwright:v1.61.1-jammy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Storybook
+        run: npm run build-storybook
+
+      - name: Run visual regression (diff against baselines)
+        if: ${{ github.event.inputs.update_baselines != 'true' }}
+        run: npm run test:visual:ci
+
+      - name: Regenerate baselines (workflow_dispatch only)
+        if: ${{ github.event.inputs.update_baselines == 'true' }}
+        run: npm run test:visual:update
+
+      - name: Upload diff images on failure
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-diffs
+          path: .storybook/__image_snapshots__/__diffs__/
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload regenerated baselines
+        if: ${{ github.event.inputs.update_baselines == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: updated-baselines
+          path: .storybook/__image_snapshots__/**/*.png
+          retention-days: 14

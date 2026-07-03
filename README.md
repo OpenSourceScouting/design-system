@@ -341,30 +341,13 @@ SIL Open Font License. Per program, the display weight ranges from 600 (Sea
 Scouts) to 900 (Cub Scouts), which is why both fonts are loaded as **variable
 fonts**: one file per Unicode subset covers every weight.
 
-### Default: jsDelivr (zero install)
+### This repo: self-hosted (no runtime CDN)
 
-Out of the box, `src/styles/globals.css` imports the variable fonts from
-jsDelivr's mirror of [Fontsource](https://fontsource.org/):
-
-```
-https://cdn.jsdelivr.net/npm/@fontsource-variable/montserrat@5/index.css
-https://cdn.jsdelivr.net/npm/@fontsource-variable/source-serif-4@5/index.css
-```
-
-No third-party tracking (unlike Google Fonts), Latin subset only for English
-content (via `unicode-range`), and pinned to the `@5` major so patch releases
-roll forward without breaking changes.
-
-### Advanced: self-host
-
-If you want zero third-party requests at runtime (recommended for production
-council deployments, offline-capable builds, or strict CSP):
-
-```bash
-npm i @fontsource-variable/montserrat @fontsource-variable/source-serif-4
-```
-
-Then in your app entry:
+The demo and Storybook self-host the fonts via
+[Fontsource](https://fontsource.org/). There is no third-party request at
+runtime: no jsDelivr, no Google Fonts, no tracking, offline-capable, and CSP
+friendly. The faces are pulled in with plain JS imports at each entry point
+(`src/main.tsx` and `.storybook/preview.tsx`):
 
 ```ts
 import "@fontsource-variable/montserrat";
@@ -373,10 +356,33 @@ import "@fontsource-variable/source-serif-4";
 import "@fontsource-variable/source-serif-4/wght-italic.css";
 ```
 
-…and remove the four `@import url(...)` lines at the top of
-`src/styles/globals.css`. The font-family names (`"Montserrat Variable"`,
-`"Source Serif 4 Variable"`) are identical in both modes, so `tokens.css`
-needs no change.
+The two `@fontsource-variable` packages are `devDependencies`: they are
+consumed by the demo and Storybook, so the built library CSS (`dist/styles.css`)
+deliberately does not inline any font faces.
+
+### Library consumers: bring your own fonts
+
+Because the published stylesheet does not bundle font faces, a consumer of
+`@openscouting/design-system` must load the two families themselves. The
+simplest route is to install the same packages and import them at your app
+entry:
+
+```bash
+npm i @fontsource-variable/montserrat @fontsource-variable/source-serif-4
+```
+
+```ts
+import "@fontsource-variable/montserrat";
+import "@fontsource-variable/montserrat/wght-italic.css";
+import "@fontsource-variable/source-serif-4";
+import "@fontsource-variable/source-serif-4/wght-italic.css";
+```
+
+Any equivalent delivery works too (a `@font-face` block, Google Fonts, a CDN of
+your choosing) as long as it registers faces under the exact family names
+`"Montserrat Variable"` and `"Source Serif 4 Variable"`, which is what
+`tokens.css` references. If those faces are absent the components still render,
+falling back to the platform system fonts.
 
 ## Accessibility
 

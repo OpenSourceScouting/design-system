@@ -1,25 +1,16 @@
 /* -----------------------------------------------------------------------------
-   Fonts: Montserrat (display) + Source Serif 4 (body), via Fontsource on jsDelivr.
-   Variable fonts: one file per Unicode subset covers all weights 100–900.
-   The browser only downloads the Latin subset for English content thanks to the
-   `unicode-range` declarations Fontsource ships.
+   Fonts: Montserrat (display) + Source Serif 4 (body), both SIL OFL variable
+   fonts. They are self-hosted via @fontsource-variable and loaded through JS
+   imports at each app/Storybook entry point (src/main.tsx,
+   .storybook/preview.tsx), not from a CDN. This keeps the built dist CSS free
+   of any runtime third-party request.
 
-   To self-host instead (no third-party request, fully offline-capable):
-     1. Remove these four @import lines.
-     2. `npm i @fontsource-variable/montserrat @fontsource-variable/source-serif-4`
-     3. In your app entry (e.g. src/main.tsx), add:
-          import "@fontsource-variable/montserrat";
-          import "@fontsource-variable/montserrat/wght-italic.css";
-          import "@fontsource-variable/source-serif-4";
-          import "@fontsource-variable/source-serif-4/wght-italic.css";
-   The font-family names ("Montserrat Variable", "Source Serif 4 Variable") are
-   identical in both modes, so tokens.css needs no change.
+   Library consumers bring their own fonts: the published stylesheet does NOT
+   bundle font faces. Install the two @fontsource-variable packages (or provide
+   equivalent "Montserrat Variable" / "Source Serif 4 Variable" faces). See the
+   Fonts section of README.md. The font-family names in tokens.css are identical
+   regardless of how the faces are delivered, so tokens.css needs no change.
    --------------------------------------------------------------------------- */
-@import url("https://cdn.jsdelivr.net/npm/@fontsource-variable/montserrat@5/index.css");
-@import url("https://cdn.jsdelivr.net/npm/@fontsource-variable/montserrat@5/wght-italic.css");
-@import url("https://cdn.jsdelivr.net/npm/@fontsource-variable/source-serif-4@5/index.css");
-@import url("https://cdn.jsdelivr.net/npm/@fontsource-variable/source-serif-4@5/wght-italic.css");
-
 @import "./tokens.css";
 
 @tailwind base;
