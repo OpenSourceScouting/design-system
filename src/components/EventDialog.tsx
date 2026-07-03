@@ -67,14 +67,17 @@ export type EventDialogFooterProps = {
 };
 
 function formatRange(start: Date, end?: Date): string {
-  const dateOpts: Intl.DateTimeFormatOptions = { weekday: "long", month: "long", day: "numeric", year: "numeric" };
+  const fullOpts: Intl.DateTimeFormatOptions = { weekday: "long", month: "long", day: "numeric", year: "numeric" };
   if (!end || isSameDay(start, end)) {
-    return start.toLocaleDateString(undefined, dateOpts);
+    return start.toLocaleDateString("en-US", fullOpts);
   }
   if (isSameMonth(start, end)) {
-    return `${start.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })} – ${end.toLocaleDateString(undefined, { weekday: "long", day: "numeric", year: "numeric" })}`;
+    // Both sides carry weekday + month + day; year appears only on the end date.
+    const startFmt = start.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
+    const endFmt = end.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+    return `${startFmt} – ${endFmt}`;
   }
-  return `${start.toLocaleDateString(undefined, dateOpts)} – ${end.toLocaleDateString(undefined, dateOpts)}`;
+  return `${start.toLocaleDateString("en-US", fullOpts)} – ${end.toLocaleDateString("en-US", fullOpts)}`;
 }
 
 function formatTime(d: Date): string {
