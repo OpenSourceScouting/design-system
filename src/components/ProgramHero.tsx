@@ -55,7 +55,7 @@ export function ProgramHero({
             // isolates mix-blend-mode (used to key out JPG backgrounds) from
             // the surface behind it, which would leave the JPG's rectangle
             // visible. Custom watermark nodes control their own opacity.
-            <ProgramMark variant="mono" size={420} className="opacity-[0.08]" />
+            <ProgramMark variant="mono" size={280} className="opacity-[0.08]" />
           );
 
   return (
@@ -69,11 +69,15 @@ export function ProgramHero({
     >
       {/* Deep watermark mark, purely decorative. Uses the `mono` variant so
           the opacity tint applies to a single licensed color rather than
-          ghosting every official color simultaneously. */}
+          ghosting every official color simultaneously. Fully inset, never
+          bleeding off the edge: the BSA license forbids cropping or
+          truncating real marks (NOTICE.md), and this slot auto-loads real
+          assets when they are present. Bleed treatments belong to our own
+          motifs (DecorativeBorder), not the marks. */}
       {watermarkNode !== null && (
         <div
           aria-hidden
-          className="pointer-events-none absolute -right-12 -top-12 sm:-right-20 sm:-top-20 text-program-primary"
+          className="pointer-events-none absolute right-6 top-6 sm:right-12 sm:top-12 text-program-primary"
         >
           {watermarkNode}
         </div>

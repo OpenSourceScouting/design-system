@@ -66,7 +66,7 @@ export function RegistrationCTA({
       : watermark !== undefined
         ? watermark
         : (
-            <ProgramMark variant="reversed" size={260} className="opacity-25" />
+            <ProgramMark variant="reversed" size={150} className="opacity-25" />
           );
 
   // Route primary-button navigation through the consumer's navigate function
@@ -90,8 +90,17 @@ export function RegistrationCTA({
         className,
       )}
     >
+      {/* Fully inset and vertically centered, never bleeding off the edge:
+          the BSA license forbids cropping real marks, and this slot
+          auto-loads them when present. Centered with flex, NOT translate:
+          a transform on this wrapper would create a stacking context and
+          isolate the mark's mix-blend-mode from the banner, resurfacing the
+          JPG's background rectangle (same failure mode as ancestor opacity). */}
       {watermarkNode !== null && (
-        <div aria-hidden className="pointer-events-none absolute -right-8 -bottom-10">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 right-8 sm:right-12 flex items-center"
+        >
           {watermarkNode}
         </div>
       )}

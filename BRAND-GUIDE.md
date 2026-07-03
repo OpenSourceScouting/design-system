@@ -184,9 +184,12 @@ simply; these are describable to any image or layout tool:
   like a mountain ridgeline.
 - **Sea Scouts**: a single continuous wave line in navy, drawn thin.
 
-Watermarks: a large, single-color, very low opacity (6-10%) program emblem or
-motif bleeding off a corner adds depth. Use one color only, never the
-full-color mark as a watermark.
+Watermarks: a large, single-color, very low opacity (6-10%) emblem or motif
+adds depth. Use one color only, never the full-color mark as a watermark.
+Bleeding off a corner is allowed ONLY for the motifs above or your own
+artwork; an official mark used as a watermark must appear whole, uncropped,
+and with clear space, because the license forbids partial reproduction
+(see section 8).
 
 ---
 
