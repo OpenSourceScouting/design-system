@@ -51,7 +51,11 @@ export function ProgramHero({
       : watermark !== undefined
         ? watermark
         : (
-            <ProgramMark variant="mono" size={420} />
+            // Opacity sits on the mark, not the wrapper: ancestor opacity
+            // isolates mix-blend-mode (used to key out JPG backgrounds) from
+            // the surface behind it, which would leave the JPG's rectangle
+            // visible. Custom watermark nodes control their own opacity.
+            <ProgramMark variant="mono" size={420} className="opacity-[0.08]" />
           );
 
   return (
@@ -69,7 +73,7 @@ export function ProgramHero({
       {watermarkNode !== null && (
         <div
           aria-hidden
-          className="pointer-events-none absolute -right-12 -top-12 sm:-right-20 sm:-top-20 opacity-[0.08] text-program-primary"
+          className="pointer-events-none absolute -right-12 -top-12 sm:-right-20 sm:-top-20 text-program-primary"
         >
           {watermarkNode}
         </div>

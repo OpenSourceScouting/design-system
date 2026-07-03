@@ -54,13 +54,19 @@ export function RegistrationCTA({
 
   // Resolve which node (if any) to render in the watermark slot.
   // `false` means suppress; `undefined` means use the built-in ProgramMark.
+  // The fade lives on the mark itself, not the positioning wrapper: JPG marks
+  // key out their solid background with mix-blend-mode, and opacity on an
+  // ancestor creates an isolated stacking context that stops the blend from
+  // reaching the banner, leaving the JPG's rectangle visible. Opacity on the
+  // blended element itself composites correctly. Custom watermark nodes
+  // control their own opacity.
   const watermarkNode =
     watermark === false
       ? null
       : watermark !== undefined
         ? watermark
         : (
-            <ProgramMark variant="reversed" size={260} />
+            <ProgramMark variant="reversed" size={260} className="opacity-25" />
           );
 
   // Route primary-button navigation through the consumer's navigate function
@@ -85,7 +91,7 @@ export function RegistrationCTA({
       )}
     >
       {watermarkNode !== null && (
-        <div aria-hidden className="pointer-events-none absolute -right-8 -bottom-10 opacity-25">
+        <div aria-hidden className="pointer-events-none absolute -right-8 -bottom-10">
           {watermarkNode}
         </div>
       )}
