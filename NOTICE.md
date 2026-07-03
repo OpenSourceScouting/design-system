@@ -11,7 +11,7 @@ own license.
 | What | Where | License |
 | ---- | ----- | ------- |
 | React components, tokens, styles, build config | `src/`, `.storybook/`, `tailwind.config.ts`, etc. | MIT (see [`LICENSE`](./LICENSE)) |
-| Placeholder program marks (paw, mountain, anchor, abstract fleur silhouette) | `src/components/ProgramMark.tsx` | MIT (our original work, NOT BSA trademarks) |
+| Placeholder program marks (PawPrint / cub, Tent / scoutsbsa, Mountain / venturing, Anchor / seascouts) | `src/components/ProgramIcon.tsx` (via `PROGRAM_ICONS`), rendered by `ProgramMark.tsx` | ISC (Lucide icons, NOT BSA trademarks, NOT original artwork of this project) |
 | Official Scouting America / BSA brand assets (real logos, fleur-de-lis, program marks) | `public/marks/*.svg` (gitignored, never committed) | BSA Brand Center license; each user downloads under their own eligibility |
 
 The repository ships **without** official assets. Cloning it gets you only
@@ -42,8 +42,9 @@ The BSA Brand Center license forbids editing or creating derivative works
 from the marks. In this codebase that means:
 
 - **`ProgramMark` does not apply any color utilities** when rendering a real
-  asset via `<img>`. It only applies them to the inline placeholder SVGs,
-  which we drew ourselves. If you need a one-color or reversed variant, save
+  asset via `<img>`. It only applies them to the Lucide placeholder icons
+  (ISC-licensed open-source icons, not original artwork of this project).
+  If you need a one-color or reversed variant, save
   it as a separate file (e.g., `cub-mono.svg`, `cub-reversed.svg`) and
   reference that filename; do not recolor at runtime.
 - **Do not pipe official marks through CSS `filter`, `mask`, or `mix-blend-mode`.**

@@ -24,10 +24,17 @@ SOFTWARE.
 
 IMPORTANT BRAND ASSET NOTICE
 
-This MIT License covers the SOFTWARE in this repository — React components,
+This MIT License covers the SOFTWARE in this repository: React components,
 TypeScript code, CSS tokens, Tailwind configuration, build scripts, and the
-abstract placeholder graphics drawn inline in `src/components/ProgramMark.tsx`
-and `src/components/DecorativeBorder.tsx`.
+original decorative graphics drawn inline in `src/components/DecorativeBorder.tsx`.
+
+The placeholder program marks rendered by `src/components/ProgramMark.tsx` are
+Lucide icons (PawPrint, Tent, Mountain, Anchor) distributed under the ISC
+license. ISC is compatible with MIT. Attribution:
+
+  Lucide: https://lucide.dev
+  Copyright (c) Lucide Contributors
+  ISC License: https://github.com/lucide-icons/lucide/blob/main/LICENSE
 
 This MIT License does NOT cover, and cannot relicense, the official Scouting
 America / Boy Scouts of America (BSA) trademarks, logos, fleur-de-lis,

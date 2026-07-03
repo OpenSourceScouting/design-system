@@ -31,12 +31,15 @@ import { cn } from "../lib/utils/cn";
  * size). JPG works as a last resort but lacks transparency; the rectangular
  * background will be visible against themed surfaces.
  *
- * If every extension 404s, the component falls back to an inline placeholder
- * SVG drawn by us. The placeholders are NOT BSA trademarks.
+ * If every extension 404s, the component falls back to Lucide icons sourced
+ * from PROGRAM_ICONS in ProgramIcon.tsx (PawPrint for Cub Scouts, Tent for
+ * Scouts BSA, Mountain for Venturing, Anchor for Sea Scouts). These icons are
+ * from the Lucide library (ISC license) and are NOT BSA trademarks and NOT
+ * original artwork created by this project.
  *
  * For real assets, NO CSS color utilities are applied to the rendered <img>.
- * The BSA Brand Center license forbids derivative works. The inline
- * placeholders, which we wrote, do accept color utilities per variant.
+ * The BSA Brand Center license forbids derivative works. The Lucide placeholder
+ * icons, being open-licensed line icons, do accept color utilities per variant.
  *
  * Use `forcePlaceholder` for contexts where you cannot lawfully display the
  * real mark (portfolio shots, open-source demos, non-approved channels).
