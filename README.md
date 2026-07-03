@@ -108,9 +108,13 @@ triplet (no `rgb()` wrapper). You can override any token by targeting the
 ```css
 /* council.css -- override Cub Scouts accent to your council color */
 [data-program="cub"] {
-  --program-accent: 220 38 38; /* R G B, no commas */
+  --program-accent: 13 115 119; /* R G B, no commas (example: a council teal) */
 }
 ```
+
+Avoid red as an override on scout-facing surfaces: red is the parent brand's
+accent and doubles as the unthemed fallback (see below), so a red accent
+reads as either an error state or a broken theme.
 
 The space-separated format is required because Tailwind appends an opacity
 modifier at compile time: `bg-program-accent/80` becomes
@@ -119,6 +123,12 @@ opacity modifier breaks.
 
 Full list of overridable tokens is in `src/styles/tokens.css` (shipped as
 `dist/tokens.css` in the package).
+
+Troubleshooting tell: if accent buttons render RED on a page you expected
+gold, your theming is not wired up. The `:root` fallback palette is the
+parent Scouting America brand, whose accent is SA Red (#CE1126), so a red
+accent means the element has no `data-program` ancestor (missing
+`ScoutThemeProvider`) or the token CSS never loaded.
 
 ### Serve program marks from a subpath
 
