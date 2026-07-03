@@ -99,12 +99,21 @@ export function RegistrationCTA({
       {watermarkNode !== null && (
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-y-0 right-8 sm:right-12 flex items-center"
+          className="pointer-events-none absolute inset-y-0 right-8 md:right-12 hidden md:flex items-center"
         >
           {watermarkNode}
         </div>
       )}
-      <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 max-w-4xl">
+      {/* When the watermark renders, the content row reserves its zone with
+          right padding instead of a fixed max-width, so the button stops
+          short of the mark at every viewport rather than overlapping it in
+          the band where an unrelated width cap used to land on the mark. */}
+      <div
+        className={cn(
+          "relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6",
+          watermarkNode !== null ? "md:pr-44 lg:pr-52" : "max-w-4xl",
+        )}
+      >
         <div className="flex flex-col gap-3 max-w-xl">
           <Heading level={2} size={2} className="text-program-on-primary">
             {resolvedHeadline}
