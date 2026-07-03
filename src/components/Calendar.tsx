@@ -12,8 +12,8 @@ import {
   startOfDay,
   startOfMonth,
   startOfWeek,
-} from "@/lib/utils/date";
-import { cn } from "@/lib/utils/cn";
+} from "../lib/utils/date";
+import { cn } from "../lib/utils/cn";
 
 export type CalendarEvent = {
   id: string;

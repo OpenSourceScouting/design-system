@@ -47,7 +47,13 @@ export type { RegistrationCTAProps } from "./components/RegistrationCTA";
 export { Calendar } from "./components/Calendar";
 export type { CalendarProps, CalendarEvent, CalendarView } from "./components/Calendar";
 
-export { EventDialog } from "./components/EventDialog";
-export type { EventDialogProps, EventDialogAction } from "./components/EventDialog";
+export { EventDialog, EventDialogHeader, EventDialogBody, EventDialogFooter } from "./components/EventDialog";
+export type {
+  EventDialogProps,
+  EventDialogAction,
+  EventDialogHeaderProps,
+  EventDialogBodyProps,
+  EventDialogFooterProps,
+} from "./components/EventDialog";
 
 export { cn } from "./lib/utils/cn";

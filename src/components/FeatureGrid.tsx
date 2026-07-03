@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Card, CardBody } from "./Card";
 import { Heading } from "./Heading";
-import { cn } from "@/lib/utils/cn";
+import { cn } from "../lib/utils/cn";
 
 export type Feature = {
   title: ReactNode;

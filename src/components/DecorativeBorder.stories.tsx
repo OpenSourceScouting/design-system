@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { DecorativeBorder } from "./DecorativeBorder";
-import { PROGRAMS, ScoutThemeProvider } from "@/lib/theme/ScoutThemeProvider";
+import { PROGRAMS, ScoutThemeProvider } from "../lib/theme/ScoutThemeProvider";
 
 const meta: Meta<typeof DecorativeBorder> = {
   title: "Foundations/DecorativeBorder",

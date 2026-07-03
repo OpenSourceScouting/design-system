@@ -19,6 +19,140 @@ npm run dev        # interactive showcase at http://localhost:5173
 npm run storybook  # component explorer at http://localhost:6006
 ```
 
+## Use this in your app
+
+### Install
+
+From the npm registry (once published):
+
+```bash
+npm install @scouting-america/design-system
+```
+
+Or directly from a packed tarball during early adoption:
+
+```bash
+npm install ./scouting-america-design-system-0.1.0.tgz
+```
+
+**Supported React versions:** React 18 and React 19 (peer dependency `react >= 18`).
+React and react-dom are peers; they must already be in your project.
+
+### Wire up Tailwind
+
+Add the preset to your `tailwind.config.ts` (or `.js`). This injects all program
+color tokens, typography utilities, and shadow/radius/border tokens:
+
+```ts
+// tailwind.config.ts
+import scoutingPreset from "@scouting-america/design-system/tailwind-preset";
+
+export default {
+  presets: [scoutingPreset],
+  content: [
+    "./src/**/*.{ts,tsx}",
+    // include the package's own components so Tailwind sees their class names
+    "./node_modules/@scouting-america/design-system/dist/**/*.js",
+  ],
+};
+```
+
+### Import the styles
+
+Import the compiled stylesheet once, at your app entry point:
+
+```ts
+// main.tsx (or index.ts, _app.tsx, etc.)
+import "@scouting-america/design-system/styles";
+```
+
+If you need only the raw CSS custom property definitions without the Tailwind
+utilities (useful for non-Tailwind projects), import the tokens file instead:
+
+```ts
+import "@scouting-america/design-system/tokens";
+```
+
+### Minimal working snippet
+
+```tsx
+import { ScoutThemeProvider, Button } from "@scouting-america/design-system";
+
+export function App() {
+  return (
+    <ScoutThemeProvider program="cub">
+      <Button variant="primary">Join Cub Scouts</Button>
+    </ScoutThemeProvider>
+  );
+}
+```
+
+`ScoutThemeProvider` sets the `data-program` attribute on its root element and
+provides program metadata through React context. Components that read program
+metadata (such as `ProgramHero`, `ProgramMark`, and `RegistrationCTA`) require
+a `ScoutThemeProvider` ancestor.
+
+### Override colors for your council
+
+Every program color is a CSS custom property carrying a space-separated RGB
+triplet (no `rgb()` wrapper). You can override any token by targeting the
+`[data-program]` attribute in your own stylesheet:
+
+```css
+/* council.css -- override Cub Scouts accent to your council color */
+[data-program="cub"] {
+  --program-accent: 220 38 38; /* R G B, no commas */
+}
+```
+
+The space-separated format is required because Tailwind appends an opacity
+modifier at compile time: `bg-program-accent/80` becomes
+`rgb(var(--program-accent) / 0.8)`. If you use `rgb(220, 38, 38)` the
+opacity modifier breaks.
+
+Full list of overridable tokens is in `src/styles/tokens.css` (shipped as
+`dist/tokens.css` in the package).
+
+### Serve program marks from a subpath
+
+By default, `ProgramMark` loads files from `/marks/` on the same origin. If
+your app is deployed at a subpath (for example `https://pack42.org/events/`)
+or you host assets on a CDN, set the base path in one of three ways:
+
+```tsx
+// 1. Per-provider (covers all ProgramMark instances inside it)
+<ScoutThemeProvider program="cub" marksBasePath="/events/marks/">
+
+// 2. Per-component
+<ProgramMark program="cub" basePath="https://cdn.pack42.org/brand/" />
+```
+
+Or set `VITE_MARKS_BASE_URL` in `.env.local` for a build-time default.
+
+### SPA router integration
+
+`EventCard`, `EventDialog`, and `RegistrationCTA` accept a `navigate` prop so
+you can drive navigation through your own router instead of
+`window.location.href`:
+
+```tsx
+import { useNavigate } from "react-router-dom";
+import { EventCard } from "@scouting-america/design-system";
+
+function MyPage() {
+  const navigate = useNavigate();
+  return (
+    <EventCard
+      event={event}
+      navigate={(url) => navigate(url)}
+    />
+  );
+}
+```
+
+When `navigate` is omitted, the components fall back to `window.location.href`
+assignment, which works fine for non-SPA deployments.
+
 ## Architecture
 
 ```
@@ -177,13 +311,15 @@ needs no change.
 
 ## Scripts
 
-| Command                | Description                              |
-| ---------------------- | ---------------------------------------- |
-| `npm run dev`          | Vite dev server, runs the App.tsx demo.  |
-| `npm run storybook`    | Storybook 8 at port 6006.                |
-| `npm run build`        | Type-check and build production assets.  |
-| `npm run typecheck`    | Type-check without emitting.             |
-| `npm run build-storybook` | Static Storybook for deploy.          |
+| Command                   | Description                                                    |
+| ------------------------- | -------------------------------------------------------------- |
+| `npm run dev`             | Vite dev server, runs the App.tsx demo at port 5173.           |
+| `npm run storybook`       | Storybook 8 component explorer at port 6006.                   |
+| `npm run build`           | Type-check, build library dist (ES + CJS), emit CSS artifacts. |
+| `npm run build:demo`      | Build the SPA showcase (copies public assets; for deployment). |
+| `npm run build:css`       | Re-emit dist/styles.css and dist/tokens.css only.              |
+| `npm run typecheck`       | Type-check without emitting (both tsconfig.json configs).      |
+| `npm run build-storybook` | Static Storybook build for deployment.                         |
 
 ## License & trademark notice
 

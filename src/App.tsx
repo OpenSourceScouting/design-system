@@ -1,13 +1,13 @@
 import { useState, type ReactElement, type ReactNode } from "react";
-import { ScoutThemeProvider, PROGRAMS, PROGRAM_META, type Program } from "@/lib/theme/ScoutThemeProvider";
-import { ProgramHero } from "@/components/ProgramHero";
-import { FeatureGrid } from "@/components/FeatureGrid";
-import { Calendar, type CalendarEvent } from "@/components/Calendar";
-import { EventDialog } from "@/components/EventDialog";
-import { RegistrationCTA } from "@/components/RegistrationCTA";
-import { Heading } from "@/components/Heading";
-import { Button } from "@/components/Button";
-import { cn } from "@/lib/utils/cn";
+import { ScoutThemeProvider, PROGRAMS, PROGRAM_META, type Program } from "./lib/theme/ScoutThemeProvider";
+import { ProgramHero } from "./components/ProgramHero";
+import { FeatureGrid } from "./components/FeatureGrid";
+import { Calendar, type CalendarEvent } from "./components/Calendar";
+import { EventDialog } from "./components/EventDialog";
+import { RegistrationCTA } from "./components/RegistrationCTA";
+import { Heading } from "./components/Heading";
+import { Button } from "./components/Button";
+import { cn } from "./lib/utils/cn";
 
 const ICONS = {
   adventure: (

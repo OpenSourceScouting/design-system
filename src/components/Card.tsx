@@ -1,5 +1,5 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
-import { cn } from "@/lib/utils/cn";
+import { cn } from "../lib/utils/cn";
 
 export type CardProps = HTMLAttributes<HTMLDivElement> & {
   /** Visual weight. `flat` is the lightest, `elevated` floats with shadow. */

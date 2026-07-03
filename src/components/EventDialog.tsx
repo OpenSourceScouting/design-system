@@ -6,8 +6,8 @@ import type { CalendarEvent } from "./Calendar";
 // ProgramMark not imported here today, but the close-button area sits on the
 // dark primary surface. If we add the program mark to the header later it
 // must use variant="reversed".
-import { isSameDay, isSameMonth } from "@/lib/utils/date";
-import { cn } from "@/lib/utils/cn";
+import { isSameDay, isSameMonth } from "../lib/utils/date";
+import { cn } from "../lib/utils/cn";
 
 export type EventDialogAction = {
   label: string;
@@ -26,6 +26,44 @@ export type EventDialogProps = {
    * a default "Register" action is added.
    */
   actions?: EventDialogAction[];
+  /**
+   * Additional class names merged onto the native `<dialog>` element.
+   * Useful for overriding max-width or adding custom backdrop styles from
+   * a consumer application without forking this component.
+   */
+  className?: string;
+  /**
+   * SPA-router navigation hook. When provided, all URL navigations (the
+   * default "Register" action and any `href`-bearing footer actions) call
+   * this function instead of assigning `window.location.href`. Inject your
+   * router's `push` or `navigate` function here so the browser history stack
+   * is not blown away on a hard reload.
+   *
+   * @example navigate={router.push}
+   */
+  navigate?: (url: string) => void;
+};
+
+export type EventDialogHeaderProps = {
+  /** The calendar event whose title, date range, and category are displayed. */
+  event: CalendarEvent;
+  /** Called when the user presses the close button. */
+  onClose: () => void;
+};
+
+export type EventDialogBodyProps = {
+  /** The calendar event whose detail fields (location, cost, description, etc.) are rendered. */
+  event: CalendarEvent;
+};
+
+export type EventDialogFooterProps = {
+  /** Action buttons to render. At least one action is required for the footer to be shown. */
+  actions: EventDialogAction[];
+  /**
+   * SPA-router navigation hook forwarded from `EventDialogProps`. When set,
+   * `href`-bearing actions call this instead of `window.location.href`.
+   */
+  navigate?: (url: string) => void;
 };
 
 function formatRange(start: Date, end?: Date): string {
@@ -50,7 +88,7 @@ function formatTimeRange(start: Date, end?: Date): string {
   return `Starts ${formatTime(start)}`;
 }
 
-export function EventDialog({ event, onClose, actions }: EventDialogProps) {
+export function EventDialog({ event, onClose, actions, className, navigate }: EventDialogProps) {
   const ref = useRef<HTMLDialogElement | null>(null);
 
   // Native <dialog> open/close: call showModal/close to drive native focus trap,
@@ -82,6 +120,9 @@ export function EventDialog({ event, onClose, actions }: EventDialogProps) {
     return <dialog ref={ref} className="hidden" />;
   }
 
+  // Default navigation falls back to a hard redirect when no SPA hook is provided.
+  const nav = navigate ?? ((url: string) => { window.location.href = url; });
+
   const resolvedActions: EventDialogAction[] =
     actions ??
     (event?.registrationUrl
@@ -90,7 +131,7 @@ export function EventDialog({ event, onClose, actions }: EventDialogProps) {
             label: "Register",
             variant: "primary",
             onClick: () => {
-              if (event.registrationUrl) window.location.href = event.registrationUrl;
+              if (event.registrationUrl) nav(event.registrationUrl);
             },
           },
         ]
@@ -105,6 +146,7 @@ export function EventDialog({ event, onClose, actions }: EventDialogProps) {
         // user-agent stylesheet (position: fixed; inset: 0; margin: auto).
         "p-0 max-w-2xl w-[calc(100vw-2rem)] bg-transparent",
         "backdrop:bg-program-on-surface/55 backdrop:backdrop-blur-sm",
+        className,
       )}
       aria-labelledby={event ? `event-dialog-title-${event.id}` : undefined}
     >
@@ -119,7 +161,7 @@ export function EventDialog({ event, onClose, actions }: EventDialogProps) {
         >
           <EventDialogHeader event={event} onClose={onClose} />
           <EventDialogBody event={event} />
-          {resolvedActions.length > 0 && <EventDialogFooter actions={resolvedActions} />}
+          {resolvedActions.length > 0 && <EventDialogFooter actions={resolvedActions} navigate={navigate} />}
         </article>
       )}
     </dialog>
@@ -128,7 +170,14 @@ export function EventDialog({ event, onClose, actions }: EventDialogProps) {
 
 /* ─────────────────────────────────────────────────────────────────────────── */
 
-function EventDialogHeader({ event, onClose }: { event: CalendarEvent; onClose: () => void }) {
+/**
+ * The primary-colored header band of an EventDialog, containing the title,
+ * date range, category badge, and close button.
+ *
+ * Exported so consumers can compose a custom dialog shell (e.g. inside a
+ * Radix Dialog or Sheet) while reusing the branded header markup.
+ */
+export function EventDialogHeader({ event, onClose }: EventDialogHeaderProps) {
   return (
     <header
       className={cn(
@@ -178,7 +227,14 @@ function EventDialogHeader({ event, onClose }: { event: CalendarEvent; onClose: 
   );
 }
 
-function EventDialogBody({ event }: { event: CalendarEvent }) {
+/**
+ * The scrollable body of an EventDialog, rendering the event fact grid
+ * (location, organizer, cost, capacity, deadline) and the description.
+ *
+ * Exported so consumers can embed the body alone inside a custom dialog
+ * shell without reconstructing the fact-grid or description layout.
+ */
+export function EventDialogBody({ event }: EventDialogBodyProps) {
   const facts: { label: string; value: ReactNode }[] = [];
   if (event.location) facts.push({ label: "Location", value: event.location });
   if (event.organizer) facts.push({ label: "Organized by", value: event.organizer });
@@ -225,7 +281,20 @@ function EventDialogBody({ event }: { event: CalendarEvent }) {
   );
 }
 
-function EventDialogFooter({ actions }: { actions: EventDialogAction[] }) {
+/**
+ * The action-button footer of an EventDialog.
+ *
+ * Exported so consumers can render the footer standalone (e.g. inside a
+ * Sheet or custom modal) or extend it with additional controls alongside
+ * the standard action buttons.
+ *
+ * Pass `navigate` to route `href`-bearing actions through a SPA router
+ * instead of a hard `window.location.href` assignment.
+ */
+export function EventDialogFooter({ actions, navigate }: EventDialogFooterProps) {
+  // Default navigation falls back to a hard redirect when no SPA hook is provided.
+  const nav = navigate ?? ((url: string) => { window.location.href = url; });
+
   return (
     <footer
       className={cn(
@@ -238,7 +307,7 @@ function EventDialogFooter({ actions }: { actions: EventDialogAction[] }) {
         const variant = a.variant ?? (i === 0 ? "primary" : "secondary");
         const onClick = a.href
           ? () => {
-              if (a.href) window.location.href = a.href;
+              if (a.href) nav(a.href);
             }
           : a.onClick;
         return (

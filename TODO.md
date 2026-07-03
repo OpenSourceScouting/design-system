@@ -143,7 +143,13 @@ mobile-friendly.
 
 ## Tier 2: distributability (the "share this with others" gap)
 
-### [ ] 2.1 Convert from showcase repo to publishable library
+### [x] 2.1 Convert from showcase repo to publishable library
+
+> Done 2026-07-02: package published as @scouting-america/design-system@0.1.0
+> with exports map, peerDependencies, vite-plugin-dts, ES+CJS outputs, CSS
+> artifacts, tailwind-preset.cjs, and publicDir:false on lib build to prevent
+> gitignored brand marks from leaking into the tarball. npm pack produces a
+> clean 30-file tarball; consumer typecheck passes.
 
 **Why:** `package.json` is `"private": true` with no library build target,
 no `exports`, no `peerDependencies`. A council webmaster cannot
@@ -169,6 +175,38 @@ no `exports`, no `peerDependencies`. A council webmaster cannot
 - Storybook still runs (`npm run storybook`).
 
 **Effort:** 3-4 hours.
+
+---
+
+### [ ] 2.8 Open the Program union so third parties can register a fifth program
+
+**Why:** `Program` is a closed string-literal union (`"cub" | "scoutsbsa" | "venturing" | "seascouts"`). A council running a custom youth program (or a future fifth national program) cannot add a brand without forking the package. Additionally, the `forced-colors` block in `tokens.css` hard-codes all four program names with `[data-program="..."]` selectors, meaning any fifth program gets no high-contrast support automatically.
+
+**Files:** `src/lib/theme/ScoutThemeProvider.tsx`, `src/styles/tokens.css`, `tailwind-preset.cjs`, `src/index.ts`.
+
+**Acceptance:**
+- `Program` becomes `"cub" | "scoutsbsa" | "venturing" | "seascouts" | (string & {})` (or a documented extension pattern) so extra programs are assignable without a type error.
+- `ScoutThemeProvider` accepts any string value for `program` and sets `data-program` accordingly; components that switch on program fall back gracefully to a sensible default (suggest Scouts BSA tokens) rather than rendering nothing.
+- The `forced-colors` block either uses a universal `[data-program]` selector or documents that consumers must add their own forced-colors overrides.
+- Typecheck passes; existing four-program stories are visually unchanged.
+
+**Effort:** 2-3 hours.
+
+---
+
+### [ ] 2.9 Open variant records on Button, Card, Badge, and Alert
+
+**Why:** `Button`'s `variant` prop is a closed enum (`"primary" | "secondary" | "accent" | "ghost"`). The same pattern applies to `Card`, `Badge`, and `Alert`. Consumers cannot add a variant (e.g. a council "danger" badge or an "outline-accent" button) without forking the component. A discriminated-union approach that hard-codes every string also makes the TS type errors cryptic for newcomers.
+
+**Files:** `src/components/Button.tsx`, `src/components/Card.tsx`, `src/components/Badge.tsx`, `src/components/Alert.tsx`.
+
+**Acceptance:**
+- Each component exposes a `classNames` or `className` escape hatch that lets consumers supply fully custom Tailwind classes alongside (not instead of) variant defaults.
+- Alternatively, each component exports its `variantStyles` map so consumers can spread it and add entries via `cva` or a wrapper component without touching library source.
+- No existing variant behavior changes.
+- Typecheck passes; Storybook stories unchanged.
+
+**Effort:** 2-3 hours.
 
 ---
 
@@ -388,7 +426,24 @@ is placed in a 400px sidebar on a 1440px screen. Container queries fix this.
 
 ---
 
-### [ ] 3.6 Iconography pack
+### [ ] 3.6 Open FeatureGrid's per-feature card structure via render slots
+
+**Why:** `FeatureGrid` renders each feature as a fixed-structure card (icon, heading, body text). Consumers cannot change the card layout, add a CTA link, swap the icon for an image, or inject additional metadata without forking the component. This limits real-world adoption where feature cards routinely need custom content (event counts, links, photos).
+
+**Files:** `src/components/FeatureGrid.tsx`, `src/components/FeatureGrid.stories.tsx`.
+
+**Acceptance:**
+- `FeatureGrid` accepts a `renderFeature?: (feature: Feature, index: number) => ReactNode` prop. When supplied, it replaces the default card rendering entirely.
+- The existing default rendering is pixel-identical when `renderFeature` is not provided.
+- Export the `Feature` type from `src/index.ts` so consumers can type their render prop without reaching into internal paths.
+- Add a Storybook story showing a custom render prop (e.g. a feature card with a background image and a "Learn more" link).
+- Typecheck passes.
+
+**Effort:** 1-2 hours.
+
+---
+
+### [ ] 3.7 Iconography pack
 
 **Why:** Lucide is generic. Programs have specific motifs: fleur-de-lis
 (SA), compass (Scouts BSA), mountain (Venturing), anchor (Sea Scouts).
@@ -405,7 +460,7 @@ is placed in a 400px sidebar on a 1440px screen. Container queries fix this.
 
 ---
 
-### [ ] 3.7 Email-safe HTML template + Mailchimp-friendly CSS bundle
+### [ ] 3.8 Email-safe HTML template + Mailchimp-friendly CSS bundle
 
 **Why:** Email clients do not support CSS variables. Marketers cannot use
 this system in Mailchimp/Constant Contact without inline hex.
@@ -422,7 +477,7 @@ new `examples/email-template/index.html`.
 
 ---
 
-### [ ] 3.8 RTL support audit
+### [ ] 3.9 RTL support audit
 
 **Why:** Scouting is global. US councils also serve Arabic/Hebrew speakers.
 
@@ -474,6 +529,6 @@ Encodes brand book photography rules.
   `research/scouting-america-brand-guidelines-2024.pdf`. Cite page numbers
   in token comments and PR descriptions when changing colors or typography.
 - `CLAUDE.md` has the deeper rules. Read it before touching theming code.
-- When a task overlaps with another (1.5 ↔ 3.5, 2.3 ↔ 3.4 ↔ 3.7),
+- When a task overlaps with another (1.5 ↔ 3.5, 2.3 ↔ 3.4 ↔ 3.8),
   prefer doing the token-source task first so the polish tasks consume the
   new artifact instead of editing two places.

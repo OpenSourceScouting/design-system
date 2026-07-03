@@ -1,5 +1,5 @@
 import { createElement, type HTMLAttributes } from "react";
-import { cn } from "@/lib/utils/cn";
+import { cn } from "../lib/utils/cn";
 
 type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 

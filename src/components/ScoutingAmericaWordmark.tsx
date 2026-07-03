@@ -1,6 +1,6 @@
 import { useEffect, useState, type CSSProperties } from "react";
-import { useScoutTheme, normalizeBasePath } from "@/lib/theme/ScoutThemeProvider";
-import { cn } from "@/lib/utils/cn";
+import { useScoutTheme, normalizeBasePath } from "../lib/theme/ScoutThemeProvider";
+import { cn } from "../lib/utils/cn";
 
 /**
  * ScoutingAmericaWordmark renders the official Scouting America wordmark.

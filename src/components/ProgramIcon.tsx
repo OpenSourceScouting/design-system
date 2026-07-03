@@ -4,8 +4,8 @@ import {
   useScoutTheme,
   PROGRAM_META,
   type Program,
-} from "@/lib/theme/ScoutThemeProvider";
-import { cn } from "@/lib/utils/cn";
+} from "../lib/theme/ScoutThemeProvider";
+import { cn } from "../lib/utils/cn";
 
 /**
  * ProgramIcon renders a generic, trademark-safe symbol for each program.

@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactNode } from "react";
-import { cn } from "@/lib/utils/cn";
+import { cn } from "../lib/utils/cn";
 
 export type AlertProps = HTMLAttributes<HTMLDivElement> & {
   tone?: "info" | "success" | "warning" | "danger";

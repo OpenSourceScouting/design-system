@@ -4,9 +4,9 @@ import {
   PROGRAM_META,
   normalizeBasePath,
   type Program,
-} from "@/lib/theme/ScoutThemeProvider";
+} from "../lib/theme/ScoutThemeProvider";
 import { PROGRAM_ICONS } from "./ProgramIcon";
-import { cn } from "@/lib/utils/cn";
+import { cn } from "../lib/utils/cn";
 
 /**
  * ProgramMark renders a program identity mark in one of three variants.

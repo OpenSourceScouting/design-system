@@ -44,6 +44,26 @@
 }
 
 /* ---------------------------------------------------------------------------
+   Display typography helper.
+
+   Deliberately a PLAIN CSS rule (not wrapped in `@layer components`). Tailwind
+   only emits `@layer components` rules whose class name appears in a scanned
+   `content` file; a library consumer importing the prebuilt "./styles" (or
+   "./tokens") artifact has no such scan, so a layered `.display` would be
+   purged and the class would silently do nothing. As a plain rule it is always
+   present in both published CSS exports. It reads the same per-program custom
+   properties the theme overrides re-bind, so it re-themes automatically.
+   --------------------------------------------------------------------------- */
+.display {
+  font-family: var(--program-font-display);
+  font-weight: var(--program-display-weight);
+  letter-spacing: var(--program-display-tracking);
+  font-style: var(--program-display-style);
+  text-transform: var(--program-display-transform);
+  line-height: 1.05;
+}
+
+/* ---------------------------------------------------------------------------
    Cub Scouts (K-5, ages 5-10)
    Voice: Adventure meets fun and friends. Family. Playful. Warm.
    Palette: Blue + Gold (uniform colors), guidelines p.23.

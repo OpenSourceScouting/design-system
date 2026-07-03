@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { PROGRAMS, ScoutThemeProvider } from "@/lib/theme/ScoutThemeProvider";
+import { PROGRAMS, ScoutThemeProvider } from "../lib/theme/ScoutThemeProvider";
 
 const meta: Meta = {
   title: "Foundations/Color Palette",

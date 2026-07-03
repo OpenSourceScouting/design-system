@@ -53,13 +53,7 @@
   }
 }
 
-@layer components {
-  .display {
-    font-family: var(--program-font-display);
-    font-weight: var(--program-display-weight);
-    letter-spacing: var(--program-display-tracking);
-    font-style: var(--program-display-style);
-    text-transform: var(--program-display-transform);
-    line-height: 1.05;
-  }
-}
+/* Note: the `.display` typography helper is intentionally NOT defined here.
+   It lives as a plain (non-@layer) rule in tokens.css so that it survives
+   Tailwind's content-based purge and ships in both the "./styles" and
+   "./tokens" package exports without the consumer needing a content glob. */
