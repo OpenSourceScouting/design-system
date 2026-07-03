@@ -63,7 +63,7 @@ export function ProgramHero({
       className={cn(
         "relative isolate overflow-hidden rounded-program",
         "bg-program-surface text-program-on-surface",
-        "px-6 sm:px-10 lg:px-16 py-12 sm:py-16 lg:py-20",
+        "px-6 sm:px-10 lg:px-16 py-10 sm:py-12 lg:py-16",
         className,
       )}
     >

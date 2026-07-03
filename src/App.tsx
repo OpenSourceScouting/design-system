@@ -225,7 +225,10 @@ export function App() {
     <ScoutThemeProvider program={program} applyToDocument>
       <ProgramSwitcher active={program} onChange={setProgram} />
 
-      <main className="max-w-6xl mx-auto px-4 py-8 sm:py-12 flex flex-col gap-12">
+      {/* Top padding is intentionally lighter than bottom: the hero card
+          carries its own generous internal padding, and the two stack
+          invisibly against the same-colored page surface. */}
+      <main className="max-w-6xl mx-auto px-4 pt-2 sm:pt-4 pb-8 sm:pb-12 flex flex-col gap-12">
         <ProgramHero
           eyebrow="Fall 2026"
           headline={content.headline}
