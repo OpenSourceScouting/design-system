@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { action } from "@storybook/addon-actions";
 import { EventCard } from "./EventCard";
 
 const meta: Meta<typeof EventCard> = {
@@ -58,4 +59,57 @@ export const Grid: Story = {
       />
     </div>
   ),
+};
+
+/**
+ * A multi-day event uses `renderDateBlock` to replace the single month/day
+ * tear with a start-to-end range. The renderer receives both `date` and
+ * `endDate`, so a range can be drawn without any branching inside EventCard.
+ */
+export const CustomDateBlock: Story = {
+  args: {
+    date: new Date(2026, 6, 24, 15, 0),
+    endDate: new Date(2026, 6, 26, 11, 0),
+    title: "Summer Resident Camp",
+    location: "Camp Emerald · Wisconsin Northwoods",
+    category: "Camping",
+    description:
+      "Three days and two nights of aquatics, shooting sports, and merit-badge sessions. Bus departs the council office Friday afternoon.",
+    cta: { label: "Register" },
+    renderDateBlock: (date, endDate) => (
+      <div
+        aria-hidden
+        className="shrink-0 w-20 rounded-program overflow-hidden bg-program-primary text-program-on-primary flex flex-col items-center justify-center py-2 border border-program-primary"
+      >
+        <span className="display text-[10px] uppercase tracking-[0.2em]">
+          {date.toLocaleDateString(undefined, { month: "short" })}
+        </span>
+        <span className="display text-2xl leading-none">{date.getDate()}</span>
+        {endDate ? (
+          <>
+            <span className="display text-[10px] leading-none opacity-80">to</span>
+            <span className="display text-2xl leading-none">{endDate.getDate()}</span>
+          </>
+        ) : null}
+      </div>
+    ),
+  },
+};
+
+/**
+ * With a `cta.href` and a `navigate` handler, clicking the CTA routes through
+ * the consumer's SPA router instead of a hard `window.location` redirect. Open
+ * the Actions panel to watch the logged navigation calls.
+ */
+export const WithNavigateHandler: Story = {
+  args: {
+    date: new Date(2026, 8, 12, 8, 30),
+    title: "Council Camporee",
+    location: "Rocky Ridge Scout Reservation",
+    category: "District Event",
+    description:
+      "Patrols from across the council compete in orienteering, first aid, and pioneering. Register your unit and reserve a campsite.",
+    cta: { label: "View Details", href: "/events/council-camporee" },
+    navigate: (url: string) => action("navigate")(url),
+  },
 };

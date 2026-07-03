@@ -89,3 +89,40 @@ export const ProgramSemanticTokens: Story = {
     </div>
   ),
 };
+
+const RULE_WEIGHTS: Record<(typeof PROGRAMS)[number], { label: string; weight: string; voice: string }> = {
+  cub: { label: "Cub Scouts", weight: "3px", voice: "chunky, kid-bold" },
+  scoutsbsa: { label: "Scouts BSA", weight: "2px", voice: "traditional" },
+  venturing: { label: "Venturing", weight: "2px", voice: "blocky geometric" },
+  seascouts: { label: "Sea Scouts", weight: "1px", voice: "drafted hairline" },
+};
+
+/**
+ * Every program sets its own `--program-rule-weight`, which drives the keyline
+ * under editorial kickers (CardEyebrow) and other rules. Cub reads heaviest at
+ * 3px, Scouts BSA and Venturing sit at 2px, and Sea Scouts drops to a 1px
+ * drafted hairline. The bars below are literal `border-b-rule` keylines pulling
+ * the live token per theme, so weight differences are exact, not simulated.
+ */
+export const RuleWeight: Story = {
+  render: () => (
+    <div>
+      <h3 className="display text-xl mb-1">Program rule weight</h3>
+      <p className="font-mono text-xs opacity-60 mb-5">--program-rule-weight</p>
+      <div className="grid gap-6 sm:grid-cols-2 max-w-3xl">
+        {PROGRAMS.map((p) => (
+          <ScoutThemeProvider key={p} program={p} className="p-5 rounded-program border border-program-border">
+            <div className="flex items-baseline justify-between mb-4">
+              <span className="display text-sm uppercase tracking-widest text-program-on-surface-soft">
+                {RULE_WEIGHTS[p].label}
+              </span>
+              <span className="font-mono text-xs text-program-on-surface-soft">{RULE_WEIGHTS[p].weight}</span>
+            </div>
+            <div className="border-b-rule border-program-primary pb-3" />
+            <p className="mt-3 font-body text-sm text-program-on-surface-soft">{RULE_WEIGHTS[p].voice}</p>
+          </ScoutThemeProvider>
+        ))}
+      </div>
+    </div>
+  ),
+};

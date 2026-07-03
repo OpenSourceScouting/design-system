@@ -53,3 +53,59 @@ export const Three: Story = {
     ],
   },
 };
+
+/**
+ * Two columns give each card more room, suited to longer descriptions or a
+ * "pillars of the program" band above the fold.
+ */
+export const Two: Story = {
+  args: {
+    columns: 2,
+    features: [
+      {
+        title: "Outdoor Adventure",
+        icon: ICONS.adventure,
+        description:
+          "Camping, hiking, and high-adventure treks teach Scouts to plan a trip, pack for it, and thrive miles from the nearest road.",
+      },
+      {
+        title: "Character & Service",
+        icon: ICONS.service,
+        description:
+          "Weekly good turns and Eagle service projects turn the Scout Oath and Law into a habit that outlasts the program.",
+      },
+    ],
+  },
+};
+
+/**
+ * Four columns compress each card, best for a scannable feature strip with
+ * short titles and one-line descriptions.
+ */
+export const Four: Story = {
+  args: {
+    columns: 4,
+    features: [
+      {
+        title: "Adventure",
+        icon: ICONS.adventure,
+        description: "Camp, hike, and explore the outdoors.",
+      },
+      {
+        title: "Leadership",
+        icon: ICONS.leadership,
+        description: "Lead a patrol and own the outcome.",
+      },
+      {
+        title: "Service",
+        icon: ICONS.service,
+        description: "Help other people at all times.",
+      },
+      {
+        title: "Friendship",
+        icon: ICONS.leadership,
+        description: "Build a den, patrol, or crew that lasts.",
+      },
+    ],
+  },
+};

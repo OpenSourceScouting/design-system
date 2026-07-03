@@ -84,6 +84,31 @@ export const Default: Story = {
   args: { events: SAMPLE_EVENTS },
 };
 
+/**
+ * One event carries `featured: true`, promoting it to the marquee/lead slot in
+ * the agenda view: a raised surface, a DecorativeBorder motif, and larger
+ * title type. Only the lead story of a program year should be featured.
+ */
+export const FeaturedMarquee: Story = {
+  args: {
+    defaultView: "agenda",
+    events: [
+      {
+        id: "marquee",
+        date: new Date(Y, M, 19, 16, 0),
+        endDate: new Date(Y, M, 21, 11, 0),
+        title: "Fall Family Camporee",
+        category: "Featured",
+        location: "Camp Wokanda · Chillicothe, IL",
+        description:
+          "The season's headline weekend: campfire program, climbing tower, and the pack cook-off. Families welcome for the whole weekend.",
+        featured: true,
+      },
+      ...SAMPLE_EVENTS.filter((e) => e.id !== "4"),
+    ],
+  },
+};
+
 export const MonthDefault: Story = {
   args: { events: SAMPLE_EVENTS, defaultView: "month" },
 };

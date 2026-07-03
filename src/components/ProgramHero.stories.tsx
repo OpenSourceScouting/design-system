@@ -27,3 +27,20 @@ export const WithoutLede: Story = {
     primaryAction: { label: "Join Today" },
   },
 };
+
+/**
+ * `watermark={false}` suppresses the built-in decorative mark entirely. Use
+ * this when the hero sits on top of a photograph that already carries a mark,
+ * or when the surrounding layout provides its own branding.
+ */
+export const WithoutWatermark: Story = {
+  args: {
+    eyebrow: "New Program Year",
+    headline: "Adventure starts the day you say yes.",
+    lede:
+      "Join a den this fall and spend the year hiking, building, camping, and earning the adventures that turn into stories worth retelling.",
+    primaryAction: { label: "Find a Unit" },
+    secondaryAction: { label: "Talk to a Leader" },
+    watermark: false,
+  },
+};

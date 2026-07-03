@@ -1,0 +1,58 @@
+# Chromatic visual regression / Storybook publish.
+#
+# ── One-time setup (do this once, before the first run will succeed) ──────────
+#   1. Sign in at https://www.chromatic.com with the GitHub account that owns
+#      this repository and create a new Chromatic project, linking it to this
+#      repo. Chromatic will issue a project token that looks like
+#      "chpt_xxxxxxxxxxxxxxx".
+#   2. In GitHub, go to: Settings → Secrets and variables → Actions → New
+#      repository secret. Name it exactly CHROMATIC_PROJECT_TOKEN and paste the
+#      token from step 1 as the value.
+#   3. Push to main (or open a PR). This workflow builds Storybook and uploads
+#      it to Chromatic for snapshotting.
+#
+# Without that secret the "chromatic" step fails fast with a clear message; the
+# rest of the pipeline is unaffected.
+
+name: Chromatic
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Cancel superseded runs on the same ref so a rapid push sequence does not
+# stack Chromatic builds.
+concurrency:
+  group: chromatic-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  chromatic:
+    name: Run Chromatic
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Chromatic uses git history to detect what changed between builds and
+          # to establish a baseline; a shallow clone breaks that inference.
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Publish to Chromatic
+        uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          # Do not fail the build when visual changes are detected; reviewers
+          # accept or reject them in the Chromatic UI. Mirrors the local
+          # "npm run chromatic" script.
+          exitZeroOnChanges: true

@@ -45,6 +45,7 @@
     "test": "vitest run",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
+    "chromatic": "chromatic --exit-zero-on-changes",
     "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.test.json"
   },
   "peerDependencies": {
@@ -71,6 +72,7 @@
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "chromatic": "^18.0.1",
     "cross-env": "^10.1.0",
     "jest-axe": "^10.0.0",
     "jsdom": "^27.0.1",
