@@ -5,11 +5,8 @@ import { ScoutThemeProvider, type Program } from "../../lib/theme/ScoutThemeProv
 /**
  * Render a component inside a ScoutThemeProvider (default program "cub") so
  * context-reading components (ProgramHero, RegistrationCTA, ProgramMark,
- * DecorativeBorder) do not throw. Returns the standard RTL result.
+ * DecorativeDivider) do not throw. Returns the standard RTL result.
  */
-export function renderThemed(
-  ui: ReactElement,
-  program: Program = "cub",
-): RenderResult {
+export function renderThemed(ui: ReactElement, program: Program = "cub"): RenderResult {
   return render(<ScoutThemeProvider program={program}>{ui}</ScoutThemeProvider>);
 }

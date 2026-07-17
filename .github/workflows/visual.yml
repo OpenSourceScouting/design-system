@@ -38,6 +38,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Baselines under .storybook/__image_snapshots__ are stored in Git LFS;
+          # without this they check out as pointer files and every diff fails.
+          lfs: true
 
       - name: Setup Node
         uses: actions/setup-node@v4

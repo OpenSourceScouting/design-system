@@ -8,11 +8,11 @@ own license.
 
 ## How the split works
 
-| What | Where | License |
-| ---- | ----- | ------- |
-| React components, tokens, styles, build config | `src/`, `.storybook/`, `tailwind.config.ts`, etc. | MIT (see [`LICENSE`](./LICENSE)) |
+| What                                                                                                   | Where                                                                                 | License                                                                      |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| React components, tokens, styles, build config                                                         | `src/`, `.storybook/`, `tailwind.config.ts`, etc.                                     | MIT (see [`LICENSE`](./LICENSE))                                             |
 | Placeholder program marks (PawPrint / cub, Tent / scoutsbsa, Mountain / venturing, Anchor / seascouts) | `src/components/ProgramIcon.tsx` (via `PROGRAM_ICONS`), rendered by `ProgramMark.tsx` | ISC (Lucide icons, NOT BSA trademarks, NOT original artwork of this project) |
-| Official Scouting America / BSA brand assets (real logos, fleur-de-lis, program marks) | `public/marks/*.svg` (gitignored, never committed) | BSA Brand Center license; each user downloads under their own eligibility |
+| Official Scouting America / BSA brand assets (real logos, fleur-de-lis, program marks)                 | `public/marks/*.svg` (gitignored, never committed)                                    | BSA Brand Center license; each user downloads under their own eligibility    |
 
 The repository ships **without** official assets. Cloning it gets you only
 code + placeholders. To use real marks, you download them yourself and place

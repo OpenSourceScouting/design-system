@@ -7,7 +7,7 @@ the official 2024 Brand Guidelines (`research/scouting-america-brand-guidelines-
 ## Commands
 
 ```bash
-npm run dev           # Vite showcase at http://localhost:5173 (App.tsx demo)
+npm run dev           # Vite showcase at http://localhost:5173 (demo/App.tsx)
 npm run storybook     # Storybook 8 at http://localhost:6006 (component lab)
 npm run typecheck     # tsc --noEmit, three configs: project + node + test
 npm run test          # Vitest: contrast ratios, axe smoke tests, component unit tests
@@ -15,7 +15,8 @@ npm run build         # tsc -b && vite build && npm run build:css (use to verify
 npm run build-storybook
 ```
 
-Node 23, npm 10. No pnpm. Restart Storybook after `.storybook/*` edits (HMR
+Node >=22, npm >=10. CI and `.nvmrc` pin the Node 22 LTS; developing on 22 or
+23 both work (22 is the supported target). No pnpm. Restart Storybook after `.storybook/*` edits (HMR
 does not cover preview/main config).
 
 ## Theming architecture (the most important thing)
@@ -64,17 +65,27 @@ those are our original work, not BSA trademarks.
 ## Project structure
 
 ```
-src/
+src/                           ← the published library ONLY
   styles/tokens.css            ← source of truth for design tokens, cite p.# of brand guidelines
   styles/globals.css           ← Tailwind layers + font imports
   lib/theme/ScoutThemeProvider ← context + data-attribute, exports normalizeBasePath
   lib/utils/{cn,date}          ← tiny helpers (no date-fns / dayjs dependency)
   components/                  ← one file per component, .stories.tsx alongside
   stories/                     ← Introduction.mdx + Colors.stories.tsx (cross-component)
+  index.ts                     ← public package entry (barrel)
+demo/                          ← dev-only showcase; Vite root for `dev` + `build:demo`, NOT published
+  index.html  main.tsx  App.tsx  (App imports the library via the `@` alias)
 .storybook/preview.tsx         ← MUST wrap stories in ScoutThemeProvider
-public/marks/                  ← gitignored (except README.md)
+public/                        ← served assets: marks/ (gitignored), oss/ (logos), favicons
 research/                      ← brand guidelines PDF + extracted text
 ```
+
+## Planned re-platform (read before large changes)
+
+ADR 0002/0003 (`docs/decisions/`) commit the project to shadcn/ui patterns on
+Tailwind v4, executed via `docs/shadcn-migration-plan.md`. Until that migration
+lands, the conventions below describe the CURRENT code; new work should avoid
+deepening deltas the migration will remove (see the delta register in ADR 0002).
 
 ## Conventions specific to this codebase
 
@@ -82,7 +93,7 @@ research/                      ← brand guidelines PDF + extracted text
 - Per-program differentiation lives in CSS-var overrides only, never in component code
 - `CardEyebrow` uses `border-b-rule` for its bottom keyline; the weight tracks `--program-rule-weight` per program (3px Cub, 2px Scouts BSA + Venturing, 1px Sea Scouts)
 - `Card featured` prop promotes to raised surface + inset hairline ring; pair with `CardEyebrow` for a "lead story" layout
-- `CalendarEvent.featured` renders the program's `DecorativeBorder` motif at the top of the agenda item and increases the title size
+- `CalendarEvent.featured` renders the program's `DecorativeDivider` motif at the top of the agenda item and increases the title size
 - Calendar falls back to agenda view below 640px (month cells need ~88px per column to be usable); the Month toggle is hidden in that state via `showToggle={!narrow}`
 - `Button variant="accent" size="sm"` is excluded at the TypeScript type level (gold at 12px fails WCAG AA); a dev-mode `console.warn` catches untyped call sites
 - `ScoutThemeProvider applyToDocument` applies `data-program` to `<html>` via `useEffect` with cleanup; unmounting or changing `program` restores the previous value on the element

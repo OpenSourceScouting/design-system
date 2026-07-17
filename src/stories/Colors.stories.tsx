@@ -68,8 +68,14 @@ export const ProgramSemanticTokens: Story = {
   render: () => (
     <div className="grid gap-6 md:grid-cols-2">
       {PROGRAMS.map((p) => (
-        <ScoutThemeProvider key={p} program={p} className="p-5 rounded-program border border-program-border">
-          <div className="display text-sm uppercase tracking-widest mb-4 text-program-on-surface-soft">{p}</div>
+        <ScoutThemeProvider
+          key={p}
+          program={p}
+          className="p-5 rounded-program border border-program-border"
+        >
+          <div className="display text-sm uppercase tracking-widest mb-4 text-program-on-surface-soft">
+            {p}
+          </div>
           <div className="grid grid-cols-2 gap-3">
             <TokenRow varName="--program-primary" label="Primary" />
             <TokenRow varName="--program-on-primary" label="On Primary" />
@@ -90,7 +96,10 @@ export const ProgramSemanticTokens: Story = {
   ),
 };
 
-const RULE_WEIGHTS: Record<(typeof PROGRAMS)[number], { label: string; weight: string; voice: string }> = {
+const RULE_WEIGHTS: Record<
+  (typeof PROGRAMS)[number],
+  { label: string; weight: string; voice: string }
+> = {
   cub: { label: "Cub Scouts", weight: "3px", voice: "chunky, kid-bold" },
   scoutsbsa: { label: "Scouts BSA", weight: "2px", voice: "traditional" },
   venturing: { label: "Venturing", weight: "2px", voice: "blocky geometric" },
@@ -111,15 +120,23 @@ export const RuleWeight: Story = {
       <p className="font-mono text-xs opacity-60 mb-5">--program-rule-weight</p>
       <div className="grid gap-6 sm:grid-cols-2 max-w-3xl">
         {PROGRAMS.map((p) => (
-          <ScoutThemeProvider key={p} program={p} className="p-5 rounded-program border border-program-border">
+          <ScoutThemeProvider
+            key={p}
+            program={p}
+            className="p-5 rounded-program border border-program-border"
+          >
             <div className="flex items-baseline justify-between mb-4">
               <span className="display text-sm uppercase tracking-widest text-program-on-surface-soft">
                 {RULE_WEIGHTS[p].label}
               </span>
-              <span className="font-mono text-xs text-program-on-surface-soft">{RULE_WEIGHTS[p].weight}</span>
+              <span className="font-mono text-xs text-program-on-surface-soft">
+                {RULE_WEIGHTS[p].weight}
+              </span>
             </div>
             <div className="border-b-rule border-program-primary pb-3" />
-            <p className="mt-3 font-body text-sm text-program-on-surface-soft">{RULE_WEIGHTS[p].voice}</p>
+            <p className="mt-3 font-body text-sm text-program-on-surface-soft">
+              {RULE_WEIGHTS[p].voice}
+            </p>
           </ScoutThemeProvider>
         ))}
       </div>

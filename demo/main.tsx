@@ -6,7 +6,7 @@ import "@fontsource-variable/montserrat";
 import "@fontsource-variable/montserrat/wght-italic.css";
 import "@fontsource-variable/source-serif-4";
 import "@fontsource-variable/source-serif-4/wght-italic.css";
-import "./styles/globals.css";
+import "@/styles/globals.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

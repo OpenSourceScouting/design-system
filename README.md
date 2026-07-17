@@ -1,4 +1,15 @@
-# Scouting America Design System
+<p align="center">
+  <img
+    src="./public/oss/opensourcescouting-logo-color.png"
+    alt="Open Source Scouting"
+    width="160"
+    height="160"
+  />
+</p>
+
+<h1 align="center">Scouting America Design System</h1>
+
+<p align="center">by <strong>Open Source Scouting</strong></p>
 
 A React + Tailwind component library for the Scouting America parent brand and
 its four program sub-brands: **Cub Scouts**, **Scouts BSA**, **Venturing**, and
@@ -9,24 +20,26 @@ Built directly from the [Scouting America 2024 Brand Guidelines](https://pathway
 > **Community project:** This library is built and maintained by registered
 > Scouting volunteers. It is not an official Scouting America product and is
 > not affiliated with, endorsed by, or sponsored by Scouting America or the
-> Boy Scouts of America. The `@openscouting` package scope reflects that
+> Boy Scouts of America. The `@opensourcescouting` package scope reflects that
 > community status. Official BSA brand assets remain governed by the BSA
 > Brand Center license (see `NOTICE.md`).
 
-Not using React? [`BRAND-GUIDE.md`](./BRAND-GUIDE.md) is a self-contained
+Not using React? [`BRAND-GUIDE.md`](./docs/BRAND-GUIDE.md) is a self-contained
 brand reference (colors, type, voice, print values, trademark rules) that you
 or any AI tool can use to produce on-brand scouting materials without this
 codebase.
 
 ## Which document do I need?
 
-| I am...                                      | Start here                          |
-| -------------------------------------------- | ----------------------------------- |
-| A developer installing the package           | This README (you are here)          |
-| A designer, marketer, or AI tool             | [`BRAND-GUIDE.md`](./BRAND-GUIDE.md) |
-| Checking trademark or asset license rules    | [`NOTICE.md`](./NOTICE.md)          |
-| Picking up a backlog task to contribute      | [`TODO.md`](./TODO.md)              |
-| A coding agent working inside this codebase  | [`CLAUDE.md`](./CLAUDE.md)          |
+| I am...                                        | Start here                                     |
+| ---------------------------------------------- | ---------------------------------------------- |
+| A developer installing the package             | This README (you are here)                     |
+| A designer, marketer, or AI tool               | [`BRAND-GUIDE.md`](./docs/BRAND-GUIDE.md)      |
+| Checking trademark or asset license rules      | [`NOTICE.md`](./NOTICE.md)                     |
+| Wanting to contribute code                     | [`CONTRIBUTING.md`](./.github/CONTRIBUTING.md) |
+| Picking up a backlog task                      | [`TODO.md`](./docs/TODO.md)                    |
+| Understanding why the architecture is this way | [`docs/decisions/`](./docs/decisions/)         |
+| A coding agent working inside this codebase    | [`CLAUDE.md`](./CLAUDE.md)                     |
 
 ## Quick start
 
@@ -43,13 +56,13 @@ npm run storybook  # component explorer at http://localhost:6006
 From the npm registry (once published):
 
 ```bash
-npm install @openscouting/design-system
+npm install @opensourcescouting/design-system
 ```
 
 Or directly from a packed tarball during early adoption:
 
 ```bash
-npm install ./openscouting-design-system-0.1.0.tgz
+npm install ./opensourcescouting-design-system-0.1.0.tgz
 ```
 
 **Supported React versions:** React 18 and React 19 (peer dependency `react >= 18`).
@@ -62,14 +75,14 @@ color tokens, typography utilities, and shadow/radius/border tokens:
 
 ```ts
 // tailwind.config.ts
-import scoutingPreset from "@openscouting/design-system/tailwind-preset";
+import scoutingPreset from "@opensourcescouting/design-system/tailwind-preset";
 
 export default {
   presets: [scoutingPreset],
   content: [
     "./src/**/*.{ts,tsx}",
     // include the package's own components so Tailwind sees their class names
-    "./node_modules/@openscouting/design-system/dist/**/*.js",
+    "./node_modules/@opensourcescouting/design-system/dist/**/*.js",
   ],
 };
 ```
@@ -80,17 +93,17 @@ Import the compiled stylesheet once, at your app entry point:
 
 ```ts
 // main.tsx (or index.ts, _app.tsx, etc.)
-import "@openscouting/design-system/styles";
+import "@opensourcescouting/design-system/styles";
 ```
 
 If you need only the raw CSS custom property definitions without the Tailwind
 utilities (useful for non-Tailwind projects), import the tokens file instead:
 
 ```ts
-import "@openscouting/design-system/tokens";
+import "@opensourcescouting/design-system/tokens";
 ```
 
-> **What `@openscouting/design-system/styles` contains (and does not contain):**
+> **What `@opensourcescouting/design-system/styles` contains (and does not contain):**
 > The published stylesheet includes only the Tailwind utility classes that the
 > design system's own components use internally. It does **not** run a full
 > Tailwind build over your project's source files. This means:
@@ -110,13 +123,13 @@ import "@openscouting/design-system/tokens";
 > ```
 >
 > If you are using Tailwind only to render design system components (no custom
-> utilities in your own code), importing `@openscouting/design-system/styles` is
+> utilities in your own code), importing `@opensourcescouting/design-system/styles` is
 > sufficient and you do not need a separate Tailwind build step.
 
 ### Minimal working snippet
 
 ```tsx
-import { ScoutThemeProvider, Button } from "@openscouting/design-system";
+import { ScoutThemeProvider, Button } from "@opensourcescouting/design-system";
 
 export function App() {
   return (
@@ -201,16 +214,11 @@ you can drive navigation through your own router instead of
 
 ```tsx
 import { useNavigate } from "react-router-dom";
-import { EventCard } from "@openscouting/design-system";
+import { EventCard } from "@opensourcescouting/design-system";
 
 function MyPage() {
   const navigate = useNavigate();
-  return (
-    <EventCard
-      event={event}
-      navigate={(url) => navigate(url)}
-    />
-  );
+  return <EventCard event={event} navigate={(url) => navigate(url)} />;
 }
 ```
 
@@ -239,7 +247,7 @@ src/
 │   ├── ProgramMark.tsx       # Auto-loads from /marks/, falls back to inline placeholder SVGs
 │   ├── ProgramIcon.tsx       # Per-program fallback icons + PROGRAM_ICONS registry
 │   ├── ScoutingAmericaWordmark.tsx  # Parent brand wordmark (wide / tall orientations)
-│   ├── DecorativeBorder.tsx  # Per-program ornamental divider
+│   ├── DecorativeDivider.tsx  # Per-program ornamental divider
 │   ├── ProgramHero.tsx       # Marketing patterns
 │   ├── FeatureGrid.tsx
 │   ├── EventCard.tsx         # Operational program patterns
@@ -263,19 +271,19 @@ import { ScoutThemeProvider, Button } from "./src";
 
 <ScoutThemeProvider program="venturing">
   <Button variant="primary">Charge ahead</Button>
-</ScoutThemeProvider>
+</ScoutThemeProvider>;
 ```
 
 You can nest providers; a Venturing card on a Scouts BSA page is supported.
 
 ## Programs at a glance
 
-| Program     | Primary    | Primary Pantone | Accent     | Accent Pantone | Personality                              |
-| ----------- | ---------- | --------------- | ---------- | -------------- | ---------------------------------------- |
-| Cub Scouts  | `#003F87`  | PMS 294         | `#FDC116`  | PMS 116        | Rounded, bold, warm. Display weight 900. |
-| Scouts BSA  | `#243E2C`  | none listed     | `#003F87`  | PMS 294        | Crisp, traditional. Display weight 700.  |
-| Venturing   | `#006B3F`  | PMS 349         | `#FCD116`  | PMS 116        | Sharp, BOLD UPPERCASE. Display weight 800. |
-| Sea Scouts  | `#003366`  | none listed     | `#FFCC00`  | none listed    | Linear, italic editorial. Weight 600.    |
+| Program    | Primary   | Primary Pantone | Accent    | Accent Pantone | Personality                                |
+| ---------- | --------- | --------------- | --------- | -------------- | ------------------------------------------ |
+| Cub Scouts | `#003F87` | PMS 294         | `#FDC116` | PMS 116        | Rounded, bold, warm. Display weight 900.   |
+| Scouts BSA | `#243E2C` | none listed     | `#003F87` | PMS 294        | Crisp, traditional. Display weight 700.    |
+| Venturing  | `#006B3F` | PMS 349         | `#FCD116` | PMS 116        | Sharp, BOLD UPPERCASE. Display weight 800. |
+| Sea Scouts | `#003366` | none listed     | `#FFCC00` | none listed    | Linear, italic editorial. Weight 600.      |
 
 Full CMYK and Pantone data (including secondary tans, grays, and mark-reproduction colors) is in [`src/styles/tokens.print.json`](./src/styles/tokens.print.json) and ships in the package at `dist/tokens.print.json`.
 
@@ -347,7 +355,7 @@ The demo and Storybook self-host the fonts via
 [Fontsource](https://fontsource.org/). There is no third-party request at
 runtime: no jsDelivr, no Google Fonts, no tracking, offline-capable, and CSP
 friendly. The faces are pulled in with plain JS imports at each entry point
-(`src/main.tsx` and `.storybook/preview.tsx`):
+(`demo/main.tsx` and `.storybook/preview.tsx`):
 
 ```ts
 import "@fontsource-variable/montserrat";
@@ -363,7 +371,7 @@ deliberately does not inline any font faces.
 ### Library consumers: bring your own fonts
 
 Because the published stylesheet does not bundle font faces, a consumer of
-`@openscouting/design-system` must load the two families themselves. The
+`@opensourcescouting/design-system` must load the two families themselves. The
 simplest route is to install the same packages and import them at your app
 entry:
 
@@ -383,6 +391,125 @@ your choosing) as long as it registers faces under the exact family names
 `"Montserrat Variable"` and `"Source Serif 4 Variable"`, which is what
 `tokens.css` references. If those faces are absent the components still render,
 falling back to the platform system fonts.
+
+## Icons
+
+The recommended icon set is [Lucide](https://lucide.dev) (ISC-licensed). The
+library depends on `lucide-react` and uses it internally, so it is already
+installed for you. We deliberately do **not** re-export a bundled icon catalog:
+Lucide is tree-shakeable, so importing glyphs directly means you ship only the
+ones you use.
+
+Use the `Icon` primitive to render any Lucide glyph with the system's sizing,
+stroke, `currentColor` tinting, and accessibility conventions:
+
+```tsx
+import { Icon } from "@opensourcescouting/design-system";
+import { Compass, Rocket } from "lucide-react";
+
+<Icon icon={Compass} className="text-program-primary" />   // decorative (aria-hidden)
+<Icon icon={Rocket} label="Launch" />                       // meaningful (role="img")
+```
+
+Icons default to **decorative** (`aria-hidden`), which is correct when they sit
+next to a text label. Pass `label` only when the icon is the sole conveyer of
+meaning (e.g. an icon-only button).
+
+`ProgramIcon` is a preset built on `Icon` that renders a trademark-safe symbol
+for the active program (paw print, tent, mountain, anchor). It is meaningful by
+default (labeled with the program name); pass `ariaLabel=""` to make it
+decorative. See also `ProgramMark` for the official brand marks.
+
+```tsx
+import { ProgramIcon } from "@opensourcescouting/design-system";
+
+<ProgramIcon />                       // symbol for the active program theme
+<ProgramIcon program="venturing" />   // pinned to one program
+```
+
+Bring your own icon library instead if you prefer: nothing forces Lucide on your
+own UI. `Icon` simply standardizes the Lucide path when you want consistency
+with the design system's components.
+
+## Forms
+
+The form layer is built on native inputs (accessible, mobile-friendly, no JS
+needed) styled with the program tokens. `Field` is the foundation: it renders a
+label, help text, and error, and wires `id` / `aria-describedby` / `aria-invalid`
+onto the control inside it automatically.
+
+```tsx
+import {
+  Field,
+  TextInput,
+  Textarea,
+  Select,
+  SelectItem,
+  NativeSelect,
+  Checkbox,
+  Switch,
+  RadioGroup,
+  Radio,
+} from "@opensourcescouting/design-system";
+
+<Field label="Email" help="For event reminders." error={errors.email} required>
+  <TextInput type="email" name="email" />
+</Field>
+
+<Checkbox label="I have read the health form" />
+<Switch label="Email me reminders" defaultChecked />
+
+<RadioGroup label="Shirt size" defaultValue="m">
+  <Radio value="s" label="Small" />
+  <Radio value="m" label="Medium" />
+</RadioGroup>
+```
+
+`Field` handles the label-above controls (`TextInput`, `Textarea`, `Select`).
+`Checkbox` and `Switch` are self-labeled (label beside the control), and
+`RadioGroup` renders a proper fieldset/legend group. Invalid state is inferred
+from a `Field`'s `error`, or forced with the `invalid` prop on a bare control.
+
+Two selects ship: **`Select`** is the themed dropdown (built on Radix, its open
+list wears the program surface; pass `SelectItem` children) and requires a
+`ScoutThemeProvider`; **`NativeSelect`** is the zero-JS native `<select>` (takes
+`<option>` children) whose popup is OS-rendered but works everywhere including
+mobile.
+
+```tsx
+<Select defaultValue="cub" onValueChange={setProgram}>
+  <SelectItem value="cub">Cub Scouts</SelectItem>
+  <SelectItem value="scoutsbsa">Scouts BSA</SelectItem>
+</Select>
+```
+
+Richer inputs (Combobox/autocomplete, a Calendar-backed date picker, file
+upload) are planned; see `docs/TODO.md`.
+
+## Scouting resource links
+
+To keep every site pointing at the same authoritative URLs (instead of drifting,
+hand-typed copies), the package ships a small versioned data module of canonical
+Scouting America links:
+
+```tsx
+import { SCOUTING_LINKS, SCOUTING_LINK_LIST } from "@opensourcescouting/design-system";
+
+<a href={SCOUTING_LINKS.beAScout.url}>{SCOUTING_LINKS.beAScout.label}</a>;
+
+// or render a footer group from the list
+SCOUTING_LINK_LIST.map((l) => (
+  <a key={l.url} href={l.url}>
+    {l.label}
+  </a>
+));
+```
+
+Includes Scouting America, BeAScout, the Guide to Safe Scouting, and Safeguarding
+Youth training. These are official **external** resources; this project is not
+affiliated with Scouting America (see `NOTICE.md`), and linking does not imply
+endorsement. URLs are treated as versioned data: when one changes it is updated
+here and noted in the `CHANGELOG.md`.
 
 ## Accessibility
 
@@ -406,6 +533,10 @@ falling back to the platform system fonts.
 | `npm run typecheck`       | `tsc --noEmit` across three configs (project, node, and test tsconfig files). |
 | `npm run test`            | Vitest: contrast-ratio assertions, axe smoke tests, component unit tests.     |
 | `npm run build-storybook` | Static Storybook build for deployment.                                        |
+| `npm run lint`            | Prettier formatting check (run in CI).                                        |
+| `npm run format`          | Prettier auto-fix across the repo.                                            |
+| `npm run clean`           | Remove build output (dist, storybook-static, caches, tsbuildinfo).            |
+| `npm run maintenance:git` | Prune unreachable objects to shrink `.git` (safe; reachable history intact).  |
 
 ## License & trademark notice
 

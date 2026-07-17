@@ -1,9 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { render, renderHook, screen } from "@testing-library/react";
-import {
-  ScoutThemeProvider,
-  useScoutTheme,
-} from "../ScoutThemeProvider";
+import { ScoutThemeProvider, useScoutTheme } from "../ScoutThemeProvider";
 
 describe("ScoutThemeProvider", () => {
   it("sets data-program on its wrapper subtree", () => {

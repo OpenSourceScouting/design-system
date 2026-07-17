@@ -98,6 +98,8 @@ describe("EventDialogHeader date range formatting", () => {
       endDate: new Date(2027, 0, 2, 15, 0),
     });
     renderThemed(<EventDialogHeader event={event} onClose={() => {}} />);
-    expect(screen.getByText(/Wednesday, December 30, 2026 – Saturday, January 2, 2027/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Wednesday, December 30, 2026 – Saturday, January 2, 2027/),
+    ).toBeInTheDocument();
   });
 });

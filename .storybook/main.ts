@@ -3,6 +3,8 @@ import type { StorybookConfig } from "@storybook/react-vite";
 const config: StorybookConfig = {
   stories: ["../src/**/*.stories.@(ts|tsx|mdx)"],
   addons: ["@storybook/addon-essentials", "@storybook/addon-a11y"],
+  // Serve public/ so the manager brand image and favicons resolve at /oss/... etc.
+  staticDirs: ["../public"],
   framework: {
     name: "@storybook/react-vite",
     options: {},

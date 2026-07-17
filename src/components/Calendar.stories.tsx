@@ -86,7 +86,7 @@ export const Default: Story = {
 
 /**
  * One event carries `featured: true`, promoting it to the marquee/lead slot in
- * the agenda view: a raised surface, a DecorativeBorder motif, and larger
+ * the agenda view: a raised surface, a DecorativeDivider motif, and larger
  * title type. Only the lead story of a program year should be featured.
  */
 export const FeaturedMarquee: Story = {

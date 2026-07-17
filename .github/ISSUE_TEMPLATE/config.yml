@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security or brand-asset disclosure
+    url: https://github.com/security/advisories
+    about: Please report vulnerabilities or licensed-asset leaks privately. See SECURITY.md.
+  - name: Brand usage & trademark questions
+    url: https://scouting.webdamdb.com/bp/#/
+    about: Official BSA brand assets are licensed through the BSA Brand Center, not this repo.

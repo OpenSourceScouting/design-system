@@ -1,0 +1,14 @@
+# Build output and dependencies
+node_modules
+dist
+storybook-static
+.vite
+
+# Generated / vendored
+package-lock.json
+*.tsbuildinfo
+
+# Binary and license-sensitive assets (never reformat)
+public/marks
+research
+.storybook/__image_snapshots__

@@ -49,7 +49,7 @@ export const Mono: Story = {
         story:
           "Single-color rendition. The BSA Brand Center license permits this variant " +
           "in any dark color, but visible recoloring requires an SVG asset that uses " +
-          "fill=\"currentColor\". JPG/PNG renditions display the file's baked pixels " +
+          'fill="currentColor". JPG/PNG renditions display the file\'s baked pixels ' +
           "unchanged.",
       },
     },

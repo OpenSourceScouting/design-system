@@ -13,7 +13,11 @@ describe("RegistrationCTA", () => {
 
   it("renders custom headline/body/label", () => {
     renderThemed(
-      <RegistrationCTA headline="Sign up today" body="Spots are filling fast." primaryLabel="Enroll" />,
+      <RegistrationCTA
+        headline="Sign up today"
+        body="Spots are filling fast."
+        primaryLabel="Enroll"
+      />,
     );
     expect(screen.getByRole("heading", { name: "Sign up today" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Enroll" })).toBeInTheDocument();

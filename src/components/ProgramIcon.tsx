@@ -1,26 +1,22 @@
-import type { CSSProperties } from "react";
 import { Anchor, Mountain, PawPrint, Tent, type LucideIcon } from "lucide-react";
-import {
-  useScoutTheme,
-  PROGRAM_META,
-  type Program,
-} from "../lib/theme/ScoutThemeProvider";
-import { cn } from "../lib/utils/cn";
+import { useScoutTheme, PROGRAM_META, type Program } from "../lib/theme/ScoutThemeProvider";
+import { Icon, type IconProps } from "./Icon";
 
 /**
  * ProgramIcon renders a generic, trademark-safe symbol for each program.
  *
- * Unlike ProgramMark (which loads the official BSA brand mark from
- * /marks/), this component renders open-licensed icons from Lucide (ISC).
- * Use it for UI affordances where you need a quick visual cue for the
- * program but cannot or should not display the official mark: navigation,
- * filter chips, list rows, breadcrumbs, etc.
+ * It is a preset built on top of {@link Icon}: it resolves the active program
+ * to a Lucide glyph and delegates rendering, inheriting Icon's sizing, stroke,
+ * color, and accessibility behavior. Use `Icon` directly for any other glyph.
  *
- * Color
- * -----
- * These are line icons that inherit `currentColor`. Wrap in any text-* utility
- * (e.g. `text-program-primary`) to tint. Unlike ProgramMark, recoloring is
- * permitted because none of these are BSA trademarks.
+ * Unlike ProgramMark (which loads the official BSA brand mark from /marks/),
+ * these are open-licensed Lucide icons (ISC). Use it for UI affordances that
+ * need a quick program cue but cannot or should not show the official mark:
+ * navigation, filter chips, list rows, breadcrumbs, etc.
+ *
+ * Color: line icons inherit `currentColor`; tint with any text-* utility (e.g.
+ * `text-program-primary`). Unlike ProgramMark, recoloring is permitted because
+ * none of these are BSA trademarks.
  */
 
 export const PROGRAM_ICONS: Record<Program, LucideIcon> = {
@@ -30,45 +26,21 @@ export const PROGRAM_ICONS: Record<Program, LucideIcon> = {
   seascouts: Anchor,
 };
 
-export type ProgramIconProps = {
+// Inherits the shared Icon contract (size, strokeWidth, className, style) and
+// adds the program-specific props. `ariaLabel` defaults to the program label,
+// so ProgramIcon is meaningful by default (Icon is decorative by default).
+export type ProgramIconProps = Omit<IconProps, "icon" | "label"> & {
   program?: Program;
-  size?: number;
-  strokeWidth?: number;
-  className?: string;
-  style?: CSSProperties;
   /** Override the default symbol for this program. */
   icon?: LucideIcon;
   /** Accessible label. Defaults to the program's label. Pass "" to mark decorative. */
   ariaLabel?: string;
 };
 
-export function ProgramIcon({
-  program,
-  size = 24,
-  strokeWidth = 2,
-  className,
-  style,
-  icon,
-  ariaLabel,
-}: ProgramIconProps) {
+export function ProgramIcon({ program, icon, ariaLabel, ...iconProps }: ProgramIconProps) {
   const ctx = useScoutTheme();
   const active = program ?? ctx.program;
-  const meta = PROGRAM_META[active];
-  const IconComp = icon ?? PROGRAM_ICONS[active];
-  const label = ariaLabel ?? meta.label;
-  const decorative = label === "";
-
-  return (
-    <IconComp
-      width={size}
-      height={size}
-      strokeWidth={strokeWidth}
-      className={cn("shrink-0", className)}
-      style={style}
-      aria-hidden={decorative || undefined}
-      aria-label={decorative ? undefined : label}
-      role={decorative ? undefined : "img"}
-    />
-  );
+  const glyph = icon ?? PROGRAM_ICONS[active];
+  const label = ariaLabel ?? PROGRAM_META[active].label;
+  return <Icon icon={glyph} label={label} {...iconProps} />;
 }
-

@@ -7,7 +7,7 @@
  *
  *   dist/styles.css: globals.css run through Tailwind (base/components/utilities
  *                      plus the @import of tokens.css). This is the "batteries
- *                      included" import: "@openscouting/design-system/styles".
+ *                      included" import: "@opensourcescouting/design-system/styles".
  *   dist/tokens.css: tokens.css verbatim (the :root + [data-program] custom
  *                      properties and the plain `.display` rule) for consumers who
  *                      run their own Tailwind build via the shared preset and only
@@ -57,4 +57,6 @@ const cssStub = "// Ambient stub for a side-effect CSS import. No runtime value.
 writeFileSync(path.join(dist, "styles.css.d.ts"), cssStub);
 writeFileSync(path.join(dist, "tokens.css.d.ts"), cssStub);
 
-console.log("build-css: wrote dist/styles.css, dist/tokens.css, dist/tokens.print.json, and .css.d.ts stubs");
+console.log(
+  "build-css: wrote dist/styles.css, dist/tokens.css, dist/tokens.print.json, and .css.d.ts stubs",
+);

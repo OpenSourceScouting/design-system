@@ -42,16 +42,24 @@ const VARIANT: Record<ButtonVariant, string> = {
   secondary:
     "bg-program-surface text-program-primary border-2 border-program-primary " +
     "hover:bg-program-primary hover:text-program-on-primary",
-  ghost:
-    "bg-transparent text-program-primary " +
-    "hover:bg-program-surface-muted",
+  ghost: "bg-transparent text-program-primary " + "hover:bg-program-surface-muted",
   accent:
     "bg-program-accent text-program-on-accent shadow-program " +
     "hover:brightness-95 hover:shadow-md",
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { variant = "primary", size = "md", leadingIcon, trailingIcon, block, className, children, type = "button", ...rest }: ButtonBaseProps & { variant?: ButtonVariant; size?: ButtonSize },
+  {
+    variant = "primary",
+    size = "md",
+    leadingIcon,
+    trailingIcon,
+    block,
+    className,
+    children,
+    type = "button",
+    ...rest
+  }: ButtonBaseProps & { variant?: ButtonVariant; size?: ButtonSize },
   ref,
 ) {
   if (import.meta.env?.DEV && variant === "accent" && size === "sm") {

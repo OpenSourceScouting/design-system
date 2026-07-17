@@ -16,10 +16,7 @@ import path from "node:path";
  */
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const TOKENS_CSS = readFileSync(
-  path.resolve(__dirname, "../src/styles/tokens.css"),
-  "utf8",
-);
+const TOKENS_CSS = readFileSync(path.resolve(__dirname, "../src/styles/tokens.css"), "utf8");
 
 type RGB = [number, number, number];
 
@@ -99,7 +96,9 @@ describe("tokens.css contrast ratios", () => {
       it("on-surface-faint vs surface >= 3.0 (inactive/dim text)", () => {
         // The original seascouts value (#7E8FA8 on #F0F4F8) measured 2.98:1;
         // the token was darkened to #7687A0 (3.31:1) when this test caught it.
-        expect(ratio("--program-on-surface-faint", "--program-surface")).toBeGreaterThanOrEqual(3.0);
+        expect(ratio("--program-on-surface-faint", "--program-surface")).toBeGreaterThanOrEqual(
+          3.0,
+        );
       });
 
       it("on-primary vs primary >= 4.5 (AA text on primary surfaces)", () => {

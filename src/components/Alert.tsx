@@ -13,7 +13,10 @@ export type AlertProps = HTMLAttributes<HTMLDivElement> & {
  * program is theming the surrounding UI. Borders and surfaces still tint
  * subtly via the program tokens so the alert feels at home.
  */
-const TONE: Record<NonNullable<AlertProps["tone"]>, { ring: string; chip: string; chipText: string }> = {
+const TONE: Record<
+  NonNullable<AlertProps["tone"]>,
+  { ring: string; chip: string; chipText: string }
+> = {
   info: { ring: "border-sa-blue/40", chip: "bg-sa-blue", chipText: "text-white" },
   success: { ring: "border-sa-blue/40", chip: "bg-[#006B3F]", chipText: "text-white" },
   warning: { ring: "border-[#996633]/40", chip: "bg-[#FCD116]", chipText: "text-sa-dark-gray" },
@@ -25,11 +28,7 @@ export function Alert({ tone = "info", title, icon, className, children, ...rest
   return (
     <div
       role="status"
-      className={cn(
-        "flex gap-3 p-4 rounded-program border bg-program-surface",
-        t.ring,
-        className,
-      )}
+      className={cn("flex gap-3 p-4 rounded-program border bg-program-surface", t.ring, className)}
       {...rest}
     >
       <div

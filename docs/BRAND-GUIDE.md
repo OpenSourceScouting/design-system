@@ -20,13 +20,13 @@ marked MUST. Everything else is strong guidance.
 One parent brand, four programs. Pick the program that matches your audience
 before making any design decision; almost every choice below varies by program.
 
-| Program | Audience | Identity in one line |
-| --- | --- | --- |
-| Scouting America (parent) | Everyone | Civic, trustworthy, heritage. Red, white, and blue. |
-| Cub Scouts | Kids K-5 and their parents | Warm, playful, kid-bold. Blue and gold, like the uniform. |
-| Scouts BSA | Ages 11-17 | Earnest, capable, traditional. Olive, tan, field-guide calm. |
-| Venturing | Ages 14-20, co-ed | Bold, peer-led, expedition sharp. Green and trail-marker yellow. |
-| Sea Scouts | Ages 14-20, co-ed | Editorial nautical, mature, drafted. Navy and signal yellow. |
+| Program                   | Audience                   | Identity in one line                                             |
+| ------------------------- | -------------------------- | ---------------------------------------------------------------- |
+| Scouting America (parent) | Everyone                   | Civic, trustworthy, heritage. Red, white, and blue.              |
+| Cub Scouts                | Kids K-5 and their parents | Warm, playful, kid-bold. Blue and gold, like the uniform.        |
+| Scouts BSA                | Ages 11-17                 | Earnest, capable, traditional. Olive, tan, field-guide calm.     |
+| Venturing                 | Ages 14-20, co-ed          | Bold, peer-led, expedition sharp. Green and trail-marker yellow. |
+| Sea Scouts                | Ages 14-20, co-ed          | Editorial nautical, mature, drafted. Navy and signal yellow.     |
 
 Official taglines (use verbatim, never embellish):
 
@@ -47,56 +47,56 @@ brand.
 
 **Scouting America (parent)**
 
-| Role | Hex | Notes |
-| --- | --- | --- |
-| Primary | #003F87 | Scouting America Blue |
-| Accent | #CE1126 | Scouting America Red. Use sparingly; it reads as alarm in bulk. |
-| Surface | #FFFFFF | White is an intentional fifth color of the palette |
-| Ink | #232528 | Dark Gray |
-| Muted surface | #E9E9E4 | Light Tan |
-| Border / rules | #D6CEBD | Tan |
-| Support | #AD9D7B Dark Tan, #515354 Gray, #858787 Pale Gray | Layering and secondary text |
+| Role           | Hex                                               | Notes                                                           |
+| -------------- | ------------------------------------------------- | --------------------------------------------------------------- |
+| Primary        | #003F87                                           | Scouting America Blue                                           |
+| Accent         | #CE1126                                           | Scouting America Red. Use sparingly; it reads as alarm in bulk. |
+| Surface        | #FFFFFF                                           | White is an intentional fifth color of the palette              |
+| Ink            | #232528                                           | Dark Gray                                                       |
+| Muted surface  | #E9E9E4                                           | Light Tan                                                       |
+| Border / rules | #D6CEBD                                           | Tan                                                             |
+| Support        | #AD9D7B Dark Tan, #515354 Gray, #858787 Pale Gray | Layering and secondary text                                     |
 
 **Cub Scouts**
 
-| Role | Hex | Notes |
-| --- | --- | --- |
-| Primary | #003F87 | Cub Scouts Blue |
-| Accent | #FDC116 | Cub Scouts Gold. See the gold rule below. |
-| Surface | #FFFCF4 | Warm paper off-white |
-| Ink | #0A1A33 | Near-black with a blue cast |
-| Muted surface | #FFF4D1 | Pale gold wash |
-| Secondary text | #46587A | Passes 4.5:1 on the surface |
+| Role           | Hex     | Notes                                     |
+| -------------- | ------- | ----------------------------------------- |
+| Primary        | #003F87 | Cub Scouts Blue                           |
+| Accent         | #FDC116 | Cub Scouts Gold. See the gold rule below. |
+| Surface        | #FFFCF4 | Warm paper off-white                      |
+| Ink            | #0A1A33 | Near-black with a blue cast               |
+| Muted surface  | #FFF4D1 | Pale gold wash                            |
+| Secondary text | #46587A | Passes 4.5:1 on the surface               |
 
 **Scouts BSA**
 
-| Role | Hex | Notes |
-| --- | --- | --- |
-| Primary | #243E2C | Olive |
-| Accent | #003F87 | Scouting America Blue borrowed for digital calm. #CE1126 red stays reserved for true errors and rare print pops. |
-| Surface | #F5F1E6 | Tan paper |
-| Ink | #1A1A14 | |
-| Muted surface | #D6CEBD | Scouts BSA Tan |
-| Border / rules | #AD9D7B | Dark Tan |
+| Role           | Hex     | Notes                                                                                                            |
+| -------------- | ------- | ---------------------------------------------------------------------------------------------------------------- |
+| Primary        | #243E2C | Olive                                                                                                            |
+| Accent         | #003F87 | Scouting America Blue borrowed for digital calm. #CE1126 red stays reserved for true errors and rare print pops. |
+| Surface        | #F5F1E6 | Tan paper                                                                                                        |
+| Ink            | #1A1A14 |                                                                                                                  |
+| Muted surface  | #D6CEBD | Scouts BSA Tan                                                                                                   |
+| Border / rules | #AD9D7B | Dark Tan                                                                                                         |
 
 **Venturing**
 
-| Role | Hex | Notes |
-| --- | --- | --- |
-| Primary | #006B3F | Venturing Green |
-| Accent | #FCD116 | Venturing Yellow, feels like trail marking |
-| Surface | #F4F1E8 | Warm stone |
-| Ink | #0B1F14 | |
-| Text on yellow | #00331F | Dark green, large sizes only |
+| Role           | Hex     | Notes                                      |
+| -------------- | ------- | ------------------------------------------ |
+| Primary        | #006B3F | Venturing Green                            |
+| Accent         | #FCD116 | Venturing Yellow, feels like trail marking |
+| Surface        | #F4F1E8 | Warm stone                                 |
+| Ink            | #0B1F14 |                                            |
+| Text on yellow | #00331F | Dark green, large sizes only               |
 
 **Sea Scouts**
 
-| Role | Hex | Notes |
-| --- | --- | --- |
-| Primary | #003366 | Sea Scouts Dark Blue |
-| Accent | #FFCC00 | Sea Scouts Yellow |
-| Surface | #F0F4F8 | Sea-foam paper |
-| Ink | #001A33 | |
+| Role          | Hex     | Notes                 |
+| ------------- | ------- | --------------------- |
+| Primary       | #003366 | Sea Scouts Dark Blue  |
+| Accent        | #FFCC00 | Sea Scouts Yellow     |
+| Surface       | #F0F4F8 | Sea-foam paper        |
+| Ink           | #001A33 |                       |
 | Muted surface | #9AB3D5 | Sea Scouts Light Blue |
 
 ### Contrast rules (MUST)
@@ -117,15 +117,15 @@ brand.
 From the 2024 guidelines. When a color below has no listed CMYK, convert the
 hex with your print vendor rather than guessing.
 
-| Color | Pantone | CMYK |
-| --- | --- | --- |
-| Scouting America Red #CE1126 | PMS 186 | 0, 100, 81, 4 |
-| Scouting America Blue #003F87 | PMS 294 | 100, 58, 0, 21 |
-| Cub Scouts Blue (mark reproduction) | PMS 294 | 100, 48, 0, 44 |
-| Gold / Yellow family | PMS 116 | 0, 10, 100, 0 |
-| Venturing Green #006B3F | PMS 349 | 100, 0, 90, 40 |
-| Sea Scouts Dark Blue #003366 | none listed | 100, 72, 27, 33 |
-| Scouts BSA emblem brown | PMS 463 | 50, 80, 100, 30 |
+| Color                               | Pantone     | CMYK            |
+| ----------------------------------- | ----------- | --------------- |
+| Scouting America Red #CE1126        | PMS 186     | 0, 100, 81, 4   |
+| Scouting America Blue #003F87       | PMS 294     | 100, 58, 0, 21  |
+| Cub Scouts Blue (mark reproduction) | PMS 294     | 100, 48, 0, 44  |
+| Gold / Yellow family                | PMS 116     | 0, 10, 100, 0   |
+| Venturing Green #006B3F             | PMS 349     | 100, 0, 90, 40  |
+| Sea Scouts Dark Blue #003366        | none listed | 100, 72, 27, 33 |
+| Scouts BSA emblem brown             | PMS 463     | 50, 80, 100, 30 |
 
 One-color reproduction: official marks may print in black or any single dark
 color. Reversed reproduction (on a dark background): white only. Never tint
@@ -147,13 +147,13 @@ display face is set, not in swapping fonts.
 
 Per-program display treatment:
 
-| Program | Weight | Case | Tracking | Style |
-| --- | --- | --- | --- | --- |
-| Parent | 700 | Sentence case | normal | upright |
+| Program    | Weight                   | Case          | Tracking       | Style   |
+| ---------- | ------------------------ | ------------- | -------------- | ------- |
+| Parent     | 700                      | Sentence case | normal         | upright |
 | Cub Scouts | 900 (heaviest available) | Sentence case | slightly tight | upright |
-| Scouts BSA | 700 | Sentence case | normal | upright |
-| Venturing | 800 | ALL CAPS | wide (+8%) | upright |
-| Sea Scouts | 600 | Sentence case | slightly tight | italic |
+| Scouts BSA | 700                      | Sentence case | normal         | upright |
+| Venturing  | 800                      | ALL CAPS      | wide (+8%)     | upright |
+| Sea Scouts | 600                      | Sentence case | slightly tight | italic  |
 
 A Cub Scouts headline should look like it was stamped by an enthusiastic kid
 with a fat marker. A Sea Scouts headline should look like the masthead of a
@@ -166,12 +166,12 @@ the type is not working hard enough.
 
 Corner rounding, rule weight, and shadow all carry personality:
 
-| Program | Corner radius | Rule/keyline weight | Shadow character |
-| --- | --- | --- | --- |
-| Cub Scouts | generous (~14px) | chunky (3px) | soft, blue-tinted, toy-like |
-| Scouts BSA | crisp (~4px) | traditional (2px) | flat, matte, archival |
-| Venturing | near-sharp (~2px) | blocky (2px) | strong and directional |
-| Sea Scouts | hairline (~1px) | drafted (1px) | almost none |
+| Program    | Corner radius     | Rule/keyline weight | Shadow character            |
+| ---------- | ----------------- | ------------------- | --------------------------- |
+| Cub Scouts | generous (~14px)  | chunky (3px)        | soft, blue-tinted, toy-like |
+| Scouts BSA | crisp (~4px)      | traditional (2px)   | flat, matte, archival       |
+| Venturing  | near-sharp (~2px) | blocky (2px)        | strong and directional      |
+| Sea Scouts | hairline (~1px)   | drafted (1px)       | almost none                 |
 
 Each program owns a decorative motif. Use it as a horizontal divider, a strip
 along the top of a featured panel, or a border on printed pieces. Draw it
@@ -232,12 +232,12 @@ General rules for all programs:
 
 Per-program voice:
 
-| Program | Speak to | Sound like | Sample CTA verbs |
-| --- | --- | --- | --- |
-| Cub Scouts | Parents first, kids over their shoulder | Warm, energetic, plain words, short sentences, reading level ~grade 4 | Join, Build, Race, Explore, Camp |
-| Scouts BSA | The scout directly | Earnest, capable, respectful of their independence | Lead, Earn, Trek, Serve |
-| Venturing | Young adults as peers | Direct, motivational, zero condescension | Plan, Climb, Paddle, Decide |
-| Sea Scouts | Young adults, slightly formal | Nautical, precise, a little romantic about the water | Sail, Navigate, Crew, Take the helm |
+| Program    | Speak to                                | Sound like                                                            | Sample CTA verbs                    |
+| ---------- | --------------------------------------- | --------------------------------------------------------------------- | ----------------------------------- |
+| Cub Scouts | Parents first, kids over their shoulder | Warm, energetic, plain words, short sentences, reading level ~grade 4 | Join, Build, Race, Explore, Camp    |
+| Scouts BSA | The scout directly                      | Earnest, capable, respectful of their independence                    | Lead, Earn, Trek, Serve             |
+| Venturing  | Young adults as peers                   | Direct, motivational, zero condescension                              | Plan, Climb, Paddle, Decide         |
+| Sea Scouts | Young adults, slightly formal           | Nautical, precise, a little romantic about the water                  | Sail, Navigate, Crew, Take the helm |
 
 ---
 

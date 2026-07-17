@@ -67,14 +67,28 @@ export type EventDialogFooterProps = {
 };
 
 function formatRange(start: Date, end?: Date): string {
-  const fullOpts: Intl.DateTimeFormatOptions = { weekday: "long", month: "long", day: "numeric", year: "numeric" };
+  const fullOpts: Intl.DateTimeFormatOptions = {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  };
   if (!end || isSameDay(start, end)) {
     return start.toLocaleDateString("en-US", fullOpts);
   }
   if (isSameMonth(start, end)) {
     // Both sides carry weekday + month + day; year appears only on the end date.
-    const startFmt = start.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
-    const endFmt = end.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+    const startFmt = start.toLocaleDateString("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+    });
+    const endFmt = end.toLocaleDateString("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
     return `${startFmt} – ${endFmt}`;
   }
   return `${start.toLocaleDateString("en-US", fullOpts)} – ${end.toLocaleDateString("en-US", fullOpts)}`;
@@ -124,7 +138,11 @@ export function EventDialog({ event, onClose, actions, className, navigate }: Ev
   }
 
   // Default navigation falls back to a hard redirect when no SPA hook is provided.
-  const nav = navigate ?? ((url: string) => { window.location.href = url; });
+  const nav =
+    navigate ??
+    ((url: string) => {
+      window.location.href = url;
+    });
 
   const resolvedActions: EventDialogAction[] =
     actions ??
@@ -164,7 +182,9 @@ export function EventDialog({ event, onClose, actions, className, navigate }: Ev
         >
           <EventDialogHeader event={event} onClose={onClose} />
           <EventDialogBody event={event} />
-          {resolvedActions.length > 0 && <EventDialogFooter actions={resolvedActions} navigate={navigate} />}
+          {resolvedActions.length > 0 && (
+            <EventDialogFooter actions={resolvedActions} navigate={navigate} />
+          )}
         </article>
       )}
     </dialog>
@@ -198,17 +218,24 @@ export function EventDialogHeader({ event, onClose }: EventDialogHeaderProps) {
           "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-program-accent",
         )}
       >
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <svg
+          viewBox="0 0 24 24"
+          width="18"
+          height="18"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden
+        >
           <path d="M18 6 6 18M6 6l12 12" />
         </svg>
       </button>
 
       <div className="flex flex-col gap-2 max-w-[calc(100%-3rem)]">
         {event.category && (
-          <Badge
-            variant="accent"
-            className="self-start"
-          >
+          <Badge variant="accent" className="self-start">
             {event.category}
           </Badge>
         )}
@@ -263,7 +290,9 @@ export function EventDialogBody({ event }: EventDialogBodyProps) {
               <dt className="display text-[10px] uppercase tracking-[0.18em] text-program-on-surface-soft">
                 {f.label}
               </dt>
-              <dd className="font-body text-sm sm:text-base mt-0.5 text-program-on-surface">{f.value}</dd>
+              <dd className="font-body text-sm sm:text-base mt-0.5 text-program-on-surface">
+                {f.value}
+              </dd>
             </div>
           ))}
         </dl>
@@ -296,7 +325,11 @@ export function EventDialogBody({ event }: EventDialogBodyProps) {
  */
 export function EventDialogFooter({ actions, navigate }: EventDialogFooterProps) {
   // Default navigation falls back to a hard redirect when no SPA hook is provided.
-  const nav = navigate ?? ((url: string) => { window.location.href = url; });
+  const nav =
+    navigate ??
+    ((url: string) => {
+      window.location.href = url;
+    });
 
   return (
     <footer

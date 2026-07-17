@@ -26,7 +26,7 @@ IMPORTANT BRAND ASSET NOTICE
 
 This MIT License covers the SOFTWARE in this repository: React components,
 TypeScript code, CSS tokens, Tailwind configuration, build scripts, and the
-original decorative graphics drawn inline in `src/components/DecorativeBorder.tsx`.
+original decorative graphics drawn inline in `src/components/DecorativeDivider.tsx`.
 
 The placeholder program marks rendered by `src/components/ProgramMark.tsx` are
 Lucide icons (PawPrint, Tent, Mountain, Anchor) distributed under the ISC

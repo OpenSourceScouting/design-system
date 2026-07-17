@@ -34,9 +34,7 @@ const EVENT_MONTH = EVENTS[0].date;
 
 describe("Calendar", () => {
   it("renders agenda view", () => {
-    renderThemed(
-      <Calendar events={EVENTS} defaultView="agenda" />,
-    );
+    renderThemed(<Calendar events={EVENTS} defaultView="agenda" />);
     expect(screen.getByText("Fall Camporee")).toBeInTheDocument();
     expect(screen.getByText("Pack Meeting")).toBeInTheDocument();
   });

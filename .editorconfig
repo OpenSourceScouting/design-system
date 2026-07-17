@@ -1,0 +1,26 @@
+# EditorConfig: https://editorconfig.org
+# Kept in sync with .prettierrc.json (printWidth 100, tabWidth 2) so editors and
+# the formatter never disagree. Prettier owns formatting for the file types it
+# supports; EditorConfig covers everything else (and editors that read it live).
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+max_line_length = 100
+
+# Markdown: two trailing spaces are a hard line break, so don't strip them.
+# Prettier's default proseWrap is "preserve", so no wrap column here either.
+[*.md]
+trim_trailing_whitespace = false
+max_line_length = off
+
+# .nvmrc is a bare version string.
+[.nvmrc]
+insert_final_newline = true
+
+# Makefiles and shell here use spaces already; no tabs override needed.

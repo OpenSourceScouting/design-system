@@ -46,12 +46,18 @@ export const Minimal: Story = {
     const [open, setOpen] = useState<CalendarEvent | null>(null);
     return (
       <div>
-        <Button onClick={() => setOpen({
-          id: "m",
-          date: new Date(),
-          title: "Weekly Meeting",
-          location: "Unit Hall",
-        })}>Open minimal event</Button>
+        <Button
+          onClick={() =>
+            setOpen({
+              id: "m",
+              date: new Date(),
+              title: "Weekly Meeting",
+              location: "Unit Hall",
+            })
+          }
+        >
+          Open minimal event
+        </Button>
         <EventDialog event={open} onClose={() => setOpen(null)} />
       </div>
     );
@@ -69,7 +75,11 @@ export const CustomActions: Story = {
           onClose={() => setOpen(null)}
           actions={[
             { label: "Register", variant: "primary", onClick: () => alert("Register clicked") },
-            { label: "Add to Calendar", variant: "secondary", onClick: () => alert("ICS download") },
+            {
+              label: "Add to Calendar",
+              variant: "secondary",
+              onClick: () => alert("ICS download"),
+            },
             { label: "Directions", variant: "ghost", onClick: () => alert("Open maps") },
           ]}
         />

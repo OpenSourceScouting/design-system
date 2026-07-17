@@ -1,4 +1,9 @@
-export { ScoutThemeProvider, useScoutTheme, PROGRAMS, PROGRAM_META } from "./lib/theme/ScoutThemeProvider";
+export {
+  ScoutThemeProvider,
+  useScoutTheme,
+  PROGRAMS,
+  PROGRAM_META,
+} from "./lib/theme/ScoutThemeProvider";
 export type { Program, ScoutThemeProviderProps } from "./lib/theme/ScoutThemeProvider";
 
 export { Button } from "./components/Button";
@@ -19,6 +24,9 @@ export type { AlertProps } from "./components/Alert";
 export { ProgramMark } from "./components/ProgramMark";
 export type { ProgramMarkProps, ProgramMarkVariant } from "./components/ProgramMark";
 
+export { Icon } from "./components/Icon";
+export type { IconProps } from "./components/Icon";
+
 export { ProgramIcon, PROGRAM_ICONS } from "./components/ProgramIcon";
 export type { ProgramIconProps } from "./components/ProgramIcon";
 
@@ -29,8 +37,8 @@ export type {
   ScoutingAmericaWordmarkVariant,
 } from "./components/ScoutingAmericaWordmark";
 
-export { DecorativeBorder } from "./components/DecorativeBorder";
-export type { DecorativeBorderProps } from "./components/DecorativeBorder";
+export { DecorativeDivider } from "./components/DecorativeDivider";
+export type { DecorativeDividerProps } from "./components/DecorativeDivider";
 
 export { ProgramHero } from "./components/ProgramHero";
 export type { ProgramHeroProps } from "./components/ProgramHero";
@@ -47,7 +55,12 @@ export type { RegistrationCTAProps } from "./components/RegistrationCTA";
 export { Calendar } from "./components/Calendar";
 export type { CalendarProps, CalendarEvent, CalendarView } from "./components/Calendar";
 
-export { EventDialog, EventDialogHeader, EventDialogBody, EventDialogFooter } from "./components/EventDialog";
+export {
+  EventDialog,
+  EventDialogHeader,
+  EventDialogBody,
+  EventDialogFooter,
+} from "./components/EventDialog";
 export type {
   EventDialogProps,
   EventDialogAction,
@@ -55,5 +68,34 @@ export type {
   EventDialogBodyProps,
   EventDialogFooterProps,
 } from "./components/EventDialog";
+
+// Form layer
+export { Field, useFieldContext, controlClasses } from "./components/Field";
+export type { FieldProps } from "./components/Field";
+export { TextInput } from "./components/TextInput";
+export type { TextInputProps } from "./components/TextInput";
+export { Textarea } from "./components/Textarea";
+export type { TextareaProps } from "./components/Textarea";
+export { Select, SelectItem } from "./components/Select";
+export type { SelectProps, SelectItemProps } from "./components/Select";
+export { NativeSelect } from "./components/NativeSelect";
+export type { NativeSelectProps } from "./components/NativeSelect";
+export { Checkbox } from "./components/Checkbox";
+export type { CheckboxProps } from "./components/Checkbox";
+export { Switch } from "./components/Switch";
+export type { SwitchProps } from "./components/Switch";
+export { RadioGroup, Radio } from "./components/RadioGroup";
+export type { RadioGroupProps, RadioProps } from "./components/RadioGroup";
+
+export { MadeWithBadge } from "./components/MadeWithBadge";
+export type {
+  MadeWithBadgeProps,
+  MadeWithBadgeVariant,
+  MadeWithBadgeSize,
+} from "./components/MadeWithBadge";
+
+// Canonical Scouting America resource links (authoritative external URLs).
+export { SCOUTING_LINKS, SCOUTING_LINK_LIST } from "./lib/links";
+export type { ScoutingLink, ScoutingLinkKey } from "./lib/links";
 
 export { cn } from "./lib/utils/cn";

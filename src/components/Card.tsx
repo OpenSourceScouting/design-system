@@ -9,7 +9,7 @@ export type CardProps = HTMLAttributes<HTMLDivElement> & {
    * shadow (shadow-program) and an inset hairline ring (ring-1 ring-inset
    * ring-program-border/60) on top of the base variant styles. The effect
    * reads as tonal depth, not a directional accent bar. Pair with CardEyebrow
-   * or a DecorativeBorder motif for the strongest "lead story" treatment.
+   * or a DecorativeDivider motif for the strongest "lead story" treatment.
    */
   featured?: boolean;
 };
@@ -46,7 +46,9 @@ export function CardBody({ className, children }: { className?: string; children
 
 export function CardHeader({ className, children }: { className?: string; children: ReactNode }) {
   return (
-    <div className={cn("px-5 pt-5 pb-3 sm:px-6 sm:pt-6 border-b border-program-border/40", className)}>
+    <div
+      className={cn("px-5 pt-5 pb-3 sm:px-6 sm:pt-6 border-b border-program-border/40", className)}
+    >
       {children}
     </div>
   );
@@ -73,7 +75,12 @@ export function CardFooter({ className, children }: { className?: string; childr
  */
 export function CardEyebrow({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <div className={cn("flex items-baseline border-b-rule border-program-border/60 pb-2 mb-3", className)}>
+    <div
+      className={cn(
+        "flex items-baseline border-b-rule border-program-border/60 pb-2 mb-3",
+        className,
+      )}
+    >
       <span className="display text-[11px] uppercase tracking-[0.18em] text-program-on-surface-soft">
         {children}
       </span>

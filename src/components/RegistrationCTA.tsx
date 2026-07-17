@@ -48,8 +48,7 @@ export function RegistrationCTA({
   const { program } = useScoutTheme();
   const meta = PROGRAM_META[program];
 
-  const resolvedHeadline =
-    headline ?? `Ready to join ${meta.label}?`;
+  const resolvedHeadline = headline ?? `Ready to join ${meta.label}?`;
   const resolvedBody = body ?? meta.platform;
 
   // Resolve which node (if any) to render in the watermark slot.
@@ -61,13 +60,11 @@ export function RegistrationCTA({
   // blended element itself composites correctly. Custom watermark nodes
   // control their own opacity.
   const watermarkNode =
-    watermark === false
-      ? null
-      : watermark !== undefined
-        ? watermark
-        : (
-            <ProgramMark variant="reversed" size={150} className="opacity-25" />
-          );
+    watermark === false ? null : watermark !== undefined ? (
+      watermark
+    ) : (
+      <ProgramMark variant="reversed" size={150} className="opacity-25" />
+    );
 
   // Route primary-button navigation through the consumer's navigate function
   // when supplied, avoiding a hard reload in SPA contexts.
@@ -123,11 +120,7 @@ export function RegistrationCTA({
           </p>
         </div>
         <div className="shrink-0">
-          <Button
-            variant="accent"
-            size="lg"
-            onClick={handlePrimaryClick}
-          >
+          <Button variant="accent" size="lg" onClick={handlePrimaryClick}>
             {primaryLabel}
           </Button>
         </div>

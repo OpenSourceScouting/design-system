@@ -13,24 +13,25 @@
 :root {
   /* --- Type system shared across all programs ---------------------------- */
   --program-font-display: "Montserrat Variable", "Montserrat", system-ui, -apple-system, sans-serif;
-  --program-font-body: "Source Serif 4 Variable", "Source Serif 4", "Source Serif Pro", Georgia, serif;
+  --program-font-body:
+    "Source Serif 4 Variable", "Source Serif 4", "Source Serif Pro", Georgia, serif;
 
   /* --- Default (parent Scouting America brand) tokens -------------------- */
   /* Primary Brand, p.14 */
-  --program-primary: 0 63 135;          /* #003F87 Scouting America Blue */
+  --program-primary: 0 63 135; /* #003F87 Scouting America Blue */
   --program-on-primary: 255 255 255;
   --program-on-primary-soft: 225 230 240; /* light blue-gray, passes 4.5:1 on primary */
-  --program-accent: 206 17 38;          /* #CE1126 Scouting America Red  */
+  --program-accent: 206 17 38; /* #CE1126 Scouting America Red  */
   --program-on-accent: 255 255 255;
   --program-surface: 255 255 255;
-  --program-on-surface: 35 37 40;       /* #232528 Scouting America Dark Gray */
-  --program-on-surface-soft: 81 83 84;  /* #515354, ~7:1 vs white */
+  --program-on-surface: 35 37 40; /* #232528 Scouting America Dark Gray */
+  --program-on-surface-soft: 81 83 84; /* #515354, ~7:1 vs white */
   --program-on-surface-faint: 133 135 135; /* #858787 Pale Gray, ~3.5:1 vs white */
   --program-surface-muted: 233 233 228; /* #E9E9E4 Light Tan */
   --program-on-surface-muted: 81 83 84; /* #515354 Scouting America Gray */
-  --program-border: 214 206 189;        /* #D6CEBD Scouting America Tan */
-  --program-ring: 0 63 135;             /* focus matches primary by default */
-  --program-decor: 173 157 123;         /* #AD9D7B Dark Tan */
+  --program-border: 214 206 189; /* #D6CEBD Scouting America Tan */
+  --program-ring: 0 63 135; /* focus matches primary by default */
+  --program-decor: 173 157 123; /* #AD9D7B Dark Tan */
 
   --program-display-weight: 700;
   --program-display-tracking: 0em;
@@ -74,19 +75,19 @@
      - Gold as accent CTA, never as background for body text
    --------------------------------------------------------------------------- */
 [data-program="cub"] {
-  --program-primary: 0 63 135;          /* Cub Scouts Blue #003F87 */
+  --program-primary: 0 63 135; /* Cub Scouts Blue #003F87 */
   --program-on-primary: 255 255 255;
   --program-on-primary-soft: 218 226 240; /* #DAE2F0, ~8:1 on blue */
-  --program-accent: 253 193 22;         /* Cub Scouts Gold #FDC116 */
-  --program-on-accent: 0 63 135;        /* blue on gold passes AA at 16pt+ */
-  --program-surface: 255 252 244;       /* warm off-white (paper) */
-  --program-on-surface: 10 26 51;       /* near-black with blue cast */
+  --program-accent: 253 193 22; /* Cub Scouts Gold #FDC116 */
+  --program-on-accent: 0 63 135; /* blue on gold passes AA at 16pt+ */
+  --program-surface: 255 252 244; /* warm off-white (paper) */
+  --program-on-surface: 10 26 51; /* near-black with blue cast */
   --program-on-surface-soft: 70 88 122; /* #46587A, ~6.9:1 muted body text */
   --program-on-surface-faint: 120 130 150; /* #788296, ~3.7:1 inactive dim */
   --program-surface-muted: 255 244 209; /* tinted gold wash */
   --program-on-surface-muted: 27 47 79;
   --program-border: 0 63 135;
-  --program-ring: 253 193 22;           /* gold focus ring on blue UI */
+  --program-ring: 253 193 22; /* gold focus ring on blue UI */
   --program-decor: 253 193 22;
 
   --program-display-weight: 900;
@@ -94,9 +95,9 @@
   --program-display-style: normal;
   --program-display-transform: none;
 
-  --program-radius: 0.875rem;           /* 14px, rounded but not bubble */
-  --program-rule-weight: 3px;           /* chunky, kid-bold */
-  --program-shadow: 0 4px 14px -2px rgb(0 63 135 / 0.18), 0 2px 4px -2px rgb(0 63 135 / 0.10);
+  --program-radius: 0.875rem; /* 14px, rounded but not bubble */
+  --program-rule-weight: 3px; /* chunky, kid-bold */
+  --program-shadow: 0 4px 14px -2px rgb(0 63 135 / 0.18), 0 2px 4px -2px rgb(0 63 135 / 0.1);
 }
 
 /* ---------------------------------------------------------------------------
@@ -119,18 +120,18 @@
    preserved for true error / danger via the raw `sa-red` palette utility.
    --------------------------------------------------------------------------- */
 [data-program="scoutsbsa"] {
-  --program-primary: 36 62 44;          /* Scouts BSA Olive #243E2C */
-  --program-on-primary: 245 241 230;    /* warm paper white */
+  --program-primary: 36 62 44; /* Scouts BSA Olive #243E2C */
+  --program-on-primary: 245 241 230; /* warm paper white */
   --program-on-primary-soft: 215 220 200; /* #D7DCC8, ~8:1 on olive */
-  --program-accent: 0 63 135;           /* Scouting America Blue #003F87 - digital-calmer accent */
+  --program-accent: 0 63 135; /* Scouting America Blue #003F87 - digital-calmer accent */
   --program-on-accent: 255 255 255;
-  --program-surface: 245 241 230;       /* tan paper, lighter than #D6CEBD */
+  --program-surface: 245 241 230; /* tan paper, lighter than #D6CEBD */
   --program-on-surface: 26 26 20;
-  --program-on-surface-soft: 82 94 72;  /* #525E48, ~6.2:1 muted body text */
+  --program-on-surface-soft: 82 94 72; /* #525E48, ~6.2:1 muted body text */
   --program-on-surface-faint: 138 139 124; /* #8A8B7C, ~3.4:1 inactive dim */
   --program-surface-muted: 214 206 189; /* Scouts BSA Tan #D6CEBD */
   --program-on-surface-muted: 36 62 44;
-  --program-border: 173 157 123;        /* Dark Tan #AD9D7B */
+  --program-border: 173 157 123; /* Dark Tan #AD9D7B */
   --program-ring: 0 63 135;
   --program-decor: 173 157 123;
 
@@ -139,9 +140,9 @@
   --program-display-style: normal;
   --program-display-transform: none;
 
-  --program-radius: 0.25rem;            /* 4px, crisp */
-  --program-rule-weight: 2px;           /* traditional */
-  --program-shadow: 0 1px 2px 0 rgb(36 62 44 / 0.10), 0 2px 6px -2px rgb(36 62 44 / 0.08);
+  --program-radius: 0.25rem; /* 4px, crisp */
+  --program-rule-weight: 2px; /* traditional */
+  --program-shadow: 0 1px 2px 0 rgb(36 62 44 / 0.1), 0 2px 6px -2px rgb(36 62 44 / 0.08);
 }
 
 /* ---------------------------------------------------------------------------
@@ -155,14 +156,14 @@
      - Yellow accent feels like trail marking / safety
    --------------------------------------------------------------------------- */
 [data-program="venturing"] {
-  --program-primary: 0 107 63;          /* Venturing Green #006B3F */
+  --program-primary: 0 107 63; /* Venturing Green #006B3F */
   --program-on-primary: 255 255 255;
   --program-on-primary-soft: 220 235 225; /* #DCEBE1, ~7.5:1 on green */
-  --program-accent: 252 209 22;         /* Venturing Yellow #FCD116 */
-  --program-on-accent: 0 51 31;         /* dark green on yellow */
-  --program-surface: 244 241 232;       /* warm stone */
+  --program-accent: 252 209 22; /* Venturing Yellow #FCD116 */
+  --program-on-accent: 0 51 31; /* dark green on yellow */
+  --program-surface: 244 241 232; /* warm stone */
   --program-on-surface: 11 31 20;
-  --program-on-surface-soft: 71 91 79;  /* #475B4F, ~6.4:1 muted body text */
+  --program-on-surface-soft: 71 91 79; /* #475B4F, ~6.4:1 muted body text */
   --program-on-surface-faint: 129 136 120; /* #818878, ~3.5:1 inactive dim */
   --program-surface-muted: 224 220 209;
   --program-on-surface-muted: 0 51 31;
@@ -175,9 +176,9 @@
   --program-display-style: normal;
   --program-display-transform: uppercase;
 
-  --program-radius: 0.125rem;           /* 2px, near-sharp */
-  --program-rule-weight: 2px;           /* blocky geometric */
-  --program-shadow: 0 8px 24px -8px rgb(0 51 31 / 0.30), 0 2px 4px -2px rgb(0 51 31 / 0.15);
+  --program-radius: 0.125rem; /* 2px, near-sharp */
+  --program-rule-weight: 2px; /* blocky geometric */
+  --program-shadow: 0 8px 24px -8px rgb(0 51 31 / 0.3), 0 2px 4px -2px rgb(0 51 31 / 0.15);
 }
 
 /* ---------------------------------------------------------------------------
@@ -191,12 +192,12 @@
      - Yellow as bright accent against deep navy
    --------------------------------------------------------------------------- */
 [data-program="seascouts"] {
-  --program-primary: 0 51 102;          /* Sea Scouts Dark Blue #003366 */
+  --program-primary: 0 51 102; /* Sea Scouts Dark Blue #003366 */
   --program-on-primary: 255 255 255;
   --program-on-primary-soft: 215 225 240; /* #D7E1F0, ~9:1 on navy */
-  --program-accent: 255 204 0;          /* Sea Scouts Yellow #FFCC00 */
+  --program-accent: 255 204 0; /* Sea Scouts Yellow #FFCC00 */
   --program-on-accent: 0 51 102;
-  --program-surface: 240 244 248;       /* sea-foam paper */
+  --program-surface: 240 244 248; /* sea-foam paper */
   --program-on-surface: 0 26 51;
   --program-on-surface-soft: 71 90 120; /* #475A78, ~6.5:1 muted body text */
   --program-on-surface-faint: 118 135 160; /* #7687A0, ~3.3:1 inactive dim (the earlier #7E8FA8 measured 2.98:1, under the 3:1 floor) */
@@ -211,8 +212,8 @@
   --program-display-style: italic;
   --program-display-transform: none;
 
-  --program-radius: 0.0625rem;          /* 1px, hairline */
-  --program-rule-weight: 1px;           /* drafted hairline */
+  --program-radius: 0.0625rem; /* 1px, hairline */
+  --program-rule-weight: 1px; /* drafted hairline */
   --program-shadow: 0 1px 0 0 rgb(0 51 102 / 0.12);
 }
 

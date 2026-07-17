@@ -1,13 +1,13 @@
 import { describe, it, expect } from "vitest";
 import { axe } from "jest-axe";
-import { DecorativeBorder, type MotifName } from "../DecorativeBorder";
+import { DecorativeDivider, type MotifName } from "../DecorativeDivider";
 import { renderThemed } from "./testUtils";
 
 const MOTIFS: MotifName[] = ["diamonds", "rule", "chevrons", "wave"];
 
-describe("DecorativeBorder", () => {
+describe("DecorativeDivider", () => {
   it("renders an aria-hidden svg by default (program-derived motif)", () => {
-    const { container } = renderThemed(<DecorativeBorder />);
+    const { container } = renderThemed(<DecorativeDivider />);
     const wrapper = container.querySelector("[aria-hidden]");
     expect(wrapper).toBeInTheDocument();
     expect(container.querySelector("svg")).toBeInTheDocument();
@@ -15,7 +15,7 @@ describe("DecorativeBorder", () => {
 
   it("renders each motif via the motif override", () => {
     for (const motif of MOTIFS) {
-      const { container } = renderThemed(<DecorativeBorder motif={motif} />);
+      const { container } = renderThemed(<DecorativeDivider motif={motif} />);
       expect(container.querySelector("svg")).toBeInTheDocument();
     }
   });
@@ -24,7 +24,7 @@ describe("DecorativeBorder", () => {
     const { container } = renderThemed(
       <div>
         {MOTIFS.map((m) => (
-          <DecorativeBorder key={m} motif={m} />
+          <DecorativeDivider key={m} motif={m} />
         ))}
       </div>,
     );

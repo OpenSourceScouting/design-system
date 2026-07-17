@@ -13,7 +13,7 @@ import "../src/styles/globals.css";
  * Every story renders inside <ScoutThemeProvider> so that:
  *   1. The `data-program` attribute is set (CSS variable theming works).
  *   2. The React context is populated (useScoutTheme() works in components
- *      like ProgramHero, RegistrationCTA, ProgramMark, DecorativeBorder).
+ *      like ProgramHero, RegistrationCTA, ProgramMark, DecorativeDivider).
  *
  * The toolbar global `program` is read from context.globals; switching it from
  * the Storybook top toolbar re-renders every story with the new theme.

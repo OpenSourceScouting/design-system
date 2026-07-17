@@ -22,9 +22,12 @@ export const Outlined: Story = {
     <Card {...args} className="max-w-sm">
       <CardBody>
         <CardEyebrow>Camping</CardEyebrow>
-        <Heading level={3} size={4}>Pinewood Derby Weekend</Heading>
+        <Heading level={3} size={4}>
+          Pinewood Derby Weekend
+        </Heading>
         <p className="mt-2 font-body text-sm leading-relaxed text-program-on-surface/80">
-          Build, race, and cheer on your custom car. Pack 42 hosts the annual race in the troop hall.
+          Build, race, and cheer on your custom car. Pack 42 hosts the annual race in the troop
+          hall.
         </p>
       </CardBody>
     </Card>
@@ -40,7 +43,9 @@ export const WithHeaderAndFooter: Story = {
   render: () => (
     <Card variant="elevated" className="max-w-md">
       <CardHeader>
-        <Heading level={3} size={5}>Troop 7: Weekly Meeting</Heading>
+        <Heading level={3} size={5}>
+          Troop 7: Weekly Meeting
+        </Heading>
       </CardHeader>
       <CardBody>
         <p className="font-body text-sm leading-relaxed text-program-on-surface/80">
@@ -48,7 +53,9 @@ export const WithHeaderAndFooter: Story = {
         </p>
       </CardBody>
       <CardFooter>
-        <Button size="sm" variant="primary">RSVP</Button>
+        <Button size="sm" variant="primary">
+          RSVP
+        </Button>
       </CardFooter>
     </Card>
   ),
@@ -70,10 +77,11 @@ export const EyebrowKeylineAcrossPrograms: Story = {
           <Card variant="outlined">
             <CardBody>
               <CardEyebrow>{PROGRAM_META[p].label}</CardEyebrow>
-              <Heading level={3} size={4}>Lead Adventure of the Month</Heading>
+              <Heading level={3} size={4}>
+                Lead Adventure of the Month
+              </Heading>
               <p className="mt-2 font-body text-sm leading-relaxed text-program-on-surface/80">
-                Notice the keyline weight under the kicker: {PROGRAM_META[p].label} sets
-                {" "}
+                Notice the keyline weight under the kicker: {PROGRAM_META[p].label} sets{" "}
                 <code className="font-mono text-xs">--program-rule-weight</code> to its own value.
               </p>
             </CardBody>

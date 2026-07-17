@@ -2,7 +2,7 @@ import { useEffect, useId, useMemo, useState, type ReactNode } from "react";
 import { Button } from "./Button";
 import { Badge } from "./Badge";
 import { Heading } from "./Heading";
-import { DecorativeBorder } from "./DecorativeBorder";
+import { DecorativeDivider } from "./DecorativeDivider";
 import {
   addDays,
   addMonths,
@@ -54,8 +54,18 @@ export type CalendarProps = {
 };
 
 const MONTH_NAMES = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 const WEEKDAY_LONG = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const WEEKDAY_SHORT = ["S", "M", "T", "W", "T", "F", "S"];
@@ -132,7 +142,10 @@ export function Calendar({
 
   const today = useMemo(() => startOfDay(new Date()), []);
   const sortedEvents = useMemo(
-    () => [...events].sort((a, b) => compareDays(a.date, b.date) || a.date.getTime() - b.date.getTime()),
+    () =>
+      [...events].sort(
+        (a, b) => compareDays(a.date, b.date) || a.date.getTime() - b.date.getTime(),
+      ),
     [events],
   );
 
@@ -205,10 +218,7 @@ function CalendarHeader({
             >
               <ChevronLeft />
             </IconButton>
-            <IconButton
-              label="Next month"
-              onClick={() => onCursorChange(addMonths(cursor, 1))}
-            >
+            <IconButton label="Next month" onClick={() => onCursorChange(addMonths(cursor, 1))}>
               <ChevronRight />
             </IconButton>
             <Button
@@ -221,9 +231,7 @@ function CalendarHeader({
           </>
         )}
         <Heading level={3} size={5} className="ml-1">
-          {showNav
-            ? `${MONTH_NAMES[cursor.getMonth()]} ${cursor.getFullYear()}`
-            : "Upcoming"}
+          {showNav ? `${MONTH_NAMES[cursor.getMonth()]} ${cursor.getFullYear()}` : "Upcoming"}
         </Heading>
       </div>
 
@@ -232,7 +240,13 @@ function CalendarHeader({
   );
 }
 
-function ViewToggle({ view, onChange }: { view: CalendarView; onChange: (v: CalendarView) => void }) {
+function ViewToggle({
+  view,
+  onChange,
+}: {
+  view: CalendarView;
+  onChange: (v: CalendarView) => void;
+}) {
   const id = useId();
   const options: { value: CalendarView; label: string }[] = [
     { value: "agenda", label: "Agenda" },
@@ -244,7 +258,9 @@ function ViewToggle({ view, onChange }: { view: CalendarView; onChange: (v: Cale
       aria-labelledby={`${id}-label`}
       className="inline-flex items-center rounded-program border border-program-border/60 p-0.5 bg-program-surface"
     >
-      <span id={`${id}-label`} className="sr-only">Calendar view</span>
+      <span id={`${id}-label`} className="sr-only">
+        Calendar view
+      </span>
       {options.map((opt) => {
         const active = view === opt.value;
         return (
@@ -296,14 +312,34 @@ function IconButton({
 
 function ChevronLeft() {
   return (
-    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg
+      viewBox="0 0 24 24"
+      width="18"
+      height="18"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
       <polyline points="15 18 9 12 15 6" />
     </svg>
   );
 }
 function ChevronRight() {
   return (
-    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg
+      viewBox="0 0 24 24"
+      width="18"
+      height="18"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
       <polyline points="9 18 15 12 9 6" />
     </svg>
   );
@@ -357,68 +393,68 @@ function MonthGrid({
 
         <div className="grid grid-cols-7 gap-1">
           {weeks.map((week, w) => (
-          <div key={w} role="row" className="contents">
-          {week.map((day, i) => {
-            const inMonth = isSameMonth(day, month);
-            const isToday = isSameDay(day, today);
-            const dayEvents = eventsOnDay(events, day);
-            const visible = dayEvents.slice(0, maxEventsPerDay);
-            const overflow = dayEvents.length - visible.length;
+            <div key={w} role="row" className="contents">
+              {week.map((day, i) => {
+                const inMonth = isSameMonth(day, month);
+                const isToday = isSameDay(day, today);
+                const dayEvents = eventsOnDay(events, day);
+                const visible = dayEvents.slice(0, maxEventsPerDay);
+                const overflow = dayEvents.length - visible.length;
 
-            return (
-              <div
-                key={i}
-                role="gridcell"
-                aria-label={day.toLocaleDateString(undefined, {
-                  weekday: "long",
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-                className={cn(
-                  "min-h-[88px] sm:min-h-[112px] rounded-program p-1.5 flex flex-col gap-1",
-                  "border border-program-border/40",
-                  inMonth ? "bg-program-surface" : "bg-program-surface-muted/30",
-                  onDayClick && "cursor-pointer hover:border-program-primary/60",
-                )}
-                onClick={onDayClick ? () => onDayClick(day) : undefined}
-              >
-                <div className="flex items-center justify-between">
-                  <span
+                return (
+                  <div
+                    key={i}
+                    role="gridcell"
+                    aria-label={day.toLocaleDateString(undefined, {
+                      weekday: "long",
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
                     className={cn(
-                      "display text-xs leading-none h-6 min-w-6 px-1.5 rounded-program grid place-items-center",
-                      !inMonth && "text-program-on-surface-faint",
-                      inMonth && !isToday && "text-program-on-surface/80",
-                      isToday && "bg-program-primary text-program-on-primary",
+                      "min-h-[88px] sm:min-h-[112px] rounded-program p-1.5 flex flex-col gap-1",
+                      "border border-program-border/40",
+                      inMonth ? "bg-program-surface" : "bg-program-surface-muted/30",
+                      onDayClick && "cursor-pointer hover:border-program-primary/60",
                     )}
+                    onClick={onDayClick ? () => onDayClick(day) : undefined}
                   >
-                    {day.getDate()}
-                  </span>
-                  {dayEvents.length > 0 && (
-                    <span className="sr-only">
-                      {dayEvents.length} event{dayEvents.length === 1 ? "" : "s"}
-                    </span>
-                  )}
-                </div>
-
-                <ul className="flex flex-col gap-0.5 min-h-0">
-                  {visible.map((ev) => (
-                    <li key={ev.id}>
-                      <EventChip event={ev} day={day} onClick={onEventClick} />
-                    </li>
-                  ))}
-                  {overflow > 0 && (
-                    <li>
-                      <span className="block text-[10px] text-program-on-surface-soft px-1.5">
-                        +{overflow} more
+                    <div className="flex items-center justify-between">
+                      <span
+                        className={cn(
+                          "display text-xs leading-none h-6 min-w-6 px-1.5 rounded-program grid place-items-center",
+                          !inMonth && "text-program-on-surface-faint",
+                          inMonth && !isToday && "text-program-on-surface/80",
+                          isToday && "bg-program-primary text-program-on-primary",
+                        )}
+                      >
+                        {day.getDate()}
                       </span>
-                    </li>
-                  )}
-                </ul>
-              </div>
-            );
-          })}
-          </div>
+                      {dayEvents.length > 0 && (
+                        <span className="sr-only">
+                          {dayEvents.length} event{dayEvents.length === 1 ? "" : "s"}
+                        </span>
+                      )}
+                    </div>
+
+                    <ul className="flex flex-col gap-0.5 min-h-0">
+                      {visible.map((ev) => (
+                        <li key={ev.id}>
+                          <EventChip event={ev} day={day} onClick={onEventClick} />
+                        </li>
+                      ))}
+                      {overflow > 0 && (
+                        <li>
+                          <span className="block text-[10px] text-program-on-surface-soft px-1.5">
+                            +{overflow} more
+                          </span>
+                        </li>
+                      )}
+                    </ul>
+                  </div>
+                );
+              })}
+            </div>
           ))}
         </div>
       </div>
@@ -506,7 +542,10 @@ function AgendaList({
   return (
     <ol className="divide-y divide-program-border/40">
       {groups.map((g, gi) => (
-        <li key={gi} className="grid grid-cols-[88px_1fr] sm:grid-cols-[120px_1fr] gap-4 px-4 sm:px-5 py-4">
+        <li
+          key={gi}
+          className="grid grid-cols-[88px_1fr] sm:grid-cols-[120px_1fr] gap-4 px-4 sm:px-5 py-4"
+        >
           <DayStamp day={g.day} />
           <ul className="flex flex-col gap-3 min-w-0">
             {g.items.map((ev) => (
@@ -528,9 +567,7 @@ function DayStamp({ day }: { day: Date }) {
       <span className="display text-[10px] uppercase tracking-[0.18em] text-program-on-surface-soft">
         {day.toLocaleDateString(undefined, { weekday: "short" })}
       </span>
-      <span className="display text-3xl leading-none text-program-on-surface">
-        {day.getDate()}
-      </span>
+      <span className="display text-3xl leading-none text-program-on-surface">{day.getDate()}</span>
       <span className="display text-xs text-program-on-surface-soft">
         {day.toLocaleDateString(undefined, { month: "short" })}
       </span>
@@ -562,7 +599,7 @@ function AgendaItem({
         event.featured && "shadow-program ring-program-border/60 px-4 py-3.5",
       )}
     >
-      {event.featured && <DecorativeBorder className="h-2 mb-2 -mt-1" />}
+      {event.featured && <DecorativeDivider className="h-2 mb-2 -mt-1" />}
       <div className="flex items-baseline gap-2 flex-wrap">
         {event.category && <Badge variant="subtle">{event.category}</Badge>}
         <span className="display text-xs text-program-on-surface-soft">
@@ -571,11 +608,18 @@ function AgendaItem({
           {formatTime(event.date)}
         </span>
       </div>
-      <div className={cn("display mt-1 text-program-on-surface", event.featured ? "text-lg sm:text-2xl" : "text-base sm:text-lg")}>
+      <div
+        className={cn(
+          "display mt-1 text-program-on-surface",
+          event.featured ? "text-lg sm:text-2xl" : "text-base sm:text-lg",
+        )}
+      >
         {event.title}
       </div>
       {event.location && (
-        <div className="font-body text-sm text-program-on-surface-soft mt-0.5">{event.location}</div>
+        <div className="font-body text-sm text-program-on-surface-soft mt-0.5">
+          {event.location}
+        </div>
       )}
       {event.description && (
         <p className="font-body text-sm text-program-on-surface/80 mt-1.5 leading-relaxed">

@@ -3,7 +3,7 @@ import { Heading } from "./Heading";
 import { Button } from "./Button";
 import { Badge } from "./Badge";
 import { ProgramMark } from "./ProgramMark";
-import { DecorativeBorder } from "./DecorativeBorder";
+import { DecorativeDivider } from "./DecorativeDivider";
 import { useScoutTheme, PROGRAM_META } from "../lib/theme/ScoutThemeProvider";
 import { cn } from "../lib/utils/cn";
 
@@ -46,17 +46,15 @@ export function ProgramHero({
   // Resolve which node (if any) to render in the watermark slot.
   // `false` means suppress; `undefined` means use the built-in ProgramMark.
   const watermarkNode =
-    watermark === false
-      ? null
-      : watermark !== undefined
-        ? watermark
-        : (
-            // Opacity sits on the mark, not the wrapper: ancestor opacity
-            // isolates mix-blend-mode (used to key out JPG backgrounds) from
-            // the surface behind it, which would leave the JPG's rectangle
-            // visible. Custom watermark nodes control their own opacity.
-            <ProgramMark variant="mono" size={280} className="opacity-[0.08]" />
-          );
+    watermark === false ? null : watermark !== undefined ? (
+      watermark
+    ) : (
+      // Opacity sits on the mark, not the wrapper: ancestor opacity
+      // isolates mix-blend-mode (used to key out JPG backgrounds) from
+      // the surface behind it, which would leave the JPG's rectangle
+      // visible. Custom watermark nodes control their own opacity.
+      <ProgramMark variant="mono" size={280} className="opacity-[0.08]" />
+    );
 
   return (
     <section
@@ -73,7 +71,7 @@ export function ProgramHero({
           bleeding off the edge: the BSA license forbids cropping or
           truncating real marks (NOTICE.md), and this slot auto-loads real
           assets when they are present. Bleed treatments belong to our own
-          motifs (DecorativeBorder), not the marks. */}
+          motifs (DecorativeDivider), not the marks. */}
       {watermarkNode !== null && (
         <div
           aria-hidden
@@ -128,7 +126,7 @@ export function ProgramHero({
           </div>
         )}
 
-        <DecorativeBorder className="mt-2 max-w-md" />
+        <DecorativeDivider className="mt-2 max-w-md" />
       </div>
     </section>
   );

@@ -197,10 +197,7 @@ export function ProgramMark({
           height={size}
           strokeWidth={1.75}
           // Hidden on screen; only the print stylesheet reveals it.
-          className={cn(
-            "hidden print:inline-block shrink-0 text-program-on-surface",
-            className,
-          )}
+          className={cn("hidden print:inline-block shrink-0 text-program-on-surface", className)}
           style={style}
         />
       )}

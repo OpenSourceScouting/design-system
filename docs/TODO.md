@@ -6,6 +6,7 @@ order is rough. Every task lists: motivation, files, acceptance criteria, and
 effort estimate.
 
 Conventions for anyone picking up work here:
+
 - Read `CLAUDE.md` first. It contains hard rules (theming model, asset legal
   rules, contrast tokens) that are easy to get wrong from a quick skim of the code.
 - Conventional Commits (`feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`).
@@ -32,12 +33,13 @@ mode invokes render twice; SSR has no `document`. Side effects belong in
 **Files:** `src/lib/theme/ScoutThemeProvider.tsx`
 
 **Acceptance:**
+
 - The `applyToDocument` branch runs in `useEffect`, not during render.
 - Cleanup function removes the attribute (or restores prior value) when the
   provider unmounts or `program` changes.
 - No `typeof document !== "undefined"` guard needed in `useEffect` (effects
   do not run on the server).
-- Typecheck passes; existing demo in `src/App.tsx` still themes correctly.
+- Typecheck passes; existing demo in `demo/App.tsx` still themes correctly.
 
 **Effort:** 15 min.
 
@@ -55,6 +57,7 @@ reduce` still see the 1px jump.
 **Files:** `src/components/Button.tsx`
 
 **Acceptance:**
+
 - Press translation wrapped in `motion-safe:` (Tailwind variant). Existing
   hover/transition utilities remain.
 - Visually identical for users without reduced-motion preference.
@@ -79,6 +82,7 @@ invisible on Windows HC mode. Required for enterprise and school deployments.
 spot-check `Button`, `Badge`, `Alert`, `Card`.
 
 **Acceptance:**
+
 - New `@media (forced-colors: active)` block in `tokens.css` overrides key
   surfaces with system color keywords: `ButtonText`, `ButtonFace`,
   `Highlight`, `HighlightText`, `Canvas`, `CanvasText`, `LinkText`.
@@ -104,6 +108,7 @@ yellow accents.
 **Files:** `src/components/Button.tsx`, possibly `tokens.css`.
 
 **Acceptance:** pick one approach:
+
 - **A:** Block `size="sm" variant="accent"` at the type level
   (`type ButtonProps` discriminated union) with a runtime dev warning.
 - **B:** When `variant="accent"` and `size="sm"`, override text color to
@@ -131,6 +136,7 @@ mobile-friendly.
 **Files:** `src/components/Calendar.tsx`
 
 **Acceptance:**
+
 - Below the `sm` breakpoint (640px), the month view auto-switches to agenda
   view, OR the view toggle hides "Month" and forces "Agenda".
 - The user-controllable `view` prop still works above `sm`.
@@ -145,7 +151,7 @@ mobile-friendly.
 
 ### [x] 2.1 Convert from showcase repo to publishable library
 
-> Done 2026-07-02: package published as @openscouting/design-system@0.1.0
+> Done 2026-07-02: package published as @opensourcescouting/design-system@0.1.0
 > with exports map, peerDependencies, vite-plugin-dts, ES+CJS outputs, CSS
 > artifacts, tailwind-preset.cjs, and publicDir:false on lib build to prevent
 > gitignored brand marks from leaking into the tarball. npm pack produces a
@@ -158,6 +164,7 @@ no `exports`, no `peerDependencies`. A council webmaster cannot
 **Files:** `package.json`, `vite.config.ts`, new `tsconfig.lib.json`.
 
 **Acceptance:**
+
 - `package.json`:
   - Remove `"private": true`.
   - Add `peerDependencies: { react: ">=18", react-dom: ">=18" }`.
@@ -185,6 +192,7 @@ no `exports`, no `peerDependencies`. A council webmaster cannot
 **Files:** `src/lib/theme/ScoutThemeProvider.tsx`, `src/styles/tokens.css`, `tailwind-preset.cjs`, `src/index.ts`.
 
 **Acceptance:**
+
 - `Program` becomes `"cub" | "scoutsbsa" | "venturing" | "seascouts" | (string & {})` (or a documented extension pattern) so extra programs are assignable without a type error.
 - `ScoutThemeProvider` accepts any string value for `program` and sets `data-program` accordingly; components that switch on program fall back gracefully to a sensible default (suggest Scouts BSA tokens) rather than rendering nothing.
 - The `forced-colors` block either uses a universal `[data-program]` selector or documents that consumers must add their own forced-colors overrides.
@@ -201,6 +209,7 @@ no `exports`, no `peerDependencies`. A council webmaster cannot
 **Files:** `src/components/Button.tsx`, `src/components/Card.tsx`, `src/components/Badge.tsx`, `src/components/Alert.tsx`.
 
 **Acceptance:**
+
 - Each component exposes a `classNames` or `className` escape hatch that lets consumers supply fully custom Tailwind classes alongside (not instead of) variant defaults.
 - Alternatively, each component exports its `variantStyles` map so consumers can spread it and add entries via `cva` or a wrapper component without touching library source.
 - No existing variant behavior changes.
@@ -220,6 +229,7 @@ under "Fonts" but not enforced or scriptable.
 `examples/self-host-fonts/` directory.
 
 **Acceptance:**
+
 - An `examples/self-host-fonts/main.tsx` shows the four imports.
 - README link added under "Fonts" section pointing to the example.
 
@@ -236,6 +246,7 @@ neutral token export does.
 **Files:** new `tokens/` source directory, build script in `package.json`.
 
 **Acceptance:**
+
 - Adopt Style Dictionary (`npm i -D style-dictionary`).
 - Source of truth moves to `tokens/source/*.json` (one file per program plus
   a base file). `src/styles/tokens.css` becomes a generated artifact.
@@ -256,7 +267,7 @@ neutral token export does.
 > Done 2026-07-03: Vitest (jsdom) + jest-axe wired up; `npm run test` runs 70
 > tests (15 files), all green. tests/contrast.test.ts parses tokens.css and
 > asserts WCAG ratios across all five palettes; per-component smoke + axe tests
-> live in src/**/__tests__. Three genuine bugs surfaced and are flagged with
+> live in src/**/**tests**. Three genuine bugs surfaced and are flagged with
 > it.fails (not silenced): seascouts on-surface-faint originally measured 2.98:1
 > (< 3:1 floor) at the old value #7E8FA8; tokens.css:202 comment at the time
 > overstated it as ~3.5:1; the token has since been corrected to #7687A0, which
@@ -272,6 +283,7 @@ token regression could break contrast silently.
 new `tests/contrast.test.ts`, `package.json` script.
 
 **Acceptance:**
+
 - `npm run test` runs Vitest in JSDOM mode.
 - Each component has a smoke test + `axe(container)` assertion (use
   `jest-axe`).
@@ -292,6 +304,7 @@ should be able to browse components without cloning the repo.
 **Files:** new `.github/workflows/storybook.yml`.
 
 **Acceptance:**
+
 - GitHub Actions workflow on push to main: build Storybook, deploy to
   GitHub Pages (or Chromatic if the user wants visual regression too).
 - Public URL added to `README.md` Quick Start section.
@@ -309,6 +322,7 @@ code should mirror that.
 **Files:** `.changeset/config.json`, `CHANGELOG.md`, `.github/workflows/release.yml`.
 
 **Acceptance:**
+
 - `npm i -D @changesets/cli && npx changeset init` done.
 - A `release` workflow opens a "Version Packages" PR when changesets exist
   and publishes to npm (or GitHub Packages) when merged.
@@ -329,6 +343,7 @@ code should mirror that.
 **Files:** new `.github/workflows/ci.yml`.
 
 **Acceptance:**
+
 - Workflow runs on `pull_request`: `npm ci`, `npm run typecheck`,
   `npm run test`, `npm run build`, `npm run build-storybook`.
 - Status check required before merge.
@@ -347,6 +362,7 @@ this audience.
 **Files:** `src/styles/tokens.css`, optionally `ScoutThemeProvider`.
 
 **Acceptance:**
+
 - Each program block has a paired `@media (prefers-color-scheme: dark)` set
   of overrides, OR a `[data-theme="dark"][data-program="cub"]` selector axis.
 - `globals.css` removes the hard-coded `color-scheme: light` and instead
@@ -371,6 +387,7 @@ runtime cost.
 (`Button`, `Card`, `EventDialog`).
 
 **Acceptance:**
+
 - New tokens per program block:
   - `--program-motion-easing`
   - `--program-motion-duration-fast`
@@ -394,6 +411,7 @@ copy.
 **Files:** new `src/lib/voice/microcopy.ts` plus per-program JSON.
 
 **Acceptance:**
+
 - One JSON file per program in `src/lib/voice/{program}.json` covering at
   least: CTA verbs (3-5), empty-state strings (3), error strings (3),
   success strings (3), reading-level target (Flesch-Kincaid grade).
@@ -418,6 +436,7 @@ keeping them inside the token system prevents drift.
 `src/styles/tokens.css` with comments.
 
 **Acceptance:**
+
 - Each named color has `srgb`, `cmyk`, `pantone` fields in the JSON source.
 - Style Dictionary build emits a print-ready JSON artifact alongside CSS.
 - README "Programs at a glance" table shows Pantone values.
@@ -435,6 +454,7 @@ is placed in a 400px sidebar on a 1440px screen. Container queries fix this.
 `tailwind.config.ts` (enable `@tailwindcss/container-queries`).
 
 **Acceptance:**
+
 - FeatureGrid switches column count based on container width, not viewport.
 - Calendar may use container queries for the month view threshold (relates
   to task 1.5).
@@ -451,6 +471,7 @@ is placed in a 400px sidebar on a 1440px screen. Container queries fix this.
 **Files:** `src/components/FeatureGrid.tsx`, `src/components/FeatureGrid.stories.tsx`.
 
 **Acceptance:**
+
 - `FeatureGrid` accepts a `renderFeature?: (feature: Feature, index: number) => ReactNode` prop. When supplied, it replaces the default card rendering entirely.
 - The existing default rendering is pixel-identical when `renderFeature` is not provided.
 - Export the `Feature` type from `src/index.ts` so consumers can type their render prop without reaching into internal paths.
@@ -463,18 +484,42 @@ is placed in a 400px sidebar on a 1440px screen. Container queries fix this.
 
 ### [ ] 3.7 Iconography pack
 
-**Why:** Lucide is generic. Programs have specific motifs: fleur-de-lis
-(SA), compass (Scouts BSA), mountain (Venturing), anchor (Sea Scouts).
+**Decision (icon strategy):** We are NOT bundling a general icon catalog.
+Lucide (ISC, tree-shakeable) is the recommended set; consumers import glyphs
+directly from `lucide-react`. Shipped a general `Icon` primitive that applies
+the system's size/stroke/`currentColor`/a11y conventions, with `ProgramIcon`
+refactored as a preset on top of it. Documented in the README "Icons" section.
+What remains below is the OPTIONAL first-party custom artwork, not a full set.
+
+**Why (remaining):** Lucide is generic. Programs have specific motifs: compass
+(Scouts BSA), mountain (Venturing), anchor (Sea Scouts). Custom-drawn glyphs
+would be more distinctive than the Lucide stand-ins.
 
 **Files:** new `src/components/icons/*.tsx` or `src/lib/icons/`.
 
 **Acceptance:**
+
 - One React component per program-specific glyph, sized via prop, themed
   via `currentColor` and `--program-*`.
 - Storybook page showing the set across all four programs.
 - Exported from `src/index.ts`.
 
 **Effort:** 1 day (drawing the icons is the work).
+
+---
+
+### [x] 3.9 Form layer (Tier 0 primitives)
+
+**Shipped:** `Field` (label + help + error, auto-wires id/aria-describedby/
+aria-invalid), `TextInput`, `Textarea`, `Select` (styled native), `Checkbox`,
+`Switch` (role=switch), and `RadioGroup`/`Radio` (fieldset/legend). Built on
+native inputs, themed via program tokens, status colors from the `sa-*` palette.
+Exported from `src/index.ts`, stories under `Forms/*`, a11y-tested in
+`__tests__/forms.test.tsx`, documented in the README "Forms" section.
+
+**Remaining (later tiers):** Combobox/autocomplete, a Calendar-backed
+DatePicker, FileUpload, NumberInput/stepper, OTP/PIN. The custom listbox-style
+Select (searchable/multi) belongs with the Tier 1 headless-widget decision.
 
 ---
 
@@ -487,6 +532,7 @@ this system in Mailchimp/Constant Contact without inline hex.
 new `examples/email-template/index.html`.
 
 **Acceptance:**
+
 - A flat CSS file with hex literals (no `var()`) emitted by the token build.
 - An example HTML email using inline styles per program.
 - README section on email use.
@@ -503,6 +549,7 @@ new `examples/email-template/index.html`.
 `EventDialog`, `RegistrationCTA`.
 
 **Acceptance:**
+
 - Every `pl-*`/`pr-*`/`ml-*`/`mr-*` replaced with `ps-*`/`pe-*`/`ms-*`/`me-*`
   (Tailwind logical properties).
 - Storybook gains a `direction: ltr | rtl` global.
@@ -525,6 +572,7 @@ results as broken `<img>` tags instead of falling back to the placeholder.
 `README.md` (deployment warning).
 
 **Acceptance:**
+
 - After fetching a candidate URL, validate the response `Content-Type` header
   (or the image's natural dimensions) before treating it as a valid asset.
   A `text/html` response must be treated as a miss, not a hit.
@@ -545,6 +593,7 @@ results as broken `<img>` tags instead of falling back to the placeholder.
 ### [ ] 3.11 Calendar ergonomics
 
 **Why:** Three independent usability gaps in the `Calendar` component:
+
 1. The agenda view window is anchored to `defaultMonth`, not today, so a user
    landing on the calendar in July sees July events even if `defaultMonth`
    is January (from a stale prop). The window should default to today.
@@ -557,6 +606,7 @@ results as broken `<img>` tags instead of falling back to the placeholder.
 **Files:** `src/components/Calendar.tsx`, `src/lib/utils/date.ts`.
 
 **Acceptance:**
+
 - Agenda view defaults the visible window to today's date regardless of
   `defaultMonth` (which should control only the initial month-grid view).
 - When the agenda window is empty and the `events` prop contains events outside
@@ -575,6 +625,7 @@ results as broken `<img>` tags instead of falling back to the placeholder.
 ## Tier 4: nice-to-have
 
 ### [x] 4.1 Visual regression (done, substituted for Chromatic)
+
 Catches per-program rendering regressions across the component x program
 matrix that no human reviewer will catch reliably. Chose self-hosted
 Playwright via `@storybook/test-runner` + `jest-image-snapshot` over Chromatic
@@ -587,21 +638,25 @@ running both baseline generation and CI inside the pinned Playwright container
 **Effort:** done.
 
 ### [ ] 4.2 `examples/` directory with reference integrations
+
 Subdirectories: `nextjs-app/`, `vanilla-html/`, `wordpress-block-theme/`,
 `mailchimp-email/`. Each is a minimal working consumer of the package.
 **Effort:** 1-2 days.
 
 ### [ ] 4.3 Figma library generated from token JSON
+
 Use Tokens Studio plugin to consume `dist/tokens/tokens.json`. Closes the
 designer ↔ engineer loop.
 **Effort:** 1 day (mostly Figma work).
 
 ### [ ] 4.4 `prefers-contrast: more` overrides
+
 Boost contrast tokens when users opt in. WCAG 2.2 SC 1.4.6 (AAA), increasingly
 expected on government/nonprofit sites.
 **Effort:** 2 hours.
 
 ### [ ] 4.5 Imagery component with brand contract
+
 `<ProgramImage program="cub" treatment="warm-overlay" aspect="16:9" />`.
 Encodes brand book photography rules.
 **Effort:** half-day.

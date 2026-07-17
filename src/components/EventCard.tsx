@@ -33,30 +33,54 @@ export type EventCardProps = {
   navigate?: (url: string) => void;
 };
 
-const MONTH_SHORT = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+const MONTH_SHORT = [
+  "JAN",
+  "FEB",
+  "MAR",
+  "APR",
+  "MAY",
+  "JUN",
+  "JUL",
+  "AUG",
+  "SEP",
+  "OCT",
+  "NOV",
+  "DEC",
+];
 
-export function EventCard({ date, endDate, title, location, description, category, cta, className, renderDateBlock, navigate }: EventCardProps) {
+export function EventCard({
+  date,
+  endDate,
+  title,
+  location,
+  description,
+  category,
+  cta,
+  className,
+  renderDateBlock,
+  navigate,
+}: EventCardProps) {
   const month = MONTH_SHORT[date.getMonth()];
   const day = date.getDate();
   const weekday = date.toLocaleDateString(undefined, { weekday: "long" });
   const time = date.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
 
-  const dateBlock = renderDateBlock
-    ? renderDateBlock(date, endDate)
-    : (
-        // Date block: calendar-tear styling, themed per program.
-        <div
-          aria-hidden
-          className={cn(
-            "shrink-0 w-16 sm:w-20 rounded-program overflow-hidden",
-            "bg-program-primary text-program-on-primary flex flex-col items-center justify-center py-2",
-            "border border-program-primary",
-          )}
-        >
-          <span className="display text-[10px] uppercase tracking-[0.2em]">{month}</span>
-          <span className="display text-3xl sm:text-4xl leading-none">{day}</span>
-        </div>
-      );
+  const dateBlock = renderDateBlock ? (
+    renderDateBlock(date, endDate)
+  ) : (
+    // Date block: calendar-tear styling, themed per program.
+    <div
+      aria-hidden
+      className={cn(
+        "shrink-0 w-16 sm:w-20 rounded-program overflow-hidden",
+        "bg-program-primary text-program-on-primary flex flex-col items-center justify-center py-2",
+        "border border-program-primary",
+      )}
+    >
+      <span className="display text-[10px] uppercase tracking-[0.2em]">{month}</span>
+      <span className="display text-3xl sm:text-4xl leading-none">{day}</span>
+    </div>
+  );
 
   // Resolve CTA click: prefer explicit onClick, then route href through the
   // optional SPA navigate hook, then fall back to a hard redirect.
@@ -66,7 +90,11 @@ export function EventCard({ date, endDate, title, location, description, categor
       ctaOnClick = cta.onClick;
     } else if (cta.href) {
       const href = cta.href;
-      const nav = navigate ?? ((url: string) => { window.location.href = url; });
+      const nav =
+        navigate ??
+        ((url: string) => {
+          window.location.href = url;
+        });
       ctaOnClick = () => nav(href);
     }
   }

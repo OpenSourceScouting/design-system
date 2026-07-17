@@ -3,7 +3,7 @@ import { cn } from "../lib/utils/cn";
 
 export type MotifName = "diamonds" | "rule" | "chevrons" | "wave";
 
-export type DecorativeBorderProps = {
+export type DecorativeDividerProps = {
   program?: Program;
   /**
    * Force a specific decorative motif regardless of the active program theme.
@@ -36,7 +36,7 @@ export type DecorativeBorderProps = {
  * Renders inline SVG so it inherits `currentColor` from the program's decor
  * token. Decorative only: marked aria-hidden.
  */
-export function DecorativeBorder({ program, motif, className }: DecorativeBorderProps) {
+export function DecorativeDivider({ program, motif, className }: DecorativeDividerProps) {
   const ctx = useScoutTheme();
   const active = program ?? ctx.program;
 
@@ -56,14 +56,13 @@ export function DecorativeBorder({ program, motif, className }: DecorativeBorder
             : "rule");
 
   return (
-    <div
-      aria-hidden
-      className={cn(
-        "w-full h-4 flex items-center text-program-decor",
-        className,
-      )}
-    >
-      <svg viewBox="0 0 400 16" preserveAspectRatio="none" className="w-full h-full" fill="currentColor">
+    <div aria-hidden className={cn("w-full h-4 flex items-center text-program-decor", className)}>
+      <svg
+        viewBox="0 0 400 16"
+        preserveAspectRatio="none"
+        className="w-full h-full"
+        fill="currentColor"
+      >
         {resolvedMotif === "diamonds" && (
           <g>
             {Array.from({ length: 20 }).map((_, i) => (
@@ -82,7 +81,14 @@ export function DecorativeBorder({ program, motif, className }: DecorativeBorder
           <g>
             <rect x={0} y={6} width={400} height={1} />
             <rect x={0} y={9} width={400} height={1} />
-            <circle cx={200} cy={8} r={3} fill="rgb(var(--program-surface))" stroke="currentColor" strokeWidth={1} />
+            <circle
+              cx={200}
+              cy={8}
+              r={3}
+              fill="rgb(var(--program-surface))"
+              stroke="currentColor"
+              strokeWidth={1}
+            />
             <circle cx={200} cy={8} r={1.5} />
           </g>
         )}

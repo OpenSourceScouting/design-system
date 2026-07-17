@@ -83,7 +83,11 @@ export const AllCombinations: Story = {
               className="flex items-center justify-center p-3 bg-program-primary rounded-program"
               style={{ height: wideCellHeight }}
             >
-              <ScoutingAmericaWordmark orientation="wide" variant="reversed" height={wideMarkHeight} />
+              <ScoutingAmericaWordmark
+                orientation="wide"
+                variant="reversed"
+                height={wideMarkHeight}
+              />
             </div>
           </div>
         </section>
@@ -102,7 +106,11 @@ export const AllCombinations: Story = {
               className="flex items-center justify-center p-3 bg-program-primary rounded-program"
               style={{ height: tallCellHeight }}
             >
-              <ScoutingAmericaWordmark orientation="tall" variant="reversed" height={tallMarkHeight} />
+              <ScoutingAmericaWordmark
+                orientation="tall"
+                variant="reversed"
+                height={tallMarkHeight}
+              />
             </div>
           </div>
         </section>

@@ -1,7 +1,7 @@
 /* -----------------------------------------------------------------------------
    Fonts: Montserrat (display) + Source Serif 4 (body), both SIL OFL variable
    fonts. They are self-hosted via @fontsource-variable and loaded through JS
-   imports at each app/Storybook entry point (src/main.tsx,
+   imports at each app/Storybook entry point (demo/main.tsx,
    .storybook/preview.tsx), not from a CDN. This keeps the built dist CSS free
    of any runtime third-party request.
 
