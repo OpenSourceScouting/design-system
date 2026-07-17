@@ -130,6 +130,19 @@ committing to the rewrite.
 - Keep the `forced-colors: active` block.
 - Update contrast tests to assert against the new names BEFORE porting
   components, so regressions surface immediately.
+- Port the token-parity test (`tests/token-parity.test.ts`, written during the
+  Phase 0 spike against the `--program-*` names) to the shadcn token names:
+  every `[data-program]` block must define an identical token set, every program
+  token must have a `:root` default, and `:root`-only tokens must match a
+  documented shared allowlist (currently the two font-family tokens). This is
+  the guard that keeps "add a program" a purely-additive change.
+- TODO (docs): write a token-requirements reference: a matrix of which token
+  names are REQUIRED in every program block, which are intentionally
+  `:root`-only shared (and WHY, e.g. the single typography pair), and which
+  belong to the `--os-*` extended vocabulary. Reserve a column for the future
+  mode dimension (light/dark, TODO 3.1) so `[data-program].dark` blocks slot in
+  without re-plumbing. Land the human-readable table in BRAND-GUIDE (Phase 6);
+  the parity test is its machine-checked counterpart.
 
 ## Phase 2: Build pipeline (Tailwind v4)
 
