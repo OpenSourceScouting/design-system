@@ -90,7 +90,7 @@ export function ScoutingAmericaWordmark({
   }
 
   const ext = EXTENSION_PRIORITY[extIdx];
-  // Reversed variant relies on dark `bg-program-primary` behind it; in print
+  // Reversed variant relies on dark `bg-primary` behind it; in print
   // (background graphics off), the screen blend bleaches it to white paper.
   // We render nothing in print rather than fall back to a generic, per the
   // "no generics" rule for this asset.

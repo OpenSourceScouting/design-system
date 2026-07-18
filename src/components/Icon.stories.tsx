@@ -26,7 +26,7 @@ export const Default: Story = {};
 
 export const Sizes: Story = {
   render: () => (
-    <div className="flex items-end gap-4 text-program-primary">
+    <div className="flex items-end gap-4 text-primary">
       <Icon icon={Compass} size={16} />
       <Icon icon={Compass} size={24} />
       <Icon icon={Compass} size={32} />
@@ -38,16 +38,16 @@ export const Sizes: Story = {
 export const Tinting: Story = {
   render: () => (
     <div className="flex gap-4">
-      <Icon icon={Rocket} className="text-program-primary" />
-      <Icon icon={Rocket} className="text-program-accent" />
-      <Icon icon={Rocket} className="text-program-on-surface-soft" />
+      <Icon icon={Rocket} className="text-primary" />
+      <Icon icon={Rocket} className="text-os-accent" />
+      <Icon icon={Rocket} className="text-muted-foreground" />
     </div>
   ),
 };
 
 export const Gallery: Story = {
   render: () => (
-    <div className="flex flex-wrap gap-6 text-program-primary">
+    <div className="flex flex-wrap gap-6 text-primary">
       {[Compass, Rocket, Tent, Map, Award, Flag].map((g, i) => (
         <Icon key={i} icon={g} size={28} />
       ))}

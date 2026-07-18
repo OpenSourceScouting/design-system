@@ -82,7 +82,7 @@ export function RegistrationCTA({
     <section
       className={cn(
         "relative overflow-hidden rounded-program",
-        "bg-program-primary text-program-on-primary",
+        "bg-primary text-primary-foreground",
         "px-6 sm:px-10 py-10 sm:py-14",
         className,
       )}
@@ -112,10 +112,10 @@ export function RegistrationCTA({
         )}
       >
         <div className="flex flex-col gap-3 max-w-xl">
-          <Heading level={2} size={2} className="text-program-on-primary">
+          <Heading level={2} size={2} className="text-primary-foreground">
             {resolvedHeadline}
           </Heading>
-          <p className="font-body text-base sm:text-lg leading-relaxed text-program-on-primary-soft">
+          <p className="font-body text-base sm:text-lg leading-relaxed text-os-on-primary-soft">
             {resolvedBody}
           </p>
         </div>

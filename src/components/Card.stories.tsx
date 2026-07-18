@@ -25,7 +25,7 @@ export const Outlined: Story = {
         <Heading level={3} size={4}>
           Pinewood Derby Weekend
         </Heading>
-        <p className="mt-2 font-body text-sm leading-relaxed text-program-on-surface/80">
+        <p className="mt-2 font-body text-sm leading-relaxed text-foreground/80">
           Build, race, and cheer on your custom car. Pack 42 hosts the annual race in the troop
           hall.
         </p>
@@ -48,7 +48,7 @@ export const WithHeaderAndFooter: Story = {
         </Heading>
       </CardHeader>
       <CardBody>
-        <p className="font-body text-sm leading-relaxed text-program-on-surface/80">
+        <p className="font-body text-sm leading-relaxed text-foreground/80">
           Plan your patrol's role in the upcoming service project. Bring your handbook.
         </p>
       </CardBody>
@@ -80,7 +80,7 @@ export const EyebrowKeylineAcrossPrograms: Story = {
               <Heading level={3} size={4}>
                 Lead Adventure of the Month
               </Heading>
-              <p className="mt-2 font-body text-sm leading-relaxed text-program-on-surface/80">
+              <p className="mt-2 font-body text-sm leading-relaxed text-foreground/80">
                 Notice the keyline weight under the kicker: {PROGRAM_META[p].label} sets{" "}
                 <code className="font-mono text-xs">--program-rule-weight</code> to its own value.
               </p>

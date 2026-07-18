@@ -166,7 +166,7 @@ export function EventDialog({ event, onClose, actions, className, navigate }: Ev
         // Native <dialog> with showModal() handles centering via the browser's
         // user-agent stylesheet (position: fixed; inset: 0; margin: auto).
         "p-0 max-w-2xl w-[calc(100vw-2rem)] bg-transparent",
-        "backdrop:bg-program-on-surface/55 backdrop:backdrop-blur-sm",
+        "backdrop:bg-foreground/55 backdrop:backdrop-blur-sm",
         className,
       )}
       aria-labelledby={event ? `event-dialog-title-${event.id}` : undefined}
@@ -174,8 +174,8 @@ export function EventDialog({ event, onClose, actions, className, navigate }: Ev
       {event && (
         <article
           className={cn(
-            "rounded-program bg-program-surface text-program-on-surface shadow-program",
-            "border border-program-border/60 overflow-hidden",
+            "rounded-program bg-background text-foreground shadow-program",
+            "border border-border/60 overflow-hidden",
             "flex flex-col max-h-[85vh]",
           )}
           onClick={(e) => e.stopPropagation()}
@@ -202,20 +202,15 @@ export function EventDialog({ event, onClose, actions, className, navigate }: Ev
  */
 export function EventDialogHeader({ event, onClose }: EventDialogHeaderProps) {
   return (
-    <header
-      className={cn(
-        "relative px-6 sm:px-8 pt-6 pb-5",
-        "bg-program-primary text-program-on-primary",
-      )}
-    >
+    <header className={cn("relative px-6 sm:px-8 pt-6 pb-5", "bg-primary text-primary-foreground")}>
       <button
         type="button"
         aria-label="Close"
         onClick={onClose}
         className={cn(
           "absolute top-3 right-3 h-9 w-9 grid place-items-center rounded-program",
-          "text-program-on-primary-soft hover:text-program-on-primary hover:bg-program-on-primary/10",
-          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-program-accent",
+          "text-os-on-primary-soft hover:text-primary-foreground hover:bg-primary-foreground/10",
+          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-os-accent",
         )}
       >
         <svg
@@ -243,11 +238,11 @@ export function EventDialogHeader({ event, onClose }: EventDialogHeaderProps) {
           level={2}
           size={3}
           id={`event-dialog-title-${event.id}`}
-          className="text-program-on-primary"
+          className="text-primary-foreground"
         >
           {event.title}
         </Heading>
-        <div className="font-body text-sm sm:text-base text-program-on-primary-soft leading-relaxed">
+        <div className="font-body text-sm sm:text-base text-os-on-primary-soft leading-relaxed">
           {formatRange(event.date, event.endDate)}
           <span aria-hidden> · </span>
           {formatTimeRange(event.date, event.endDate)}
@@ -287,19 +282,17 @@ export function EventDialogBody({ event }: EventDialogBodyProps) {
         <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
           {facts.map((f) => (
             <div key={f.label}>
-              <dt className="display text-[10px] uppercase tracking-[0.18em] text-program-on-surface-soft">
+              <dt className="display text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
                 {f.label}
               </dt>
-              <dd className="font-body text-sm sm:text-base mt-0.5 text-program-on-surface">
-                {f.value}
-              </dd>
+              <dd className="font-body text-sm sm:text-base mt-0.5 text-foreground">{f.value}</dd>
             </div>
           ))}
         </dl>
       )}
 
       {event.description && (
-        <div className="font-body text-base leading-relaxed text-program-on-surface/85">
+        <div className="font-body text-base leading-relaxed text-foreground/85">
           {typeof event.description === "string"
             ? event.description.split(/\n\s*\n/).map((p, i) => (
                 <p key={i} className="mb-3 last:mb-0">
@@ -334,8 +327,8 @@ export function EventDialogFooter({ actions, navigate }: EventDialogFooterProps)
   return (
     <footer
       className={cn(
-        "px-6 sm:px-8 py-4 border-t border-program-border/50",
-        "bg-program-surface-muted/40",
+        "px-6 sm:px-8 py-4 border-t border-border/50",
+        "bg-muted/40",
         "flex flex-wrap items-center justify-end gap-3",
       )}
     >

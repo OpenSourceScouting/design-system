@@ -93,12 +93,12 @@ export const CustomActions: Story = {
  * can drop them into a custom shell without the native `<dialog>` wrapper. This
  * story composes them inline in a plain rounded panel: use it when embedding
  * event detail in a side sheet, a route page, or a print layout rather than a
- * modal. The header renders on `bg-program-primary`, so it always previews
+ * modal. The header renders on `bg-primary`, so it always previews
  * against the active program color.
  */
 export const ComposedManually: Story = {
   render: () => (
-    <div className="max-w-lg overflow-hidden rounded-program border border-program-border/60 shadow-program">
+    <div className="max-w-lg overflow-hidden rounded-program border border-border/60 shadow-program">
       <EventDialogHeader event={SAMPLE} onClose={() => {}} />
       <EventDialogBody event={SAMPLE} />
       <EventDialogFooter

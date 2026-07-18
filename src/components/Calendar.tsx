@@ -152,7 +152,7 @@ export function Calendar({
   return (
     <section
       className={cn(
-        "rounded-program border border-program-border/60 bg-program-surface overflow-hidden",
+        "rounded-program border border-border/60 bg-background overflow-hidden",
         className,
       )}
       aria-label="Calendar"
@@ -208,7 +208,7 @@ function CalendarHeader({
   showToggle: boolean;
 }) {
   return (
-    <header className="flex flex-wrap items-center justify-between gap-3 px-4 sm:px-5 py-3 border-b border-program-border/50 bg-program-surface-muted/40">
+    <header className="flex flex-wrap items-center justify-between gap-3 px-4 sm:px-5 py-3 border-b border-border/50 bg-muted/40">
       <div className="flex items-center gap-2">
         {showNav && (
           <>
@@ -256,7 +256,7 @@ function ViewToggle({
     <div
       role="radiogroup"
       aria-labelledby={`${id}-label`}
-      className="inline-flex items-center rounded-program border border-program-border/60 p-0.5 bg-program-surface"
+      className="inline-flex items-center rounded-program border border-border/60 p-0.5 bg-background"
     >
       <span id={`${id}-label`} className="sr-only">
         Calendar view
@@ -271,10 +271,10 @@ function ViewToggle({
             onClick={() => onChange(opt.value)}
             className={cn(
               "display text-xs uppercase tracking-wider px-3 py-1.5 rounded-program transition-colors",
-              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-program-ring",
+              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
               active
-                ? "bg-program-primary text-program-on-primary"
-                : "bg-transparent text-program-on-surface-soft hover:text-program-on-surface",
+                ? "bg-primary text-primary-foreground"
+                : "bg-transparent text-muted-foreground hover:text-foreground",
             )}
           >
             {opt.label}
@@ -301,8 +301,8 @@ function IconButton({
       aria-label={label}
       className={cn(
         "h-9 w-9 grid place-items-center rounded-program",
-        "text-program-on-surface/80 hover:text-program-on-surface hover:bg-program-surface-muted",
-        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-program-ring",
+        "text-foreground/80 hover:text-foreground hover:bg-muted",
+        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
       )}
     >
       {children}
@@ -384,7 +384,7 @@ function MonthGrid({
               key={i}
               role="columnheader"
               aria-label={weekdayLong[i]}
-              className="display text-[10px] uppercase tracking-[0.18em] text-program-on-surface-soft text-center py-1.5"
+              className="display text-[10px] uppercase tracking-[0.18em] text-muted-foreground text-center py-1.5"
             >
               {d}
             </div>
@@ -413,9 +413,9 @@ function MonthGrid({
                     })}
                     className={cn(
                       "min-h-[88px] sm:min-h-[112px] rounded-program p-1.5 flex flex-col gap-1",
-                      "border border-program-border/40",
-                      inMonth ? "bg-program-surface" : "bg-program-surface-muted/30",
-                      onDayClick && "cursor-pointer hover:border-program-primary/60",
+                      "border border-border/40",
+                      inMonth ? "bg-background" : "bg-muted/30",
+                      onDayClick && "cursor-pointer hover:border-primary/60",
                     )}
                     onClick={onDayClick ? () => onDayClick(day) : undefined}
                   >
@@ -423,9 +423,9 @@ function MonthGrid({
                       <span
                         className={cn(
                           "display text-xs leading-none h-6 min-w-6 px-1.5 rounded-program grid place-items-center",
-                          !inMonth && "text-program-on-surface-faint",
-                          inMonth && !isToday && "text-program-on-surface/80",
-                          isToday && "bg-program-primary text-program-on-primary",
+                          !inMonth && "text-os-on-surface-faint",
+                          inMonth && !isToday && "text-foreground/80",
+                          isToday && "bg-primary text-primary-foreground",
                         )}
                       >
                         {day.getDate()}
@@ -445,7 +445,7 @@ function MonthGrid({
                       ))}
                       {overflow > 0 && (
                         <li>
-                          <span className="block text-[10px] text-program-on-surface-soft px-1.5">
+                          <span className="block text-[10px] text-muted-foreground px-1.5">
                             +{overflow} more
                           </span>
                         </li>
@@ -480,20 +480,17 @@ function EventChip({
       {...(onClick ? { onClick: () => onClick(event), type: "button" as const } : {})}
       className={cn(
         "group/chip flex items-baseline gap-1.5 w-full text-left truncate px-1 py-0.5 rounded-program",
-        "text-[11px] leading-tight text-program-on-surface",
+        "text-[11px] leading-tight text-foreground",
         onClick &&
-          "hover:bg-program-surface-muted/50 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-program-ring",
-        isMultiDay && !isStart && "italic text-program-on-surface-soft",
+          "hover:bg-muted/50 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring",
+        isMultiDay && !isStart && "italic text-muted-foreground",
       )}
       title={event.title}
     >
       {!(isMultiDay && !isStart) && (
-        <span
-          aria-hidden
-          className="mt-[3px] h-1.5 w-1.5 shrink-0 rounded-program bg-program-decor"
-        />
+        <span aria-hidden className="mt-[3px] h-1.5 w-1.5 shrink-0 rounded-program bg-os-decor" />
       )}
-      <span className="display text-[10px] text-program-on-surface-soft shrink-0">
+      <span className="display text-[10px] text-muted-foreground shrink-0">
         {isStart ? formatTime(event.date) : "→"}
       </span>
       <span className="truncate">{event.title}</span>
@@ -524,7 +521,7 @@ function AgendaList({
 
   if (visible.length === 0) {
     return (
-      <div className="px-5 py-12 text-center text-program-on-surface-soft font-body">
+      <div className="px-5 py-12 text-center text-muted-foreground font-body">
         Nothing on the calendar in the next {days} days.
       </div>
     );
@@ -540,7 +537,7 @@ function AgendaList({
   }
 
   return (
-    <ol className="divide-y divide-program-border/40">
+    <ol className="divide-y divide-border/40">
       {groups.map((g, gi) => (
         <li
           key={gi}
@@ -564,11 +561,11 @@ function DayStamp({ day }: { day: Date }) {
   const today = isSameDay(day, new Date());
   return (
     <div className="flex flex-col items-start gap-0.5">
-      <span className="display text-[10px] uppercase tracking-[0.18em] text-program-on-surface-soft">
+      <span className="display text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
         {day.toLocaleDateString(undefined, { weekday: "short" })}
       </span>
-      <span className="display text-3xl leading-none text-program-on-surface">{day.getDate()}</span>
-      <span className="display text-xs text-program-on-surface-soft">
+      <span className="display text-3xl leading-none text-foreground">{day.getDate()}</span>
+      <span className="display text-xs text-muted-foreground">
         {day.toLocaleDateString(undefined, { month: "short" })}
       </span>
       {today && (
@@ -592,17 +589,17 @@ function AgendaItem({
     <Wrapper
       {...(onClick ? { onClick: () => onClick(event), type: "button" as const } : {})}
       className={cn(
-        "group text-left rounded-program bg-program-surface px-4 py-3 transition",
-        "ring-1 ring-inset ring-program-border/50",
+        "group text-left rounded-program bg-background px-4 py-3 transition",
+        "ring-1 ring-inset ring-border/50",
         onClick &&
-          "hover:bg-program-surface-muted/40 hover:ring-program-border hover:shadow-program focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-program-ring",
-        event.featured && "shadow-program ring-program-border/60 px-4 py-3.5",
+          "hover:bg-muted/40 hover:ring-border hover:shadow-program focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+        event.featured && "shadow-program ring-border/60 px-4 py-3.5",
       )}
     >
       {event.featured && <DecorativeDivider className="h-2 mb-2 -mt-1" />}
       <div className="flex items-baseline gap-2 flex-wrap">
         {event.category && <Badge variant="subtle">{event.category}</Badge>}
-        <span className="display text-xs text-program-on-surface-soft">
+        <span className="display text-xs text-muted-foreground">
           {formatDateRange(event.date, event.endDate)}
           <span aria-hidden> · </span>
           {formatTime(event.date)}
@@ -610,19 +607,17 @@ function AgendaItem({
       </div>
       <div
         className={cn(
-          "display mt-1 text-program-on-surface",
+          "display mt-1 text-foreground",
           event.featured ? "text-lg sm:text-2xl" : "text-base sm:text-lg",
         )}
       >
         {event.title}
       </div>
       {event.location && (
-        <div className="font-body text-sm text-program-on-surface-soft mt-0.5">
-          {event.location}
-        </div>
+        <div className="font-body text-sm text-muted-foreground mt-0.5">{event.location}</div>
       )}
       {event.description && (
-        <p className="font-body text-sm text-program-on-surface/80 mt-1.5 leading-relaxed">
+        <p className="font-body text-sm text-foreground/80 mt-1.5 leading-relaxed">
           {event.description}
         </p>
       )}
