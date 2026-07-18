@@ -1,7 +1,8 @@
-import { useEffect, useRef, type MouseEvent, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { Button } from "./Button";
 import { Badge } from "./Badge";
 import { Heading } from "./Heading";
+import { Dialog, DialogContent, DialogTitle } from "./Dialog";
 import type { CalendarEvent } from "./Calendar";
 // ProgramMark not imported here today, but the close-button area sits on the
 // dark primary surface. If we add the program mark to the header later it
@@ -27,9 +28,8 @@ export type EventDialogProps = {
    */
   actions?: EventDialogAction[];
   /**
-   * Additional class names merged onto the native `<dialog>` element.
-   * Useful for overriding max-width or adding custom backdrop styles from
-   * a consumer application without forking this component.
+   * Additional class names merged onto the dialog content container. Useful for
+   * overriding max-width or padding from a consumer application without forking.
    */
   className?: string;
   /**
@@ -106,37 +106,6 @@ function formatTimeRange(start: Date, end?: Date): string {
 }
 
 export function EventDialog({ event, onClose, actions, className, navigate }: EventDialogProps) {
-  const ref = useRef<HTMLDialogElement | null>(null);
-
-  // Native <dialog> open/close: call showModal/close to drive native focus trap,
-  // ESC handling, inert background, and ::backdrop styling.
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (event && !el.open) el.showModal();
-    if (!event && el.open) el.close();
-  }, [event]);
-
-  // Native dialog dispatches "close" on ESC. Sync that back to React state.
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const handleClose = () => onClose();
-    el.addEventListener("close", handleClose);
-    return () => el.removeEventListener("close", handleClose);
-  }, [onClose]);
-
-  const handleBackdropClick = (e: MouseEvent<HTMLDialogElement>) => {
-    // The dialog element fills the viewport; clicks on the element itself
-    // (not its inner card) are backdrop clicks.
-    if (e.target === ref.current) onClose();
-  };
-
-  if (!event && typeof window !== "undefined") {
-    // Render the dialog node even when closed so React-keyed state survives.
-    return <dialog ref={ref} className="hidden" />;
-  }
-
   // Default navigation falls back to a hard redirect when no SPA hook is provided.
   const nav =
     navigate ??
@@ -158,36 +127,42 @@ export function EventDialog({ event, onClose, actions, className, navigate }: Ev
         ]
       : []);
 
+  // Rebuilt on the shadcn Dialog recipe (Radix), retiring the native <dialog>
+  // (ADR 0002). Radix supplies the focus trap, ESC handling, inert background,
+  // overlay, and the delta-9 data-program re-stamp (via DialogContent). Open
+  // state is driven by `event` (non-null = open); closing routes through onClose.
   return (
-    <dialog
-      ref={ref}
-      onClick={handleBackdropClick}
-      className={cn(
-        // Native <dialog> with showModal() handles centering via the browser's
-        // user-agent stylesheet (position: fixed; inset: 0; margin: auto).
-        "p-0 max-w-2xl w-[calc(100vw-2rem)] bg-transparent",
-        "backdrop:bg-foreground/55 backdrop:backdrop-blur-sm",
-        className,
-      )}
-      aria-labelledby={event ? `event-dialog-title-${event.id}` : undefined}
+    <Dialog
+      open={Boolean(event)}
+      onOpenChange={(open) => {
+        if (!open) onClose();
+      }}
     >
       {event && (
-        <article
+        <DialogContent
+          showClose={false}
+          // The visible branded header carries the title; a visually-hidden
+          // DialogTitle gives Radix the required accessible name. No visible
+          // description, so suppress Radix's description warning.
+          aria-describedby={undefined}
           className={cn(
-            "rounded-program bg-background text-foreground shadow-program",
-            "border border-border/60 overflow-hidden",
-            "flex flex-col max-h-[85vh]",
+            "flex max-h-[85vh] w-[calc(100vw-2rem)] max-w-2xl flex-col gap-0 overflow-hidden p-0",
+            className,
           )}
-          onClick={(e) => e.stopPropagation()}
         >
+          {/* asChild -> a span, not a second <h2>: gives Radix the dialog's
+              accessible name without duplicating the visible header heading. */}
+          <DialogTitle asChild>
+            <span className="sr-only">{event.title}</span>
+          </DialogTitle>
           <EventDialogHeader event={event} onClose={onClose} />
           <EventDialogBody event={event} />
           {resolvedActions.length > 0 && (
             <EventDialogFooter actions={resolvedActions} navigate={navigate} />
           )}
-        </article>
+        </DialogContent>
       )}
-    </dialog>
+    </Dialog>
   );
 }
 
