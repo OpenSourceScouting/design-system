@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 import { Button } from "../Button";
 import { renderThemed } from "./testUtils";
 
@@ -12,11 +11,6 @@ describe("Button", () => {
   it("renders its label", () => {
     renderThemed(<Button>Sign up</Button>);
     expect(screen.getByRole("button", { name: "Sign up" })).toBeInTheDocument();
-  });
-
-  it("has no axe violations", async () => {
-    const { container } = renderThemed(<Button>Sign up</Button>);
-    expect(await axe(container)).toHaveNoViolations();
   });
 
   it("warns in dev when variant=accent and size=sm (untyped call site)", () => {

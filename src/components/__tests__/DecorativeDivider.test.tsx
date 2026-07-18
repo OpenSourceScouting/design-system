@@ -1,5 +1,4 @@
 import { describe, it, expect } from "vitest";
-import { axe } from "jest-axe";
 import { DecorativeDivider, type MotifName } from "../DecorativeDivider";
 import { renderThemed } from "./testUtils";
 
@@ -18,16 +17,5 @@ describe("DecorativeDivider", () => {
       const { container } = renderThemed(<DecorativeDivider motif={motif} />);
       expect(container.querySelector("svg")).toBeInTheDocument();
     }
-  });
-
-  it("has no axe violations for every motif", async () => {
-    const { container } = renderThemed(
-      <div>
-        {MOTIFS.map((m) => (
-          <DecorativeDivider key={m} motif={m} />
-        ))}
-      </div>,
-    );
-    expect(await axe(container)).toHaveNoViolations();
   });
 });

@@ -42,3 +42,6 @@ public/marks/*.eps
 public/marks/*.ai
 # README.md inside public/marks/ is allowed and tracked.
 !public/marks/README.md
+
+# Ignore graphify for now. Testing it.
+graphify-out/

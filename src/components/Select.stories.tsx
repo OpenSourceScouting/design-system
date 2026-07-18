@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Select, SelectItem } from "./Select";
 
 const meta: Meta<typeof Select> = {

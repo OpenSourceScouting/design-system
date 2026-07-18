@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Compass, Flag, Sailboat } from "lucide-react";
 import { ProgramIcon } from "./ProgramIcon";
 import { PROGRAMS, ScoutThemeProvider } from "../lib/theme/ScoutThemeProvider";

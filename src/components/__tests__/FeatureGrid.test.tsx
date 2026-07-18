@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import { screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 import { FeatureGrid, type Feature } from "../FeatureGrid";
 import { renderThemed } from "./testUtils";
 
@@ -17,10 +16,5 @@ describe("FeatureGrid", () => {
       expect(screen.getByText(f.title as string)).toBeInTheDocument();
       expect(screen.getByText(f.description as string)).toBeInTheDocument();
     }
-  });
-
-  it("has no axe violations", async () => {
-    const { container } = renderThemed(<FeatureGrid features={FEATURES} columns={3} />);
-    expect(await axe(container)).toHaveNoViolations();
   });
 });

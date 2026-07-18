@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import { screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 import { Heading } from "../Heading";
 import { renderThemed } from "./testUtils";
 
@@ -18,10 +17,5 @@ describe("Heading", () => {
       </Heading>,
     );
     expect(screen.getByRole("heading", { level: 2 })).toBeInTheDocument();
-  });
-
-  it("has no axe violations", async () => {
-    const { container } = renderThemed(<Heading level={2}>Section title</Heading>);
-    expect(await axe(container)).toHaveNoViolations();
   });
 });

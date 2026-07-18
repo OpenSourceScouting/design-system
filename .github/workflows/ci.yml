@@ -1,8 +1,8 @@
 name: CI
 
-# Guards the design system against regressions: type errors, contrast/axe
-# failures, broken library build, or a broken Storybook build. Runs on every
-# PR and on pushes to main.
+# Guards the design system against regressions: type errors, contrast failures,
+# a11y violations (real-browser axe via @storybook/addon-vitest), broken library
+# build, or a broken Storybook build. Runs on every PR and on pushes to main.
 on:
   pull_request:
   push:
@@ -30,6 +30,12 @@ jobs:
 
       - name: Typecheck
         run: npm run typecheck
+
+      # The Vitest "storybook" project runs stories as tests in real Chromium
+      # (@storybook/addon-vitest), so the browser binary + system deps must be
+      # present before `npm run test`.
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
 
       - name: Test
         run: npm run test

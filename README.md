@@ -509,20 +509,20 @@ here and noted in the `CHANGELOG.md`.
 
 ## Scripts
 
-| Command                   | Description                                                                   |
-| ------------------------- | ----------------------------------------------------------------------------- |
-| `npm run dev`             | Vite dev server, runs the App.tsx demo at port 5173.                          |
-| `npm run storybook`       | Storybook 8 component explorer at port 6006.                                  |
-| `npm run build`           | `tsc -b && vite build && npm run build:css` (library dist + CSS artifacts).   |
-| `npm run build:demo`      | Build the SPA showcase (copies public assets; for deployment).                |
-| `npm run build:css`       | Re-emit dist/styles.css and dist/tokens.css only.                             |
-| `npm run typecheck`       | `tsc --noEmit` across three configs (project, node, and test tsconfig files). |
-| `npm run test`            | Vitest: contrast-ratio assertions, axe smoke tests, component unit tests.     |
-| `npm run build-storybook` | Static Storybook build for deployment.                                        |
-| `npm run lint`            | Prettier formatting check (run in CI).                                        |
-| `npm run format`          | Prettier auto-fix across the repo.                                            |
-| `npm run clean`           | Remove build output (dist, storybook-static, caches, tsbuildinfo).            |
-| `npm run maintenance:git` | Prune unreachable objects to shrink `.git` (safe; reachable history intact).  |
+| Command                   | Description                                                                                                                                                    |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`             | Vite dev server, runs the App.tsx demo at port 5173.                                                                                                           |
+| `npm run storybook`       | Storybook 10 component explorer at port 6006.                                                                                                                  |
+| `npm run build`           | `tsc -b && vite build && npm run build:css` (library dist + CSS artifacts).                                                                                    |
+| `npm run build:demo`      | Build the SPA showcase (copies public assets; for deployment).                                                                                                 |
+| `npm run build:css`       | Re-emit dist/styles.css and dist/tokens.css only.                                                                                                              |
+| `npm run typecheck`       | `tsc --noEmit` across three configs (project, node, and test tsconfig files).                                                                                  |
+| `npm run test`            | Vitest, two projects: jsdom unit tests (contrast, token parity, component smoke, jest-axe) and a real-Chromium Storybook project running every story with axe. |
+| `npm run build-storybook` | Static Storybook build for deployment.                                                                                                                         |
+| `npm run lint`            | Prettier formatting check (run in CI).                                                                                                                         |
+| `npm run format`          | Prettier auto-fix across the repo.                                                                                                                             |
+| `npm run clean`           | Remove build output (dist, storybook-static, caches, tsbuildinfo).                                                                                             |
+| `npm run maintenance:git` | Prune unreachable objects to shrink `.git` (safe; reachable history intact).                                                                                   |
 
 ## License & trademark notice
 

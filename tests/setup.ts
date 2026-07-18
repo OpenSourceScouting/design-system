@@ -1,10 +1,6 @@
 import "@testing-library/jest-dom/vitest";
-import { afterEach, expect } from "vitest";
+import { afterEach } from "vitest";
 import { cleanup } from "@testing-library/react";
-import { toHaveNoViolations } from "jest-axe";
-
-// jest-axe ships a custom matcher; register it on Vitest's expect.
-expect.extend(toHaveNoViolations);
 
 // jsdom does not implement matchMedia. Calendar uses it to fall back to the
 // agenda view on narrow viewports (task 1.5). Provide a minimal stub that

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Compass, Rocket, Tent, Map, Award, Flag } from "lucide-react";
 import { Icon } from "./Icon";
 

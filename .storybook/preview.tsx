@@ -1,4 +1,5 @@
-import type { Preview, Decorator } from "@storybook/react";
+import type { Preview, Decorator } from "@storybook/react-vite";
+import { INITIAL_VIEWPORTS } from "storybook/viewport";
 import { ScoutThemeProvider, type Program } from "../src/lib/theme/ScoutThemeProvider";
 // Self-hosted fonts (no runtime CDN). Loading them here means Storybook and the
 // Playwright test-runner render with locally bundled faces, which is required
@@ -37,19 +38,44 @@ const withScoutTheme: Decorator = (Story, context) => {
 const preview: Preview = {
   parameters: {
     layout: "padded",
-    backgrounds: { disable: true },
+    backgrounds: { disabled: true },
     controls: { expanded: true },
+
+    // Register the built-in viewport set so stories can select named viewports
+    // (e.g. Calendar's `mobile1`) via the SB9 globals API.
+    viewport: { options: INITIAL_VIEWPORTS },
+
     options: {
       storySort: {
         order: ["Introduction", "Foundations", "Primitives", "Marketing", "Programs"],
       },
     },
+
+    a11y: {
+      // Fail the addon-vitest browser run on a11y violations (roles, names,
+      // labels, ARIA, focus). This replaces the retired test-runner axe pass
+      // (ADR 0005 item 2).
+      test: "error",
+      // color-contrast is deferred to tests/contrast.test.ts, which checks it
+      // exhaustively per program (base pairs + /80 and /85 composites). Leaving
+      // it on here duplicates that work and produces noisier, less precise
+      // failures. Do not re-enable (ADR 0005).
+      config: {
+        rules: [{ id: "color-contrast", enabled: false }],
+      },
+    },
   },
+
+  // SB9: global defaults live in initialGlobals, not globalTypes.defaultValue.
+  initialGlobals: {
+    program: "cub",
+    forcePlaceholderMarks: "off",
+  },
+
   globalTypes: {
     program: {
       name: "Program",
       description: "Active Scouting America program theme",
-      defaultValue: "cub",
       toolbar: {
         icon: "paintbrush",
         items: [
@@ -64,7 +90,6 @@ const preview: Preview = {
     forcePlaceholderMarks: {
       name: "Marks",
       description: "Force placeholder marks (hides real BSA assets)",
-      defaultValue: "off",
       toolbar: {
         icon: "photo",
         items: [
@@ -75,7 +100,9 @@ const preview: Preview = {
       },
     },
   },
+
   decorators: [withScoutTheme],
+  tags: ["autodocs"],
 };
 
 export default preview;

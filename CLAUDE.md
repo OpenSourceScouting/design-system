@@ -12,9 +12,9 @@ from stock shadcn: see the delta register in `docs/decisions/0002-adopt-shadcn-p
 
 ```bash
 npm run dev           # Vite showcase at http://localhost:5173 (demo/App.tsx)
-npm run storybook     # Storybook 8 at http://localhost:6006 (component lab)
+npm run storybook     # Storybook 10 at http://localhost:6006 (component lab)
 npm run typecheck     # tsc --noEmit, three configs: project + node + test
-npm run test          # Vitest: contrast ratios, token parity, axe smoke tests, component unit tests
+npm run test          # Vitest, two projects: jsdom "unit" (contrast, parity, unit + jest-axe) + browser "storybook" (stories-as-tests + axe in Chromium)
 npm run build         # tsc -b && vite build && npm run build:css (use to verify final correctness)
 npm run build-storybook
 ```
@@ -151,30 +151,38 @@ research/                      ← brand guidelines PDF + extracted text
 
 ## Testing
 
-- `npm test` is the fast suite (Vitest + jsdom): a component smoke test plus a
-  `jest-axe` scan per component, `tests/contrast.test.ts` (WCAG ratios per
-  program, including the `/80` and `/85` composites over each surface), and
-  `tests/token-parity.test.ts` (per-program token-set parity). Every new
-  component needs a jsdom axe smoke test.
+- `npm test` runs Vitest with two projects (see `vitest.config.ts`):
+  - **`unit`** (jsdom): `tests/contrast.test.ts` (WCAG ratios per program,
+    including the `/80` and `/85` composites over each surface),
+    `tests/token-parity.test.ts` (per-program token-set parity), and per-component
+    smoke + behavior tests (non-a11y logic). This is the sub-3s inner loop; run
+    just it with `npx vitest --project unit`. It does NOT run axe (retired: the
+    browser project is the single a11y source, see ADR 0005).
+  - **`storybook`** (browser): every story runs as a test in real Chromium via
+    `@storybook/addon-vitest`, with an axe pass per story. Needs Playwright
+    Chromium (`npx playwright install chromium`). Run just it with
+    `npx vitest --project=storybook`.
+  - Every new component needs a **story** (that is the required a11y coverage);
+    a jsdom `unit` test is for non-a11y logic and is optional for a11y. Use story
+    `play` functions to assert focus/keyboard behavior on interactive widgets.
 - Radix portalled widgets (Popover, Tooltip, DropdownMenu, Select) need the jsdom
   stubs in `tests/setup.ts` (ResizeObserver, scrollIntoView, pointer-capture) to
-  render in tests: open with `defaultOpen`, scan `document.body`, and disable the
-  axe `region` rule for the isolated-widget scan (see `widgets.test.tsx`).
-- Accessibility testing strategy: ADR 0004. Contrast is owned by
-  `contrast.test.ts`; the `@storybook/test-runner` runs a real-browser axe pass
-  (roles/names/ARIA/focus) with `color-contrast` DISABLED there on purpose. Do
-  not re-enable color-contrast in the test-runner; it is deferred to the contrast
-  test.
-- Visual regression runs via `@storybook/test-runner` + jest-image-snapshot in
-  the pinned Playwright container. **Baselines cannot be regenerated locally**:
-  the in-container Storybook build OOMs, and building Storybook on the host then
-  screenshotting in the container produces BLANK images. Regenerate via the CI
-  "Visual regression" workflow (`workflow_dispatch`, `update_baselines=true`),
-  per `.storybook/VISUAL_REGRESSION.md`.
-- Gotcha: running the visual/baseline container against the repo does `npm ci`
-  inside the container against the mounted `node_modules`, replacing it with
-  Linux binaries. Run `npm install` on the host afterward to restore darwin
-  binaries before local builds.
+  render in the jsdom project: open with `defaultOpen`, scan `document.body`, and
+  disable the axe `region` rule for the isolated-widget scan (see
+  `widgets.test.tsx`).
+- Accessibility testing strategy: ADR 0005. Two contrast layers: token soundness
+  in `contrast.test.ts` (all five palettes), and rendered-contrast application in
+  `src/stories/ContrastKitchenSink.stories.tsx` (color-contrast re-enabled there
+  across programs). Semantics run via `@storybook/addon-vitest`
+  (`parameters.a11y.test = "error"` in `.storybook/preview.tsx`, so violations
+  fail CI) with `color-contrast` DISABLED there on purpose. Do not re-enable
+  `color-contrast` globally; it is deferred to the token test and the kitchen-sink
+  story. Per-story a11y opt-out is `parameters: { a11y: { test: "off" } }`.
+- Visual regression is RETIRED and parked (the `@storybook/test-runner` +
+  jest-image-snapshot pipeline was removed in the Storybook 10 upgrade; baselines
+  were deleted and purged from history). For now, eyeball changes in
+  `npm run storybook` across the program toolbar. See
+  `.storybook/VISUAL_REGRESSION.md` to rebuild it later.
 
 ## Things to avoid
 
