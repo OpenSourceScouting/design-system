@@ -41,6 +41,21 @@ function contrastRatio(a: RGB, b: RGB): number {
 }
 
 /**
+ * Flatten a semi-transparent foreground over an opaque background (standard
+ * sRGB alpha compositing). Components apply opacity-tinted TEXT via utilities
+ * like `text-program-on-surface/85`; the base-token contrast tests above do not
+ * catch whether the COMPOSITE still clears AA, so this models what the user
+ * actually sees. Conventional/conservative approximation of the rendered pixel.
+ */
+function composite(fg: RGB, bg: RGB, alpha: number): RGB {
+  return [
+    Math.round(alpha * fg[0] + (1 - alpha) * bg[0]),
+    Math.round(alpha * fg[1] + (1 - alpha) * bg[1]),
+    Math.round(alpha * fg[2] + (1 - alpha) * bg[2]),
+  ];
+}
+
+/**
  * Extract a single palette (map of token name -> RGB triplet) from a CSS
  * selector block. `selector` is matched literally against the text before the
  * `{`. Only `--program-*` declarations holding three space-separated integers
@@ -119,6 +134,32 @@ describe("tokens.css contrast ratios", () => {
         // so we assert the large-text AA floor (WCAG SC 1.4.3, 3:1) here rather
         // than a normal-text 4.5:1 the palette is not designed to meet.
         expect(ratio("--program-on-accent", "--program-accent")).toBeGreaterThanOrEqual(3.0);
+      });
+
+      // --- Opacity-tinted TEXT composites (what components actually render) --
+      // CLAUDE.md permits /80 and /85 text tints "for hierarchy"; verify the
+      // flattened composite still clears AA on this program's surface, since the
+      // base-token tests only cover fully opaque pairs.
+      describe("alpha-composited text over surface", () => {
+        const over = (fg: string, bg: string, alpha: number) => {
+          const f = p[fg];
+          const b = p[bg];
+          expect(f, `${fg} missing in ${name}`).toBeDefined();
+          expect(b, `${bg} missing in ${name}`).toBeDefined();
+          return contrastRatio(composite(f, b, alpha), b);
+        };
+
+        it("on-surface @ 85% over surface >= 4.5 (EventDialog body text)", () => {
+          expect(over("--program-on-surface", "--program-surface", 0.85)).toBeGreaterThanOrEqual(
+            4.5,
+          );
+        });
+
+        it("on-surface @ 80% over surface >= 4.5 (muted body text)", () => {
+          expect(over("--program-on-surface", "--program-surface", 0.8)).toBeGreaterThanOrEqual(
+            4.5,
+          );
+        });
       });
 
       // --- shadcn / --os-* vocabulary (Phase 1 re-platform) -----------------

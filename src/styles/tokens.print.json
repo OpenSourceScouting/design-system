@@ -11,7 +11,7 @@
       "rgb": { "r": 0, "g": 63, "b": 135 },
       "pantone": "PMS 294",
       "cmyk": { "c": 100, "m": 58, "y": 0, "k": 21 },
-      "source": "p.9, p.14 — mark reproduction and primary palette swatch"
+      "source": "p.9, p.14: mark reproduction and primary palette swatch"
     },
     {
       "name": "sa-red",
@@ -22,7 +22,7 @@
       "rgb": { "r": 206, "g": 17, "b": 38 },
       "pantone": "PMS 186",
       "cmyk": { "c": 0, "m": 100, "y": 81, "k": 4 },
-      "source": "p.9, p.14 — mark reproduction and primary palette swatch"
+      "source": "p.9, p.14: mark reproduction and primary palette swatch"
     },
     {
       "name": "sa-dark-gray",
@@ -121,7 +121,7 @@
       "rgb": { "r": 0, "g": 63, "b": 135 },
       "pantone": "PMS 294",
       "cmyk": { "c": 100, "m": 48, "y": 0, "k": 44 },
-      "source": "p.22 — Cub Scouts mark reproduction. Note: the K value (44) differs from the parent SA Blue mark spec (K=21) on the same Pantone. Use K=44 for Cub Scouts materials.",
+      "source": "p.22: Cub Scouts mark reproduction. Note: the K value (44) differs from the parent SA Blue mark spec (K=21) on the same Pantone. Use K=44 for Cub Scouts materials.",
       "_note": "Same Pantone as SA Blue but a noticeably different CMYK formula. Both values are verbatim from the PDF; the 2024 guidelines list them separately."
     },
     {
@@ -133,7 +133,7 @@
       "rgb": { "r": 253, "g": 193, "b": 22 },
       "pantone": "PMS 116",
       "cmyk": { "c": 0, "m": 10, "y": 100, "k": 0 },
-      "source": "p.22 — Cub Scouts mark reproduction"
+      "source": "p.22: Cub Scouts mark reproduction"
     },
     {
       "name": "scoutsbsa-olive",
@@ -166,7 +166,7 @@
       "rgb": { "r": 206, "g": 17, "b": 38 },
       "pantone": "PMS 186",
       "cmyk": { "c": 0, "m": 100, "y": 81, "k": 4 },
-      "source": "p.25 — Scouts BSA mark reproduction (same spec as SA Red)",
+      "source": "p.25: Scouts BSA mark reproduction (same spec as SA Red)",
       "_note": "This is the print accent for Scouts BSA marks. The design system uses SA Blue (#003F87) as the digital accent for Scouts BSA to reduce aggressive red in UI; the red is preserved here for print mark fidelity."
     },
     {
@@ -178,7 +178,7 @@
       "rgb": { "r": 153, "g": 102, "b": 51 },
       "pantone": "PMS 463",
       "cmyk": { "c": 50, "m": 80, "y": 100, "k": 30 },
-      "source": "p.25 — Scouts BSA mark reproduction",
+      "source": "p.25: Scouts BSA mark reproduction",
       "_note": "Appears only in the BSA emblem mark. Not used as a UI token; included here for print-production completeness."
     },
     {
@@ -190,7 +190,7 @@
       "rgb": { "r": 0, "g": 107, "b": 63 },
       "pantone": "PMS 349",
       "cmyk": { "c": 100, "m": 0, "y": 90, "k": 40 },
-      "source": "p.28 — Venturing mark reproduction"
+      "source": "p.28: Venturing mark reproduction"
     },
     {
       "name": "venturing-yellow",
@@ -201,7 +201,7 @@
       "rgb": { "r": 252, "g": 209, "b": 22 },
       "pantone": "PMS 116",
       "cmyk": { "c": 0, "m": 10, "y": 100, "k": 0 },
-      "source": "p.28 — Venturing mark reproduction"
+      "source": "p.28: Venturing mark reproduction"
     },
     {
       "name": "seascouts-dark-blue",
@@ -212,7 +212,7 @@
       "rgb": { "r": 0, "g": 51, "b": 102 },
       "pantone": null,
       "cmyk": { "c": 100, "m": 72, "y": 27, "k": 33 },
-      "source": "p.31 — Sea Scouts mark reproduction (dark blue component)",
+      "source": "p.31: Sea Scouts mark reproduction (dark blue component)",
       "_note": "No Pantone is listed for Sea Scouts Dark Blue anywhere in the 2024 guidelines. The CMYK is from the mark reproduction table on p.31 where it appears as the 'Dark Blue' field."
     },
     {
@@ -235,7 +235,7 @@
       "rgb": { "r": 154, "g": 179, "b": 213 },
       "pantone": null,
       "cmyk": { "c": 34, "m": 17, "y": 0, "k": 7 },
-      "source": "p.31 — Sea Scouts mark reproduction (light blue component)",
+      "source": "p.31: Sea Scouts mark reproduction (light blue component)",
       "_note": "No Pantone listed. CMYK taken from the mark reproduction table; treat as a starting point and verify with print vendor."
     }
   ],

@@ -152,8 +152,11 @@ export function ScoutThemeProvider({
         data-program={program}
         className={className}
         style={{
-          backgroundColor: "rgb(var(--program-surface))",
-          color: "rgb(var(--program-on-surface))",
+          // shadcn vocabulary (Phase 1): value-identical to the legacy
+          // --program-surface/on-surface (proven by token-mapping.test.ts) but
+          // survives the Phase 5 removal of the legacy tokens.
+          backgroundColor: "rgb(var(--background))",
+          color: "rgb(var(--foreground))",
         }}
       >
         {children}

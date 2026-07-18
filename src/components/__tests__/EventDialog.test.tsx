@@ -74,32 +74,32 @@ describe("EventDialogHeader date range formatting", () => {
     expect(screen.getByText(/Sunday, July 19, 2026/)).toBeInTheDocument();
   });
 
-  it("same-month range (Jul 19–21 2026): both sides carry month, year only at end", () => {
+  it("same-month range (Jul 19-21 2026): both sides carry month, year only at end", () => {
     const event = makeEvent({
       date: new Date(2026, 6, 19, 9, 0),
       endDate: new Date(2026, 6, 21, 15, 0),
     });
     renderThemed(<EventDialogHeader event={event} onClose={() => {}} />);
-    expect(screen.getByText(/Sunday, July 19 – Tuesday, July 21, 2026/)).toBeInTheDocument();
+    expect(screen.getByText(/Sunday, July 19 - Tuesday, July 21, 2026/)).toBeInTheDocument();
   });
 
-  it("cross-month range (Jul 28 – Aug 2 2026): both sides carry their own month and year", () => {
+  it("cross-month range (Jul 28 - Aug 2 2026): both sides carry their own month and year", () => {
     const event = makeEvent({
       date: new Date(2026, 6, 28, 9, 0),
       endDate: new Date(2026, 7, 2, 15, 0),
     });
     renderThemed(<EventDialogHeader event={event} onClose={() => {}} />);
-    expect(screen.getByText(/Tuesday, July 28, 2026 – Sunday, August 2, 2026/)).toBeInTheDocument();
+    expect(screen.getByText(/Tuesday, July 28, 2026 - Sunday, August 2, 2026/)).toBeInTheDocument();
   });
 
-  it("cross-year range (Dec 30 2026 – Jan 2 2027): both sides carry their own month and year", () => {
+  it("cross-year range (Dec 30 2026 - Jan 2 2027): both sides carry their own month and year", () => {
     const event = makeEvent({
       date: new Date(2026, 11, 30, 9, 0),
       endDate: new Date(2027, 0, 2, 15, 0),
     });
     renderThemed(<EventDialogHeader event={event} onClose={() => {}} />);
     expect(
-      screen.getByText(/Wednesday, December 30, 2026 – Saturday, January 2, 2027/),
+      screen.getByText(/Wednesday, December 30, 2026 - Saturday, January 2, 2027/),
     ).toBeInTheDocument();
   });
 });

@@ -89,9 +89,9 @@ function formatRange(start: Date, end?: Date): string {
       day: "numeric",
       year: "numeric",
     });
-    return `${startFmt} – ${endFmt}`;
+    return `${startFmt} - ${endFmt}`;
   }
-  return `${start.toLocaleDateString("en-US", fullOpts)} – ${end.toLocaleDateString("en-US", fullOpts)}`;
+  return `${start.toLocaleDateString("en-US", fullOpts)} - ${end.toLocaleDateString("en-US", fullOpts)}`;
 }
 
 function formatTime(d: Date): string {
@@ -100,7 +100,7 @@ function formatTime(d: Date): string {
 
 function formatTimeRange(start: Date, end?: Date): string {
   if (!end || isSameDay(start, end)) {
-    return end ? `${formatTime(start)} – ${formatTime(end)}` : formatTime(start);
+    return end ? `${formatTime(start)} - ${formatTime(end)}` : formatTime(start);
   }
   return `Starts ${formatTime(start)}`;
 }
@@ -299,7 +299,7 @@ export function EventDialogBody({ event }: EventDialogBodyProps) {
       )}
 
       {event.description && (
-        <div className="font-body text-base leading-relaxed text-program-on-surface/85 prose-program">
+        <div className="font-body text-base leading-relaxed text-program-on-surface/85">
           {typeof event.description === "string"
             ? event.description.split(/\n\s*\n/).map((p, i) => (
                 <p key={i} className="mb-3 last:mb-0">

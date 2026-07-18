@@ -119,7 +119,7 @@ function formatDateRange(start: Date, end?: Date): string {
     month: sameMonth ? undefined : "short",
     day: "numeric",
   });
-  return `${startStr} – ${endStr}`;
+  return `${startStr} - ${endStr}`;
 }
 
 export function Calendar({

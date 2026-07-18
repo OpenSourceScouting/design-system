@@ -70,6 +70,23 @@ React and react-dom are peers; they must already be in your project.
 
 ### Wire up Tailwind
 
+> **⚠️ These wiring docs are out of date (Tailwind v3 preset). The package now
+> ships a Tailwind v4 CSS-first contract; the v3 preset and `tailwind-preset`
+> export have been removed.** A full rewrite of this section lands with Phase 6
+> of the shadcn re-platform (see `docs/shadcn-migration-plan.md`). Until then,
+> for Tailwind v4 wire it up in CSS instead of a JS preset:
+>
+> ```css
+> /* your entry CSS */
+> @import "tailwindcss";
+> @import "@opensourcescouting/design-system/tokens"; /* the --program-*/shadcn variables */
+> @import "@opensourcescouting/design-system/theme";  /* the @theme mapping (preset replacement) */
+> ```
+>
+> Or, to render the design system's components without your own Tailwind build,
+> just `import "@opensourcescouting/design-system/styles"` (see below). The v3
+> instructions that follow are retained only for reference until Phase 6.
+
 Add the preset to your `tailwind.config.ts` (or `.js`). This injects all program
 color tokens, typography utilities, and shadow/radius/border tokens:
 
