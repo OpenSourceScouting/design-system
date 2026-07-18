@@ -24,17 +24,13 @@
       "types": "./dist/tokens.css.d.ts",
       "default": "./dist/tokens.css"
     },
-    "./tailwind-preset": {
-      "types": "./tailwind-preset.d.cts",
-      "require": "./tailwind-preset.cjs",
-      "default": "./tailwind-preset.cjs"
+    "./theme": {
+      "default": "./dist/theme.css"
     },
     "./package.json": "./package.json"
   },
   "files": [
-    "dist",
-    "tailwind-preset.cjs",
-    "tailwind-preset.d.cts"
+    "dist"
   ],
   "scripts": {
     "dev": "vite",
@@ -81,6 +77,8 @@
     "@storybook/react": "^8.4.7",
     "@storybook/react-vite": "^8.4.7",
     "@storybook/test-runner": "^0.22.0",
+    "@tailwindcss/cli": "^4.3.3",
+    "@tailwindcss/vite": "^4.3.3",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@types/jest-axe": "^3.5.9",
@@ -89,19 +87,17 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
-    "autoprefixer": "^10.4.20",
     "concurrently": "^10.0.3",
     "cross-env": "^10.1.0",
     "http-server": "^14.1.1",
     "jest-axe": "^10.0.0",
     "jest-image-snapshot": "^6.5.2",
     "jsdom": "^27.0.1",
-    "postcss": "^8.4.49",
     "prettier": "^3.4.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "storybook": "^8.4.7",
-    "tailwindcss": "^3.4.15",
+    "tailwindcss": "^4.3.3",
     "typescript": "^5.6.3",
     "vite": "^5.4.11",
     "vite-plugin-dts": "^5.0.3",

@@ -5,9 +5,12 @@
  * a component-scoped chunk rather than the fully Tailwind-processed stylesheet we
  * want), so the two CSS exports are produced here instead:
  *
- *   dist/styles.css: globals.css run through Tailwind (base/components/utilities
- *                      plus the @import of tokens.css). This is the "batteries
- *                      included" import: "@opensourcescouting/design-system/styles".
+ *   dist/styles.css: library.css run through Tailwind v4 (@import "tailwindcss"
+ *                      plus the @theme mapping and token variables). This is the
+ *                      "batteries included" import:
+ *                      "@opensourcescouting/design-system/styles". The source
+ *                      scan is scoped to src/ inside library.css, so only the
+ *                      shipped components' utilities are emitted.
  *   dist/tokens.css: tokens.css verbatim (the :root + [data-program] custom
  *                      properties and the plain `.display` rule) for consumers who
  *                      run their own Tailwind build via the shared preset and only
@@ -28,13 +31,13 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dist = path.join(root, "dist");
 mkdirSync(dist, { recursive: true });
 
-// 1. Tailwind-process globals.css into dist/styles.css.
+// 1. Tailwind-process library.css into dist/styles.css (v4 CLI, @tailwindcss/cli).
 const tailwindBin = path.join(root, "node_modules", ".bin", "tailwindcss");
 execFileSync(
   tailwindBin,
   [
     "-i",
-    path.join(root, "src", "styles", "globals.css"),
+    path.join(root, "src", "styles", "library.css"),
     "-o",
     path.join(dist, "styles.css"),
     "--minify",
@@ -50,6 +53,14 @@ copyFileSync(
   path.join(root, "src", "styles", "tokens.print.json"),
   path.join(dist, "tokens.print.json"),
 );
+
+// 2c. Ship theme.css verbatim (the v4 @theme mapping, replacing the retired
+//     tailwind-preset). Consumers running their own Tailwind v4 build import it
+//     alongside tokens.css to regenerate the program/shadcn utilities:
+//       @import "tailwindcss";
+//       @import "@opensourcescouting/design-system/tokens";
+//       @import "@opensourcescouting/design-system/theme";
+copyFileSync(path.join(root, "src", "styles", "theme.css"), path.join(dist, "theme.css"));
 
 // 3. Emit ambient declaration stubs so TS "bundler" resolution accepts the
 //    side-effect CSS imports (fixes TS2882).

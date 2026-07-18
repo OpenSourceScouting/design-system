@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 import dts from "vite-plugin-dts";
 import path from "node:path";
 
@@ -27,6 +28,12 @@ export default defineConfig(({ command }) => {
     root: usesDemoRoot ? path.resolve(__dirname, "demo") : __dirname,
     plugins: [
       react(),
+      // Tailwind v4 CSS-first pipeline (replaces PostCSS + the v3 preset). Only
+      // active where CSS is in the graph: dev server and demo build import
+      // globals.css. The library build (lib mode, entry src/index.ts) pulls in
+      // no CSS, so the plugin is a no-op there; dist/styles.css is built
+      // separately by scripts/build-css.mjs.
+      tailwindcss(),
       // Only emit declaration files for the library build. The demo entry
       // (demo/App.tsx, demo/main.tsx) is outside `src`, so it is naturally
       // excluded without listing it here.
