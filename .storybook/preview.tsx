@@ -40,12 +40,28 @@ const preview: Preview = {
     layout: "padded",
     backgrounds: { disabled: true },
     controls: { expanded: true },
+
     // Register the built-in viewport set so stories can select named viewports
     // (e.g. Calendar's `mobile1`) via the SB9 globals API.
     viewport: { options: INITIAL_VIEWPORTS },
+
     options: {
       storySort: {
         order: ["Introduction", "Foundations", "Primitives", "Marketing", "Programs"],
+      },
+    },
+
+    a11y: {
+      // Fail the addon-vitest browser run on a11y violations (roles, names,
+      // labels, ARIA, focus). This replaces the retired test-runner axe pass
+      // (ADR 0004 item 2).
+      test: "error",
+      // color-contrast is deferred to tests/contrast.test.ts, which checks it
+      // exhaustively per program (base pairs + /80 and /85 composites). Leaving
+      // it on here duplicates that work and produces noisier, less precise
+      // failures. Do not re-enable (ADR 0004).
+      config: {
+        rules: [{ id: "color-contrast", enabled: false }],
       },
     },
   },
@@ -86,7 +102,7 @@ const preview: Preview = {
   },
 
   decorators: [withScoutTheme],
-  tags: ["autodocs"]
+  tags: ["autodocs"],
 };
 
 export default preview;

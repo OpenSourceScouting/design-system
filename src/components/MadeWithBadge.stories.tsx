@@ -36,8 +36,8 @@ export const Dark: Story = {
   ),
   globals: {
     backgrounds: {
-      value: "dark"
-    }
+      value: "dark",
+    },
   },
 };
 
