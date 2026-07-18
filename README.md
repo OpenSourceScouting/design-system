@@ -24,22 +24,22 @@ Built directly from the [Scouting America 2024 Brand Guidelines](https://pathway
 > community status. Official BSA brand assets remain governed by the BSA
 > Brand Center license (see `NOTICE.md`).
 
-Not using React? [`BRAND-GUIDE.md`](./docs/BRAND-GUIDE.md) is a self-contained
+Not using React? [`unofficial-brand-guide.md`](./docs/unofficial-brand-guide.md) is a self-contained
 brand reference (colors, type, voice, print values, trademark rules) that you
 or any AI tool can use to produce on-brand scouting materials without this
 codebase.
 
 ## Which document do I need?
 
-| I am...                                        | Start here                                     |
-| ---------------------------------------------- | ---------------------------------------------- |
-| A developer installing the package             | This README (you are here)                     |
-| A designer, marketer, or AI tool               | [`BRAND-GUIDE.md`](./docs/BRAND-GUIDE.md)      |
-| Checking trademark or asset license rules      | [`NOTICE.md`](./NOTICE.md)                     |
-| Wanting to contribute code                     | [`CONTRIBUTING.md`](./.github/CONTRIBUTING.md) |
-| Picking up a backlog task                      | [`TODO.md`](./docs/TODO.md)                    |
-| Understanding why the architecture is this way | [`docs/decisions/`](./docs/decisions/)         |
-| A coding agent working inside this codebase    | [`CLAUDE.md`](./CLAUDE.md)                     |
+| I am...                                        | Start here                                                      |
+| ---------------------------------------------- | --------------------------------------------------------------- |
+| A developer installing the package             | This README (you are here)                                      |
+| A designer, marketer, or AI tool               | [`unofficial-brand-guide.md`](./docs/unofficial-brand-guide.md) |
+| Checking trademark or asset license rules      | [`NOTICE.md`](./NOTICE.md)                                      |
+| Wanting to contribute code                     | [`CONTRIBUTING.md`](./.github/CONTRIBUTING.md)                  |
+| Picking up a backlog task                      | [`TODO.md`](./docs/TODO.md)                                     |
+| Understanding why the architecture is this way | [`docs/decisions/`](./docs/decisions/)                          |
+| A coding agent working inside this codebase    | [`CLAUDE.md`](./CLAUDE.md)                                      |
 
 ## Quick start
 
@@ -153,7 +153,7 @@ The brand accent (gold, yellow, red) lives in `--os-accent`, not the shadcn
 `--accent`. The shadcn `--accent` is the muted hover wash used by menus and
 hover states, so override `--os-accent` when you want to change the branded
 pop, and `--primary` for the main brand color. See the token reference in
-`docs/BRAND-GUIDE.md`.
+`docs/unofficial-brand-guide.md`.
 
 Avoid red as an override on scout-facing surfaces. Red is the parent brand's
 accent and doubles as the unthemed fallback (see below), so a red accent reads
