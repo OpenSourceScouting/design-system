@@ -154,26 +154,30 @@ research/                      ← brand guidelines PDF + extracted text
 - `npm test` runs Vitest with two projects (see `vitest.config.ts`):
   - **`unit`** (jsdom): `tests/contrast.test.ts` (WCAG ratios per program,
     including the `/80` and `/85` composites over each surface),
-    `tests/token-parity.test.ts` (per-program token-set parity), and the
-    per-component smoke + `jest-axe` scans. This is the fast inner loop. Run just
-    it with `npx vitest --project unit`.
+    `tests/token-parity.test.ts` (per-program token-set parity), and per-component
+    smoke + behavior tests (non-a11y logic). This is the sub-3s inner loop; run
+    just it with `npx vitest --project unit`. It does NOT run axe (retired: the
+    browser project is the single a11y source, see ADR 0005).
   - **`storybook`** (browser): every story runs as a test in real Chromium via
     `@storybook/addon-vitest`, with an axe pass per story. Needs Playwright
     Chromium (`npx playwright install chromium`). Run just it with
     `npx vitest --project=storybook`.
-    Every new component needs a jsdom axe smoke test AND at least one story (the
-    story is what the browser a11y pass scans).
+  - Every new component needs a **story** (that is the required a11y coverage);
+    a jsdom `unit` test is for non-a11y logic and is optional for a11y. Use story
+    `play` functions to assert focus/keyboard behavior on interactive widgets.
 - Radix portalled widgets (Popover, Tooltip, DropdownMenu, Select) need the jsdom
   stubs in `tests/setup.ts` (ResizeObserver, scrollIntoView, pointer-capture) to
   render in the jsdom project: open with `defaultOpen`, scan `document.body`, and
   disable the axe `region` rule for the isolated-widget scan (see
   `widgets.test.tsx`).
-- Accessibility testing strategy: ADR 0005 (Draft, being revalidated after the
-  Storybook 10 upgrade in ADR 0004). Contrast is owned by `contrast.test.ts`; the
-  browser a11y pass runs via `@storybook/addon-vitest` (`parameters.a11y.test =
-"error"` in `.storybook/preview.tsx`, so violations fail CI) with
-  `color-contrast` DISABLED there on purpose. Do not re-enable `color-contrast`
-  there; it is deferred to the contrast test.
+- Accessibility testing strategy: ADR 0005. Two contrast layers: token soundness
+  in `contrast.test.ts` (all five palettes), and rendered-contrast application in
+  `src/stories/ContrastKitchenSink.stories.tsx` (color-contrast re-enabled there
+  across programs). Semantics run via `@storybook/addon-vitest`
+  (`parameters.a11y.test = "error"` in `.storybook/preview.tsx`, so violations
+  fail CI) with `color-contrast` DISABLED there on purpose. Do not re-enable
+  `color-contrast` globally; it is deferred to the token test and the kitchen-sink
+  story. Per-story a11y opt-out is `parameters: { a11y: { test: "off" } }`.
 - Visual regression is RETIRED and parked (the `@storybook/test-runner` +
   jest-image-snapshot pipeline was removed in the Storybook 10 upgrade; baselines
   were deleted and purged from history). For now, eyeball changes in

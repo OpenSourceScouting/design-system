@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import { screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 import { Calendar, type CalendarEvent } from "../Calendar";
 import { renderThemed } from "./testUtils";
 
@@ -44,17 +43,5 @@ describe("Calendar", () => {
     // Month heading shows the month name of the anchored event month.
     const monthName = EVENT_MONTH.toLocaleDateString("en-US", { month: "long" });
     expect(screen.getByText(new RegExp(monthName, "i"))).toBeInTheDocument();
-  });
-
-  it("has no axe violations (agenda)", async () => {
-    const { container } = renderThemed(<Calendar events={EVENTS} defaultView="agenda" />);
-    expect(await axe(container)).toHaveNoViolations();
-  });
-
-  it("has no axe violations (month)", async () => {
-    const { container } = renderThemed(
-      <Calendar events={EVENTS} defaultView="month" defaultMonth={EVENT_MONTH} />,
-    );
-    expect(await axe(container)).toHaveNoViolations();
   });
 });

@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import { screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 import { EventCard } from "../EventCard";
 import { renderThemed } from "./testUtils";
 
@@ -33,19 +32,5 @@ describe("EventCard", () => {
     expect(block).toHaveTextContent("12-14");
     // The built-in month label must NOT render when overridden.
     expect(screen.queryByText("SEP")).not.toBeInTheDocument();
-  });
-
-  it("has no axe violations", async () => {
-    const { container } = renderThemed(
-      <EventCard
-        date={DATE}
-        title="Fall Camporee"
-        location="Camp Alpine"
-        description="A weekend of outdoor skills."
-        category="Camporee"
-        cta={{ label: "Details", onClick: () => {} }}
-      />,
-    );
-    expect(await axe(container)).toHaveNoViolations();
   });
 });

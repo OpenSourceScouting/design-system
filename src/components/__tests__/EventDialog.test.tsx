@@ -1,13 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 import { EventDialog, EventDialogHeader } from "../EventDialog";
 import type { CalendarEvent } from "../Calendar";
 import { renderThemed } from "./testUtils";
 
 // EventDialog is built on the Radix Dialog recipe. Radix portals the content to
-// document.body, so open-dialog assertions query the whole document (screen)
-// and the axe pass targets document.body, not the render container.
+// document.body, so open-dialog assertions query the whole document (screen).
 
 const EVENT: CalendarEvent = {
   id: "e1",
@@ -33,12 +31,6 @@ describe("EventDialog", () => {
     renderThemed(<EventDialog event={null} onClose={() => {}} />);
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Fall Camporee" })).not.toBeInTheDocument();
-  });
-
-  it("has no axe violations when open", async () => {
-    renderThemed(<EventDialog event={EVENT} onClose={() => {}} />);
-    // Radix portals the dialog to document.body, outside the render container.
-    expect(await axe(document.body)).toHaveNoViolations();
   });
 });
 

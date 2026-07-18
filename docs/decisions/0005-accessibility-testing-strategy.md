@@ -1,84 +1,106 @@
 # 0005. Accessibility testing strategy
 
 Date: 2026-07-18
-Status: Draft (under revision after the Storybook 10 migration, ADR 0004)
+Status: Accepted
 
-> **Revisit required.** This ADR described the Storybook 8 arrangement. The
-> Storybook 10 upgrade (ADR 0004) changed how the layered strategy is
-> implemented: item 2 (the real-browser axe pass) moved from the retired
-> `@storybook/test-runner` to `@storybook/addon-vitest` (stories run as tests in
-> Chromium with axe; `color-contrast` stays disabled there, still owned by
-> `tests/contrast.test.ts`). Items 1, 3, and 4 are unchanged. The visual
-> regression pipeline referenced below was retired. This document is kept as a
-> Draft until the strategy is re-validated on the new stack and rewritten to
-> match; treat the details below as historical where they conflict with ADR 0004.
+Supersedes the Storybook 8 arrangement (the same decision, re-derived after the
+Storybook 10 migration in ADR 0004).
 
 ## Context
 
 WCAG AA is a product goal for this library (ADR 0002), so it needs automated
-verification, not just intent. Several tools overlap and each has real limits:
+verification, not just intent. No single tool covers it, and the tools overlap,
+so the strategy must divide the work deliberately. The organizing principle is
+**divide by what varies per program**, because the theming architecture
+guarantees that per-program difference is CSS-variable-only:
 
-- jsdom (Vitest) cannot lay out or paint, so axe-core silently disables its
-  `color-contrast` rule there and cannot judge visible focus. jsdom axe catches
-  roles, names, labels, and ARIA structure, and little else.
-- `@storybook/addon-a11y` (installed) only powers the interactive a11y panel in
-  the Storybook UI. It does not run in CI on its own.
-- The `@storybook/test-runner` already visits every story in a real Chromium (in
-  the pinned Playwright container) for visual regression, but was only taking
-  screenshots.
-- Contrast in this system is a multi-program problem: the same utility renders
-  five palettes, and components composite opacity tints (`/80`, `/85`) over
-  program surfaces. That is more combinations than a per-story axe sample covers.
+- **Contrast varies per program.** The same utility renders five palettes
+  (parent brand plus four programs), and components composite opacity tints
+  (`/80`, `/85`) over program surfaces. This is a combinatorial, pixel-level
+  concern.
+- **Semantics do not vary per program.** Roles, names, labels, ARIA, and DOM
+  structure are identical across programs; only colors change. So semantic a11y
+  needs to be checked thoroughly once, not once per program.
+
+Tool limits that shape the split:
+
+- jsdom (Vitest) cannot lay out or paint, so axe-core silently disables
+  `color-contrast` there and cannot judge focus or the computed accessibility
+  tree. It sees roles/names/ARIA structure and little else: strictly a subset of
+  what a real browser sees.
+- `@storybook/addon-vitest` runs every story as a test in real Chromium: it runs
+  axe per story AND executes `play` functions as interaction tests. This is the
+  authoritative a11y layer (ADR 0004). It runs in `npm test` and in CI.
+- `@storybook/addon-a11y` also powers the interactive a11y panel in the Storybook
+  UI.
+- A token-parsing unit test can assert exact WCAG ratios for every token pair
+  across all five palettes: more exhaustive and deterministic than any per-story
+  sample.
 
 ## Decision
 
-Use a layered strategy with a deliberate division of labor, so each concern is
-checked by the tool that checks it best and nothing is checked twice.
+A layered strategy, each layer owning what it checks best:
 
-1. **Color contrast: `tests/contrast.test.ts` (Vitest, no browser).** Parses
-   `tokens.css` and asserts WCAG ratios for every semantic pair across all five
-   palettes, including the `/80` and `/85` text composites flattened over each
-   surface. This is exhaustive and deterministic in a way a per-story axe sample
-   is not.
+1. **Token contrast (palette soundness): `tests/contrast.test.ts`** (Vitest
+   `unit` project, no browser). Parses `tokens.css` and asserts WCAG ratios for
+   every semantic pair across all five palettes, including the `/80` and `/85`
+   text composites flattened over each surface. Proves the palette itself is AA.
 
-2. **Semantics and focus: real-browser axe in the test-runner `postVisit`**
-   (`axe-playwright`). Runs on every story in Chromium, after the screenshots so
-   a baseline-update pass is never blocked. `color-contrast` is **disabled here
-   on purpose** because item 1 owns it; this pass focuses on roles, names,
-   labels, ARIA, and focusable-content structure, which jsdom cannot see. A story
-   opts out with `parameters: { a11y: { disable: true } }`.
+1b. **Rendered contrast (correct application): the contrast kitchen-sink story**
+(`src/stories/ContrastKitchenSink.stories.tsx`, scanned by the browser
+project). The token test proves the palette is sound; it does not prove a
+component applies the right token. This story renders a curated set of
+components and text-on-surface pairs under each program theme with the axe
+`color-contrast` rule turned back ON (it is disabled globally, see below), so
+a component that puts low-contrast text on a surface fails. It is curated to
+pairs that must meet 4.5:1 at their rendered size, and deliberately omits
+by-design exceptions (`text-os-on-surface-faint` at 3:1, `accent size="sm"`)
+so failures are real.
 
-3. **Fast inner loop: jsdom jest-axe smoke tests per component.** One `axe()`
-   assertion per component in the Vitest suite, so `npm test` gives sub-second
-   ARIA/label/role regression signal without a browser. The `region` rule is
-   disabled for isolated widget scans (a landmark is a page concern; a component
-   test renders no `<main>`/`<nav>`).
+2. **Semantics and interaction: the `@storybook/addon-vitest` browser project.**
+   Every story runs in Chromium with an axe pass (roles, names, labels, ARIA,
+   focusable structure: what jsdom cannot see). `parameters.a11y.test = "error"`
+   in `.storybook/preview.tsx` makes violations fail CI; `color-contrast` is
+   disabled there on purpose (layers 1 and 1b own contrast). Scans run at the
+   default program (cub); that is sufficient because semantics are
+   program-invariant. For interactive widgets, use `play` functions to assert
+   focus order, focus trap, and escape-to-close: the real-browser capability the
+   old screenshot-only pass never had.
+
+3. **Fast unit logic: the jsdom `unit` Vitest project.** Component smoke and
+   behavior tests (e.g. `ProgramMark` fallback, `Button` dev warning, `Calendar`
+   date math), plus the contrast and token-parity tests. This is the sub-3s inner
+   loop (`npx vitest --project unit`). It does NOT run axe: a second, lower-
+   fidelity a11y layer bought nothing (browser watch mode already gives a warm
+   loop, and a green jsdom axe never justified skipping the browser run). The
+   jsdom stubs in `tests/setup.ts` (ResizeObserver, pointer-capture,
+   scrollIntoView) remain, because the non-a11y widget tests still need them.
 
 4. **Authoring aid: `@storybook/addon-a11y` panel.** Manual, in the Storybook UI,
    for catching issues while building a component.
 
-Contrast lives in a unit test rather than axe because it is more precise and
-exhaustive there; the browser axe pass exists for exactly what the token math
-and jsdom cannot see.
-
-This is the Storybook 8 arrangement. It is an interim stopgap: TODO 3.12 upgrades
-to Storybook 9 and adopts the Vitest addon, which runs stories as browser tests
-with a11y built in and would consolidate items 2 and 3 (stories as the tests),
-retiring the test-runner axe bolt-on.
-
 ## Consequences
 
-- Accessibility is enforced in CI: the visual-regression job now also fails on
-  axe violations. Every component, widget, and program is covered in a real
-  browser.
-- Do not "fix" the test-runner by re-enabling `color-contrast` there. It is
-  deferred to `contrast.test.ts` on purpose; enabling it duplicates and produces
-  noisier, less precise failures.
-- Every new component needs a jsdom smoke test, and every new portalled widget
-  needs its content re-stamped (ADR 0002 delta 9) so the axe scan sees the themed
-  tree.
-- The strategy already earns its keep: on first run the browser axe pass caught
-  that Radix `PopoverContent` is `role="dialog"` and requires an accessible name
-  (the consumer must label it, as with stock shadcn).
-- When Storybook 9 lands (TODO 3.12), revisit this ADR: the Vitest addon
-  supersedes item 2, and the visual-regression pipeline decision is made then.
+- One authoritative a11y source (the browser project), not two. Every new
+  component needs a **story** (that is the required a11y coverage); a jsdom test
+  is for non-a11y unit logic and is optional for a11y purposes.
+- Focus/keyboard behavior is now testable via `play` functions, closing a gap the
+  Storybook 8 strategy left open (jsdom could not judge focus; the test-runner
+  only screenshotted).
+- Rendered-contrast misuse is caught by the kitchen-sink story; the previously
+  hidden gap (token test proves palette, not application) is closed for the
+  curated set. Contrast outside that set is still covered at the token level and
+  by manual review.
+- CI must `npx playwright install chromium` before `npm test` (the browser
+  project needs it). A story opts out of the a11y pass with
+  `parameters: { a11y: { test: "off" } }` (not the old `{ disable: true }`, which
+  only hid the panel).
+- Do not re-enable `color-contrast` globally in the browser a11y config. It is
+  deferred to the token test and the kitchen-sink story on purpose; enabling it
+  on every story produces noisy, less precise failures (disabled controls,
+  decorative elements, by-design 3:1 tokens).
+- The strategy earns its keep: the browser axe pass caught, during the Storybook
+  10 migration itself, that the `NativeSelect` story rendered a `<select>` with
+  no accessible name (`select-name`), which was then fixed. (It earlier caught
+  that Radix `PopoverContent` is `role="dialog"` and needs an accessible name.)
+- Every new portalled widget still needs its content re-stamped (ADR 0002 delta 9) so both the browser scan and the jsdom widget tests see the themed tree.
