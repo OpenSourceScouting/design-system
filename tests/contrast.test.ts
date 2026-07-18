@@ -102,40 +102,6 @@ describe("tokens.css contrast ratios", () => {
         return contrastRatio(f, b);
       };
 
-      it("on-surface vs surface >= 4.5 (AA body text)", () => {
-        expect(ratio("--program-on-surface", "--program-surface")).toBeGreaterThanOrEqual(4.5);
-      });
-
-      it("on-surface-soft vs surface >= 4.5 (AA muted body text)", () => {
-        expect(ratio("--program-on-surface-soft", "--program-surface")).toBeGreaterThanOrEqual(4.5);
-      });
-
-      it("on-surface-faint vs surface >= 3.0 (inactive/dim text)", () => {
-        // The original seascouts value (#7E8FA8 on #F0F4F8) measured 2.98:1;
-        // the token was darkened to #7687A0 (3.31:1) when this test caught it.
-        expect(ratio("--program-on-surface-faint", "--program-surface")).toBeGreaterThanOrEqual(
-          3.0,
-        );
-      });
-
-      it("on-primary vs primary >= 4.5 (AA text on primary surfaces)", () => {
-        expect(ratio("--program-on-primary", "--program-primary")).toBeGreaterThanOrEqual(4.5);
-      });
-
-      it("on-primary-soft vs primary >= 4.5 (AA muted text on primary)", () => {
-        expect(ratio("--program-on-primary-soft", "--program-primary")).toBeGreaterThanOrEqual(4.5);
-      });
-
-      it("on-accent vs accent >= 3.0 (large-text only)", () => {
-        // Threshold is 3.0, not 4.5, on purpose. The accent fill is gold/yellow
-        // in every program and its dark on-accent text only reaches AA (4.5:1)
-        // at large sizes (16px bold / 24px normal and up). The Button type
-        // system already forbids the small-size accent combination (task 1.4),
-        // so we assert the large-text AA floor (WCAG SC 1.4.3, 3:1) here rather
-        // than a normal-text 4.5:1 the palette is not designed to meet.
-        expect(ratio("--program-on-accent", "--program-accent")).toBeGreaterThanOrEqual(3.0);
-      });
-
       // --- Opacity-tinted TEXT composites (what components actually render) --
       // CLAUDE.md permits /80 and /85 text tints "for hierarchy"; verify the
       // flattened composite still clears AA on this program's surface, since the
@@ -149,21 +115,17 @@ describe("tokens.css contrast ratios", () => {
           return contrastRatio(composite(f, b, alpha), b);
         };
 
-        it("on-surface @ 85% over surface >= 4.5 (EventDialog body text)", () => {
-          expect(over("--program-on-surface", "--program-surface", 0.85)).toBeGreaterThanOrEqual(
-            4.5,
-          );
+        it("foreground @ 85% over background >= 4.5 (EventDialog body text)", () => {
+          expect(over("--foreground", "--background", 0.85)).toBeGreaterThanOrEqual(4.5);
         });
 
-        it("on-surface @ 80% over surface >= 4.5 (muted body text)", () => {
-          expect(over("--program-on-surface", "--program-surface", 0.8)).toBeGreaterThanOrEqual(
-            4.5,
-          );
+        it("foreground @ 80% over background >= 4.5 (muted body text)", () => {
+          expect(over("--foreground", "--background", 0.8)).toBeGreaterThanOrEqual(4.5);
         });
       });
 
-      // --- shadcn / --os-* vocabulary (Phase 1 re-platform) -----------------
-      // Same audited values under the new names; assert the thresholds hold so
+      // --- shadcn / --os-* vocabulary ---------------------------------------
+      // The audited program values under the shadcn names; assert thresholds so
       // the migration cannot silently regress contrast before components port.
       describe("shadcn vocabulary", () => {
         it("foreground vs background >= 4.5 (AA body text)", () => {

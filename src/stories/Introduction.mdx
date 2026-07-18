@@ -33,9 +33,9 @@ grammar (spacing, type scale, component anatomy):
   2px geometric (Venturing) → 1px hairline (Sea Scouts)
 - **Shadow**: soft blue-tinted (Cub) → matte (Scouts BSA) →
   strong directional (Venturing) → minimal (Sea Scouts)
-- **Rule weight** (`--program-rule-weight`): 3px bold (Cub) → 2px traditional (Scouts BSA + Venturing) →
+- **Rule weight** (`--os-rule-weight`): 3px bold (Cub) → 2px traditional (Scouts BSA + Venturing) →
   1px hairline (Sea Scouts). Controls the keylines on `CardEyebrow`, section heads, and agenda
-  separators via the `border-*-rule` Tailwind utility (bound in `tailwind-preset.cjs`).
+  separators via the `border-*-rule` Tailwind utility (defined in `src/styles/theme.css`).
 
 ## Source of truth
 
@@ -45,7 +45,7 @@ Page references appear in `src/styles/tokens.css`.
 
 ## Accessibility
 
-- Focus rings use `--program-ring` (override it in `[data-program]` CSS to reroute the focus ring color), always visible at 2px offset
+- Focus rings use `--ring` (override it in `[data-program]` CSS to reroute the focus ring color), always visible at 2px offset
 - Color combinations are chosen to meet WCAG AA contrast for body text
 - `prefers-reduced-motion` disables non-essential animation
 - Decorative SVG marks are marked `aria-hidden`

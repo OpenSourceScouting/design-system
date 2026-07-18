@@ -3,103 +3,59 @@
    Source: Scouting America Brand Guidelines 2024 (May 2024 edition)
    https://pathwaytoadventure.org/wp-content/uploads/2024/05/Scouting-America-Brand-Guidelines-2024-BC.pdf
 
-   Color values are stored as space-separated RGB triplets so Tailwind utilities
-   can apply alpha via the `<alpha-value>` syntax (e.g. bg-program-primary/50).
+   Color values are stored as space-separated RGB triplets so Tailwind v4 can
+   apply alpha via color-mix (e.g. bg-primary/80). Each program is selected via
+   `data-program="..."` on any ancestor element; :root is the parent Scouting
+   America brand.
 
-   Each program is selected via `data-program="..."` on any ancestor element.
-   Defaults to the parent Scouting America palette on :root.
-
-   -------------------------------------------------------------------------
-   MIGRATION NOTE (shadcn re-platform, ADR 0002/0003, Phase 1)
-
-   Two token vocabularies coexist here during the migration (expand/contract):
-
-     1. shadcn vocabulary (--background, --foreground, --primary, --secondary,
-        --muted, --accent, --destructive, --border, --input, --ring, --radius,
-        --card, --popover) plus the --os-* EXTENDED vocabulary for concepts
-        shadcn lacks (brand accent, contrast tiers, rule weight, decor, shadow,
-        display type). This is the NEW source of truth that components migrate
-        to in Phases 3-5.
-
-     2. legacy --program-* tokens, LEFT UNCHANGED so the 62 files still using
-        `bg-program-*` etc. via the v3 preset render byte-identically. These are
-        removed in the Phase 5/6 "contract" step once no component references
-        them.
-
-   The curated mapping (delta 4) is the important, non-obvious part: shadcn
-   --accent is the MUTED HOVER WASH (from surface-muted), NOT the brand accent
-   (gold/red/yellow). The brand accent lives in --os-accent. tests/token-*.test.ts
-   enforce this and the value parity between the two vocabularies.
+   Vocabulary (shadcn re-platform, ADR 0002/0003):
+     - shadcn semantic tokens: --background, --foreground, --card, --popover,
+       --primary, --secondary, --muted, --accent, --destructive, --border,
+       --input, --ring, --radius (+ their -foreground pairs).
+     - --os-* extended tokens for concepts shadcn lacks: the BRAND accent
+       (--os-accent, delta 3/4 - shadcn --accent is the muted hover wash, NOT
+       the brand accent), the contrast-safe text tiers, rule weight, decor,
+       shadow, and display type. The single shared type pair is :root-only.
+   `src/styles/theme.css` maps these to Tailwind utilities; the contrast/parity
+   tests guard the WCAG thresholds and per-program token parity.
    ============================================================================= */
 
 :root {
-  /* --- Type system shared across all programs ---------------------------- */
-  --program-font-display: "Montserrat Variable", "Montserrat", system-ui, -apple-system, sans-serif;
-  --program-font-body:
-    "Source Serif 4 Variable", "Source Serif 4", "Source Serif Pro", Georgia, serif;
-
-  /* --- Default (parent Scouting America brand) tokens -------------------- */
-  /* Primary Brand, p.14 */
-  --program-primary: 0 63 135; /* #003F87 Scouting America Blue */
-  --program-on-primary: 255 255 255;
-  --program-on-primary-soft: 225 230 240; /* light blue-gray, passes 4.5:1 on primary */
-  --program-accent: 206 17 38; /* #CE1126 Scouting America Red  */
-  --program-on-accent: 255 255 255;
-  --program-surface: 255 255 255;
-  --program-on-surface: 35 37 40; /* #232528 Scouting America Dark Gray */
-  --program-on-surface-soft: 81 83 84; /* #515354, ~7:1 vs white */
-  --program-on-surface-faint: 133 135 135; /* #858787 Pale Gray, ~3.5:1 vs white */
-  --program-surface-muted: 233 233 228; /* #E9E9E4 Light Tan */
-  --program-on-surface-muted: 81 83 84; /* #515354 Scouting America Gray */
-  --program-border: 214 206 189; /* #D6CEBD Scouting America Tan */
-  --program-ring: 0 63 135; /* focus matches primary by default */
-  --program-decor: 173 157 123; /* #AD9D7B Dark Tan */
-
-  --program-display-weight: 700;
-  --program-display-tracking: 0em;
-  --program-display-style: normal;
-  --program-display-transform: none;
-
-  --program-radius: 0.375rem;
-  /* keyline weight for kicker rules and section heads; drives editorial hierarchy without a colored rail */
-  --program-rule-weight: 2px;
-  --program-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.06), 0 1px 3px 0 rgb(0 0 0 / 0.08);
-
-  /* === shadcn vocabulary (parent brand) ================================== */
-  --background: 255 255 255; /* = surface */
-  --foreground: 35 37 40; /* = on-surface */
+  /* Parent Scouting America brand. Primary Brand palette, guidelines p.14-15. */
+  --background: 255 255 255;
+  --foreground: 35 37 40; /* #232528 Scouting America Dark Gray */
   --card: 255 255 255;
   --card-foreground: 35 37 40;
   --popover: 255 255 255;
   --popover-foreground: 35 37 40;
-  --primary: 0 63 135;
+  --primary: 0 63 135; /* #003F87 Scouting America Blue */
   --primary-foreground: 255 255 255;
-  --secondary: 233 233 228; /* = surface-muted */
-  --secondary-foreground: 81 83 84; /* = on-surface-muted */
+  --secondary: 233 233 228; /* #E9E9E4 Light Tan */
+  --secondary-foreground: 81 83 84; /* #515354 Scouting America Gray */
   --muted: 233 233 228;
-  --muted-foreground: 81 83 84; /* = on-surface-soft, AA >=4.5 */
-  --accent: 233 233 228; /* delta 4: hover wash = surface-muted, NOT brand red */
+  --muted-foreground: 81 83 84; /* AA >=4.5 muted body text */
+  --accent: 233 233 228; /* delta 4: hover wash = muted surface, NOT brand red */
   --accent-foreground: 81 83 84;
-  --destructive: 206 17 38; /* sa-red; status color, identical across programs */
+  --destructive: 206 17 38; /* #CE1126 sa-red; status color, identical per program */
   --destructive-foreground: 255 255 255;
-  --border: 214 206 189;
-  --input: 214 206 189; /* input border = border */
+  --border: 214 206 189; /* #D6CEBD Scouting America Tan */
+  --input: 214 206 189;
   --ring: 0 63 135;
   --radius: 0.375rem;
 
-  /* --- --os-* extended vocabulary (concepts shadcn lacks) --------------- */
-  --os-accent: 206 17 38; /* BRAND accent (Scouting America Red), delta 3 */
+  /* --os-* extended vocabulary */
+  --os-accent: 206 17 38; /* BRAND accent: Scouting America Red #CE1126 */
   --os-accent-foreground: 255 255 255;
   --os-on-primary-soft: 225 230 240; /* AA >=4.5 muted text on primary */
-  --os-on-surface-faint: 133 135 135; /* >=3:1 inactive/dim text */
-  --os-decor: 173 157 123;
+  --os-on-surface-faint: 133 135 135; /* #858787, >=3:1 inactive/dim text */
+  --os-decor: 173 157 123; /* #AD9D7B Dark Tan */
   --os-rule-weight: 2px;
   --os-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.06), 0 1px 3px 0 rgb(0 0 0 / 0.08);
   --os-display-weight: 700;
   --os-display-tracking: 0em;
   --os-display-style: normal;
   --os-display-transform: none;
-  /* Shared type families (one pair across all programs); :root-only by design. */
+  /* One type pair across all programs (:root-only by design). */
   --os-font-display: "Montserrat Variable", "Montserrat", system-ui, -apple-system, sans-serif;
   --os-font-body: "Source Serif 4 Variable", "Source Serif 4", "Source Serif Pro", Georgia, serif;
 }
@@ -111,82 +67,52 @@
    only emits `@layer components` rules whose class name appears in a scanned
    `content` file; a library consumer importing the prebuilt "./styles" (or
    "./tokens") artifact has no such scan, so a layered `.display` would be
-   purged and the class would silently do nothing. As a plain rule it is always
-   present in both published CSS exports. It reads the same per-program custom
-   properties the theme overrides re-bind, so it re-themes automatically.
+   purged. As a plain rule it always ships in both CSS exports. It reads the
+   per-program display tokens the theme overrides re-bind, so it re-themes
+   automatically.
    --------------------------------------------------------------------------- */
 .display {
-  font-family: var(--program-font-display);
-  font-weight: var(--program-display-weight);
-  letter-spacing: var(--program-display-tracking);
-  font-style: var(--program-display-style);
-  text-transform: var(--program-display-transform);
+  font-family: var(--os-font-display);
+  font-weight: var(--os-display-weight);
+  letter-spacing: var(--os-display-tracking);
+  font-style: var(--os-display-style);
+  text-transform: var(--os-display-transform);
   line-height: 1.05;
 }
 
 /* ---------------------------------------------------------------------------
-   Cub Scouts (K-5, ages 5-10)
-   Voice: Adventure meets fun and friends. Family. Playful. Warm.
-   Palette: Blue + Gold (uniform colors), guidelines p.23.
-   Personality choices:
-     - Generous radii (friendly, soft)
-     - Heaviest display weight (kid-bold, exuberant)
-     - Soft elevated shadows (toy-like depth)
-     - Gold as accent CTA, never as background for body text
+   Cub Scouts (K-5, ages 5-10). Blue + Gold (uniform colors), p.23.
+   Generous radii, heaviest display weight, soft elevated shadows; gold as the
+   accent CTA, never as a background for body text.
    --------------------------------------------------------------------------- */
 [data-program="cub"] {
-  --program-primary: 0 63 135; /* Cub Scouts Blue #003F87 */
-  --program-on-primary: 255 255 255;
-  --program-on-primary-soft: 218 226 240; /* #DAE2F0, ~8:1 on blue */
-  --program-accent: 253 193 22; /* Cub Scouts Gold #FDC116 */
-  --program-on-accent: 0 63 135; /* blue on gold passes AA at 16pt+ */
-  --program-surface: 255 252 244; /* warm off-white (paper) */
-  --program-on-surface: 10 26 51; /* near-black with blue cast */
-  --program-on-surface-soft: 70 88 122; /* #46587A, ~6.9:1 muted body text */
-  --program-on-surface-faint: 120 130 150; /* #788296, ~3.7:1 inactive dim */
-  --program-surface-muted: 255 244 209; /* tinted gold wash */
-  --program-on-surface-muted: 27 47 79;
-  --program-border: 0 63 135;
-  --program-ring: 253 193 22; /* gold focus ring on blue UI */
-  --program-decor: 253 193 22;
-
-  --program-display-weight: 900;
-  --program-display-tracking: -0.02em;
-  --program-display-style: normal;
-  --program-display-transform: none;
-
-  --program-radius: 0.875rem; /* 14px, rounded but not bubble */
-  --program-rule-weight: 3px; /* chunky, kid-bold */
-  --program-shadow: 0 4px 14px -2px rgb(0 63 135 / 0.18), 0 2px 4px -2px rgb(0 63 135 / 0.1);
-
-  /* === shadcn vocabulary (Cub Scouts) =================================== */
-  --background: 255 252 244;
-  --foreground: 10 26 51;
+  --background: 255 252 244; /* warm off-white paper */
+  --foreground: 10 26 51; /* near-black, blue cast */
   --card: 255 252 244;
   --card-foreground: 10 26 51;
   --popover: 255 252 244;
   --popover-foreground: 10 26 51;
-  --primary: 0 63 135;
+  --primary: 0 63 135; /* Cub Scouts Blue #003F87 */
   --primary-foreground: 255 255 255;
-  --secondary: 255 244 209;
+  --secondary: 255 244 209; /* tinted gold wash */
   --secondary-foreground: 27 47 79;
   --muted: 255 244 209;
-  --muted-foreground: 70 88 122; /* on-surface-soft, ~6.9:1 */
-  --accent: 255 244 209; /* delta 4: gold WASH (surface-muted), NOT gold fill */
+  --muted-foreground: 70 88 122; /* #46587A, ~6.9:1 */
+  --accent: 255 244 209; /* delta 4: gold WASH, not the gold fill */
   --accent-foreground: 27 47 79;
   --destructive: 206 17 38;
   --destructive-foreground: 255 255 255;
   --border: 0 63 135;
   --input: 0 63 135;
-  --ring: 253 193 22;
-  --radius: 0.875rem;
+  --ring: 253 193 22; /* gold focus ring on blue UI */
+  --radius: 0.875rem; /* 14px, rounded but not bubble */
 
-  --os-accent: 253 193 22; /* BRAND gold */
-  --os-accent-foreground: 0 63 135;
-  --os-on-primary-soft: 218 226 240;
-  --os-on-surface-faint: 120 130 150;
+  --os-accent: 253 193 22; /* Cub Scouts Gold #FDC116 */
+  --os-accent-foreground: 0 63 135; /* blue on gold, AA at 16pt+ */
+  --os-on-primary-soft: 218 226 240; /* #DAE2F0, ~8:1 on blue */
+  --os-on-surface-faint: 120 130 150; /* #788296, ~3.7:1 */
   --os-decor: 253 193 22;
-  --os-rule-weight: 3px;
+  --os-rule-weight: 3px; /* chunky, kid-bold */
   --os-shadow: 0 4px 14px -2px rgb(0 63 135 / 0.18), 0 2px 4px -2px rgb(0 63 135 / 0.1);
   --os-display-weight: 900;
   --os-display-tracking: -0.02em;
@@ -195,75 +121,43 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Scouts BSA (ages 11-17)
-   Voice: Test your limits. Earnest, capable, traditional, heritage.
-   Palette: Tan + Olive + Red (uniform-led, color from patches), p.26.
-   Personality choices:
-     - Tight radii (crisp, disciplined)
-     - Traditional display weight, small tracking
-     - Subtle shadows (matte, archival)
-     - Olive is structural; tan is paper
+   Scouts BSA (ages 11-17). Tan + Olive + Red (uniform-led), p.26.
+   Tight radii, traditional weight, subtle shadows; olive is structural, tan is
+   paper.
 
-   Accent note: the 2024 guidelines (p.26) sanction Scouts BSA Red (#CE1126) as
-   the action accent. In a digital system the accent appears constantly (badges,
-   chips, focus rings, buttons), which makes pure red read as confrontational
-   rather than the occasional print pop the guidelines assume. The same page
-   also says the parent Scouting America palette "may be used by any of the
-   sub-brands ... to unify the portfolio." We follow that license and use
-   Scouting America Blue (#003F87) as the digital accent. The print red is
-   preserved for true error / danger via the raw `sa-red` palette utility.
+   Accent note: p.26 sanctions Scouts BSA Red (#CE1126) as the action accent,
+   but in a digital system the accent appears constantly (badges, chips, focus
+   rings), which makes pure red read as confrontational. The same page allows
+   the parent Scouting America palette to unify the portfolio, so we use
+   Scouting America Blue (#003F87) as the digital accent. Print red is preserved
+   for true error/danger via --destructive.
    --------------------------------------------------------------------------- */
 [data-program="scoutsbsa"] {
-  --program-primary: 36 62 44; /* Scouts BSA Olive #243E2C */
-  --program-on-primary: 245 241 230; /* warm paper white */
-  --program-on-primary-soft: 215 220 200; /* #D7DCC8, ~8:1 on olive */
-  --program-accent: 0 63 135; /* Scouting America Blue #003F87 - digital-calmer accent */
-  --program-on-accent: 255 255 255;
-  --program-surface: 245 241 230; /* tan paper, lighter than #D6CEBD */
-  --program-on-surface: 26 26 20;
-  --program-on-surface-soft: 82 94 72; /* #525E48, ~6.2:1 muted body text */
-  --program-on-surface-faint: 138 139 124; /* #8A8B7C, ~3.4:1 inactive dim */
-  --program-surface-muted: 214 206 189; /* Scouts BSA Tan #D6CEBD */
-  --program-on-surface-muted: 36 62 44;
-  --program-border: 173 157 123; /* Dark Tan #AD9D7B */
-  --program-ring: 0 63 135;
-  --program-decor: 173 157 123;
-
-  --program-display-weight: 700;
-  --program-display-tracking: 0em;
-  --program-display-style: normal;
-  --program-display-transform: none;
-
-  --program-radius: 0.25rem; /* 4px, crisp */
-  --program-rule-weight: 2px; /* traditional */
-  --program-shadow: 0 1px 2px 0 rgb(36 62 44 / 0.1), 0 2px 6px -2px rgb(36 62 44 / 0.08);
-
-  /* === shadcn vocabulary (Scouts BSA) =================================== */
-  --background: 245 241 230;
+  --background: 245 241 230; /* tan paper */
   --foreground: 26 26 20;
   --card: 245 241 230;
   --card-foreground: 26 26 20;
   --popover: 245 241 230;
   --popover-foreground: 26 26 20;
-  --primary: 36 62 44;
-  --primary-foreground: 245 241 230;
-  --secondary: 214 206 189;
+  --primary: 36 62 44; /* Scouts BSA Olive #243E2C */
+  --primary-foreground: 245 241 230; /* warm paper white */
+  --secondary: 214 206 189; /* Scouts BSA Tan #D6CEBD */
   --secondary-foreground: 36 62 44;
   --muted: 214 206 189;
-  --muted-foreground: 82 94 72; /* on-surface-soft, ~6.2:1 */
-  --accent: 214 206 189; /* delta 4: tan WASH (surface-muted), NOT the blue accent */
+  --muted-foreground: 82 94 72; /* #525E48, ~6.2:1 */
+  --accent: 214 206 189; /* delta 4: tan WASH, not the blue accent */
   --accent-foreground: 36 62 44;
   --destructive: 206 17 38;
   --destructive-foreground: 255 255 255;
-  --border: 173 157 123;
+  --border: 173 157 123; /* Dark Tan #AD9D7B */
   --input: 173 157 123;
   --ring: 0 63 135;
-  --radius: 0.25rem;
+  --radius: 0.25rem; /* 4px, crisp */
 
-  --os-accent: 0 63 135; /* BRAND accent (SA Blue, per accent note above) */
+  --os-accent: 0 63 135; /* BRAND accent: SA Blue (per accent note) */
   --os-accent-foreground: 255 255 255;
-  --os-on-primary-soft: 215 220 200;
-  --os-on-surface-faint: 138 139 124;
+  --os-on-primary-soft: 215 220 200; /* #D7DCC8, ~8:1 on olive */
+  --os-on-surface-faint: 138 139 124; /* #8A8B7C, ~3.4:1 */
   --os-decor: 173 157 123;
   --os-rule-weight: 2px;
   --os-shadow: 0 1px 2px 0 rgb(36 62 44 / 0.1), 0 2px 6px -2px rgb(36 62 44 / 0.08);
@@ -274,66 +168,36 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Venturing (ages 14-20)
-   Voice: Challenge yourself, challenge your world. Bold, motivational, peer-led.
-   Palette: Venturing Green + Yellow (mountain emblem), p.29.
-   Personality choices:
-     - Sharp / nearly-zero radii (geometric, expedition gear)
-     - Heavy weight, extra-wide tracking, often UPPERCASE
-     - Strong directional shadows (depth, terrain)
-     - Yellow accent feels like trail marking / safety
+   Venturing (ages 14-20). Green + Yellow (mountain emblem), p.29.
+   Sharp/near-zero radii, heavy weight, wide tracking, often UPPERCASE; strong
+   directional shadows; yellow reads like trail marking.
    --------------------------------------------------------------------------- */
 [data-program="venturing"] {
-  --program-primary: 0 107 63; /* Venturing Green #006B3F */
-  --program-on-primary: 255 255 255;
-  --program-on-primary-soft: 220 235 225; /* #DCEBE1, ~7.5:1 on green */
-  --program-accent: 252 209 22; /* Venturing Yellow #FCD116 */
-  --program-on-accent: 0 51 31; /* dark green on yellow */
-  --program-surface: 244 241 232; /* warm stone */
-  --program-on-surface: 11 31 20;
-  --program-on-surface-soft: 71 91 79; /* #475B4F, ~6.4:1 muted body text */
-  --program-on-surface-faint: 129 136 120; /* #818878, ~3.5:1 inactive dim */
-  --program-surface-muted: 224 220 209;
-  --program-on-surface-muted: 0 51 31;
-  --program-border: 0 107 63;
-  --program-ring: 252 209 22;
-  --program-decor: 0 107 63;
-
-  --program-display-weight: 800;
-  --program-display-tracking: 0.08em;
-  --program-display-style: normal;
-  --program-display-transform: uppercase;
-
-  --program-radius: 0.125rem; /* 2px, near-sharp */
-  --program-rule-weight: 2px; /* blocky geometric */
-  --program-shadow: 0 8px 24px -8px rgb(0 51 31 / 0.3), 0 2px 4px -2px rgb(0 51 31 / 0.15);
-
-  /* === shadcn vocabulary (Venturing) ==================================== */
-  --background: 244 241 232;
+  --background: 244 241 232; /* warm stone */
   --foreground: 11 31 20;
   --card: 244 241 232;
   --card-foreground: 11 31 20;
   --popover: 244 241 232;
   --popover-foreground: 11 31 20;
-  --primary: 0 107 63;
+  --primary: 0 107 63; /* Venturing Green #006B3F */
   --primary-foreground: 255 255 255;
   --secondary: 224 220 209;
   --secondary-foreground: 0 51 31;
   --muted: 224 220 209;
-  --muted-foreground: 71 91 79; /* on-surface-soft, ~6.4:1 */
-  --accent: 224 220 209; /* delta 4: stone WASH (surface-muted), NOT yellow fill */
+  --muted-foreground: 71 91 79; /* #475B4F, ~6.4:1 */
+  --accent: 224 220 209; /* delta 4: stone WASH, not the yellow fill */
   --accent-foreground: 0 51 31;
   --destructive: 206 17 38;
   --destructive-foreground: 255 255 255;
   --border: 0 107 63;
   --input: 0 107 63;
-  --ring: 252 209 22;
-  --radius: 0.125rem;
+  --ring: 252 209 22; /* yellow focus ring */
+  --radius: 0.125rem; /* 2px, near-sharp */
 
-  --os-accent: 252 209 22; /* BRAND yellow */
-  --os-accent-foreground: 0 51 31;
-  --os-on-primary-soft: 220 235 225;
-  --os-on-surface-faint: 129 136 120;
+  --os-accent: 252 209 22; /* Venturing Yellow #FCD116 */
+  --os-accent-foreground: 0 51 31; /* dark green on yellow */
+  --os-on-primary-soft: 220 235 225; /* #DCEBE1, ~7.5:1 on green */
+  --os-on-surface-faint: 129 136 120; /* #818878, ~3.5:1 */
   --os-decor: 0 107 63;
   --os-rule-weight: 2px;
   --os-shadow: 0 8px 24px -8px rgb(0 51 31 / 0.3), 0 2px 4px -2px rgb(0 51 31 / 0.15);
@@ -344,68 +208,38 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Sea Scouts (ages 14-20)
-   Voice: Navigate the world. Editorial nautical, mature, crisp.
-   Palette: Dark Blue + Yellow + Pale Blue (marine), p.32.
-   Personality choices:
-     - Linear radii (clean, drafted)
-     - Italic display weight (editorial, sailing pennant feel)
-     - Minimal shadows (clean, charts-and-instruments)
-     - Yellow as bright accent against deep navy
+   Sea Scouts (ages 14-20). Dark Blue + Yellow + Pale Blue (marine), p.32.
+   Linear (hairline) radii, italic display weight, minimal shadows; yellow as a
+   bright accent against deep navy.
    --------------------------------------------------------------------------- */
 [data-program="seascouts"] {
-  --program-primary: 0 51 102; /* Sea Scouts Dark Blue #003366 */
-  --program-on-primary: 255 255 255;
-  --program-on-primary-soft: 215 225 240; /* #D7E1F0, ~9:1 on navy */
-  --program-accent: 255 204 0; /* Sea Scouts Yellow #FFCC00 */
-  --program-on-accent: 0 51 102;
-  --program-surface: 240 244 248; /* sea-foam paper */
-  --program-on-surface: 0 26 51;
-  --program-on-surface-soft: 71 90 120; /* #475A78, ~6.5:1 muted body text */
-  --program-on-surface-faint: 118 135 160; /* #7687A0, ~3.3:1 inactive dim (the earlier #7E8FA8 measured 2.98:1, under the 3:1 floor) */
-  --program-surface-muted: 154 179 213; /* Sea Scouts Light Blue #9AB3D5 */
-  --program-on-surface-muted: 0 26 51;
-  --program-border: 0 51 102;
-  --program-ring: 255 204 0;
-  --program-decor: 154 179 213;
-
-  --program-display-weight: 600;
-  --program-display-tracking: -0.01em;
-  --program-display-style: italic;
-  --program-display-transform: none;
-
-  --program-radius: 0.0625rem; /* 1px, hairline */
-  --program-rule-weight: 1px; /* drafted hairline */
-  --program-shadow: 0 1px 0 0 rgb(0 51 102 / 0.12);
-
-  /* === shadcn vocabulary (Sea Scouts) =================================== */
-  --background: 240 244 248;
+  --background: 240 244 248; /* sea-foam paper */
   --foreground: 0 26 51;
   --card: 240 244 248;
   --card-foreground: 0 26 51;
   --popover: 240 244 248;
   --popover-foreground: 0 26 51;
-  --primary: 0 51 102;
+  --primary: 0 51 102; /* Sea Scouts Dark Blue #003366 */
   --primary-foreground: 255 255 255;
-  --secondary: 154 179 213;
+  --secondary: 154 179 213; /* Sea Scouts Light Blue #9AB3D5 */
   --secondary-foreground: 0 26 51;
   --muted: 154 179 213;
-  --muted-foreground: 71 90 120; /* on-surface-soft, ~6.5:1 */
-  --accent: 154 179 213; /* delta 4: pale-blue WASH (surface-muted), NOT yellow fill */
+  --muted-foreground: 71 90 120; /* #475A78, ~6.5:1 */
+  --accent: 154 179 213; /* delta 4: pale-blue WASH, not the yellow fill */
   --accent-foreground: 0 26 51;
   --destructive: 206 17 38;
   --destructive-foreground: 255 255 255;
   --border: 0 51 102;
   --input: 0 51 102;
-  --ring: 255 204 0;
-  --radius: 0.0625rem;
+  --ring: 255 204 0; /* yellow focus ring */
+  --radius: 0.0625rem; /* 1px, hairline */
 
-  --os-accent: 255 204 0; /* BRAND yellow */
+  --os-accent: 255 204 0; /* Sea Scouts Yellow #FFCC00 */
   --os-accent-foreground: 0 51 102;
-  --os-on-primary-soft: 215 225 240;
-  --os-on-surface-faint: 118 135 160;
+  --os-on-primary-soft: 215 225 240; /* #D7E1F0, ~9:1 on navy */
+  --os-on-surface-faint: 118 135 160; /* #7687A0, ~3.3:1 (the earlier #7E8FA8 measured 2.98:1) */
   --os-decor: 154 179 213;
-  --os-rule-weight: 1px;
+  --os-rule-weight: 1px; /* drafted hairline */
   --os-shadow: 0 1px 0 0 rgb(0 51 102 / 0.12);
   --os-display-weight: 600;
   --os-display-tracking: -0.01em;
@@ -428,16 +262,13 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Forced colors (Windows High Contrast). The browser replaces the palette
-   with system colors, which erases background fills and shadows. Program
-   personality is intentionally lost here; legibility of structure is what
-   matters. Three interventions:
-   1. Shadows carry no information once colors are forced; disable the token
-      so elevated cards do not depend on it.
-   2. Buttons lose their primary/accent fill and would blend into Canvas;
-      a real border in ButtonText keeps every control visible.
-   3. Focus uses the system Highlight pair so keyboard position is always
-      obvious regardless of the program ring color.
+   Forced colors (Windows High Contrast). The browser replaces the palette with
+   system colors, erasing background fills and shadows. Program personality is
+   intentionally lost here; legibility of structure is what matters.
+   1. Shadows carry no information once colors are forced; disable the token.
+   2. Buttons lose their fill and would blend into Canvas; a real ButtonText
+      border keeps every control visible.
+   3. Focus uses the system Highlight pair so keyboard position is always clear.
    --------------------------------------------------------------------------- */
 @media (forced-colors: active) {
   :root,
@@ -445,7 +276,6 @@
   [data-program="scoutsbsa"],
   [data-program="venturing"],
   [data-program="seascouts"] {
-    --program-shadow: none;
     --os-shadow: none;
   }
 

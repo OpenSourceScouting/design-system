@@ -33,23 +33,7 @@
   --color-sa-pale-gray: #858787;
   --color-sa-dark-gray: #232528;
 
-  /* --- Legacy program.* semantic tokens (re-theme per data-program) ------ */
-  --color-program-primary: rgb(var(--program-primary));
-  --color-program-on-primary: rgb(var(--program-on-primary));
-  --color-program-on-primary-soft: rgb(var(--program-on-primary-soft));
-  --color-program-accent: rgb(var(--program-accent));
-  --color-program-on-accent: rgb(var(--program-on-accent));
-  --color-program-surface: rgb(var(--program-surface));
-  --color-program-on-surface: rgb(var(--program-on-surface));
-  --color-program-on-surface-soft: rgb(var(--program-on-surface-soft));
-  --color-program-on-surface-faint: rgb(var(--program-on-surface-faint));
-  --color-program-surface-muted: rgb(var(--program-surface-muted));
-  --color-program-on-surface-muted: rgb(var(--program-on-surface-muted));
-  --color-program-border: rgb(var(--program-border));
-  --color-program-ring: rgb(var(--program-ring));
-  --color-program-decor: rgb(var(--program-decor));
-
-  /* --- shadcn vocabulary (Phase 1) --------------------------------------- */
+  /* --- shadcn vocabulary --------------------------------------------------- */
   --color-background: rgb(var(--background));
   --color-foreground: rgb(var(--foreground));
   --color-card: rgb(var(--card));
@@ -78,10 +62,10 @@
   --color-os-decor: rgb(var(--os-decor));
 
   /* --- Typography, radius, shadow ---------------------------------------- */
-  --font-display: var(--program-font-display);
-  --font-body: var(--program-font-body);
-  --radius-program: var(--program-radius);
-  --shadow-program: var(--program-shadow);
+  --font-display: var(--os-font-display);
+  --font-body: var(--os-font-body);
+  --radius-program: var(--radius); /* alias of the shadcn radius; == rounded-lg */
+  --shadow-program: var(--os-shadow);
 
   /* shadcn radius scale, derived from the per-program --radius (Phase 3). Lets
      recipes use rounded-sm/md/lg/xl and still track each program's radius. No
@@ -92,28 +76,28 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* Rule keyline width tracks --program-rule-weight per program. v4 has no
-   theme namespace that emits directional border-width utilities, so define the
-   ones components use explicitly. */
+/* Rule keyline width tracks --os-rule-weight per program. v4 has no theme
+   namespace that emits directional border-width utilities, so define the ones
+   components use explicitly. */
 @utility border-rule {
-  border-width: var(--program-rule-weight);
+  border-width: var(--os-rule-weight);
 }
 @utility border-b-rule {
-  border-bottom-width: var(--program-rule-weight);
+  border-bottom-width: var(--os-rule-weight);
 }
 @utility border-t-rule {
-  border-top-width: var(--program-rule-weight);
+  border-top-width: var(--os-rule-weight);
 }
 
 @layer base {
   html {
-    font-family: var(--program-font-body);
+    font-family: var(--os-font-body);
     color-scheme: light;
   }
 
   body {
-    background-color: rgb(var(--program-surface));
-    color: rgb(var(--program-on-surface));
+    background-color: rgb(var(--background));
+    color: rgb(var(--foreground));
     font-feature-settings: "kern", "liga", "calt";
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -121,13 +105,15 @@
   }
 
   :focus-visible {
-    outline: 2px solid rgb(var(--program-ring));
+    outline: 2px solid rgb(var(--ring));
     outline-offset: 2px;
     border-radius: 2px;
   }
 
+  /* Selection uses the program primary (AA-safe), not the brand accent: gold/
+     yellow selection with dark text only reaches ~3:1 for small body text. */
   ::selection {
-    background-color: rgb(var(--program-accent));
-    color: rgb(var(--program-on-accent));
+    background-color: rgb(var(--primary));
+    color: rgb(var(--primary-foreground));
   }
 }

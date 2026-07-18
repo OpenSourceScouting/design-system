@@ -39,10 +39,7 @@ const TOKENS_CSS = readFileSync(path.resolve(__dirname, "../src/styles/tokens.cs
 const ROOT_ONLY_SHARED = new Set<string>([
   // One typography pair across all programs (Montserrat display, Source Serif 4
   // body). Per-program differentiation is weight/tracking/style, not family, so
-  // the family tokens are shared and never re-declared per program. Both the
-  // legacy names and the Phase 1 --os-* names live only on :root.
-  "--program-font-display",
-  "--program-font-body",
+  // the family tokens are shared and never re-declared per program.
   "--os-font-display",
   "--os-font-body",
 ]);
