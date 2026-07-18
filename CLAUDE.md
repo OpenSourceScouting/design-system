@@ -144,6 +144,37 @@ research/                      ← brand guidelines PDF + extracted text
 - `EventDialog` is built on the shadcn `Dialog` recipe (Radix); Radix supplies the focus trap, ESC, inert background, overlay, and the delta-9 re-stamp. The native `<dialog>` implementation was retired.
 - Status colors (Alert tones) come from the raw `sa-*` palette, not program tokens: system feedback reads the same across programs.
 - All components support theme nesting (a Venturing card inside a Scouts BSA page works).
+- Adding a program is additive: add a `[data-program]` block to `tokens.css` with
+  the full token set (the parity test enforces an identical set), add it to
+  `PROGRAMS` / `PROGRAM_META` in `ScoutThemeProvider`, and to the `PALETTES`
+  arrays in the token tests. No component code changes.
+
+## Testing
+
+- `npm test` is the fast suite (Vitest + jsdom): a component smoke test plus a
+  `jest-axe` scan per component, `tests/contrast.test.ts` (WCAG ratios per
+  program, including the `/80` and `/85` composites over each surface), and
+  `tests/token-parity.test.ts` (per-program token-set parity). Every new
+  component needs a jsdom axe smoke test.
+- Radix portalled widgets (Popover, Tooltip, DropdownMenu, Select) need the jsdom
+  stubs in `tests/setup.ts` (ResizeObserver, scrollIntoView, pointer-capture) to
+  render in tests: open with `defaultOpen`, scan `document.body`, and disable the
+  axe `region` rule for the isolated-widget scan (see `widgets.test.tsx`).
+- Accessibility testing strategy: ADR 0004. Contrast is owned by
+  `contrast.test.ts`; the `@storybook/test-runner` runs a real-browser axe pass
+  (roles/names/ARIA/focus) with `color-contrast` DISABLED there on purpose. Do
+  not re-enable color-contrast in the test-runner; it is deferred to the contrast
+  test.
+- Visual regression runs via `@storybook/test-runner` + jest-image-snapshot in
+  the pinned Playwright container. **Baselines cannot be regenerated locally**:
+  the in-container Storybook build OOMs, and building Storybook on the host then
+  screenshotting in the container produces BLANK images. Regenerate via the CI
+  "Visual regression" workflow (`workflow_dispatch`, `update_baselines=true`),
+  per `.storybook/VISUAL_REGRESSION.md`.
+- Gotcha: running the visual/baseline container against the repo does `npm ci`
+  inside the container against the mounted `node_modules`, replacing it with
+  Linux binaries. Run `npm install` on the host afterward to restore darwin
+  binaries before local builds.
 
 ## Things to avoid
 
@@ -156,3 +187,7 @@ research/                      ← brand guidelines PDF + extracted text
 - Opacity-tinted text below `/80`. Use the `-muted-foreground` / `-os-on-surface-faint` tokens.
 - `variant="accent" size="sm"` on `Button`. The type system blocks it, but untyped call sites still get a dev-mode console warning.
 - Reintroducing a `tailwind.config.js` or JS preset. v4 is configured in CSS (`theme.css`).
+- Bundling a new runtime dependency without deciding externalization. `radix-ui`,
+  `sonner`, `lucide-react`, and React are externalized in `vite.config.ts`
+  (`rollupOptions.external` + `globals`); `clsx`, `tailwind-merge`, and `cva` are
+  bundled. A new runtime dep needs an explicit externalize-or-bundle choice there.
