@@ -133,6 +133,8 @@ export {
 } from "./components/DropdownMenu";
 export { Popover, PopoverTrigger, PopoverAnchor, PopoverContent } from "./components/Popover";
 export { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "./components/Tooltip";
+export { Toaster, toast } from "./components/Toaster";
+export type { ToasterProps } from "./components/Toaster";
 
 // Tier-1 structural widgets (shadcn recipes on Radix)
 export { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/Tabs";

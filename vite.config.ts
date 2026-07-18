@@ -82,7 +82,14 @@ export default defineConfig(({ command }) => {
               format === "cjs" ? `${entryName}.cjs` : `${entryName}.js`,
           },
           rollupOptions: {
-            external: ["react", "react-dom", "react/jsx-runtime", "lucide-react", "radix-ui"],
+            external: [
+              "react",
+              "react-dom",
+              "react/jsx-runtime",
+              "lucide-react",
+              "radix-ui",
+              "sonner",
+            ],
             output: {
               globals: {
                 react: "React",
@@ -90,6 +97,7 @@ export default defineConfig(({ command }) => {
                 "react/jsx-runtime": "jsxRuntime",
                 "lucide-react": "lucideReact",
                 "radix-ui": "RadixUI",
+                sonner: "Sonner",
               },
             },
           },

@@ -1,7 +1,7 @@
 import { forwardRef, type ReactNode } from "react";
 import { Check, ChevronDown } from "lucide-react";
 import { Select as RS } from "radix-ui";
-import { useScoutTheme } from "../lib/theme/ScoutThemeProvider";
+import { useProgramStamp } from "../lib/theme/ScoutThemeProvider";
 import { useFieldContext, controlClasses } from "./Field";
 import { Icon } from "./Icon";
 import { cn } from "../lib/utils/cn";
@@ -53,7 +53,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
   },
   ref,
 ) {
-  const { program } = useScoutTheme();
+  const stamp = useProgramStamp();
   const field = useFieldContext();
   const isInvalid = invalid ?? field?.invalid ?? false;
 
@@ -85,7 +85,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
       </RS.Trigger>
       <RS.Portal>
         <RS.Content
-          data-program={program}
+          {...stamp}
           position="popper"
           sideOffset={4}
           className={cn(
