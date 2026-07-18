@@ -23,6 +23,22 @@ if (typeof window !== "undefined" && !window.matchMedia) {
     }) as unknown as MediaQueryList;
 }
 
+// Radix popper widgets (Popover, Tooltip, DropdownMenu, Select) use APIs jsdom
+// does not implement. Stub the minimum so they can open and be a11y-scanned.
+if (typeof window !== "undefined" && !window.ResizeObserver) {
+  window.ResizeObserver = class {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  } as unknown as typeof ResizeObserver;
+}
+if (typeof Element !== "undefined") {
+  Element.prototype.scrollIntoView ??= () => {};
+  Element.prototype.hasPointerCapture ??= () => false;
+  Element.prototype.setPointerCapture ??= () => {};
+  Element.prototype.releasePointerCapture ??= () => {};
+}
+
 // Unmount React trees between tests so document.body stays clean and axe scans
 // only the component under test.
 afterEach(() => {

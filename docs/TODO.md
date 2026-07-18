@@ -622,6 +622,61 @@ results as broken `<img>` tags instead of falling back to the placeholder.
 
 ---
 
+### [ ] 3.12 Upgrade to Storybook 9 and adopt the Vitest addon for a11y/component testing
+
+**Why:** Storybook 9 makes component testing and accessibility testing
+first-class through the Vitest addon (the graduated `experimental-addon-test`):
+stories run as Vitest browser-mode tests with axe built in, per story. That is
+the modern, maintained path and would replace both the jsdom jest-axe suite and
+the interim test-runner axe pass (task added alongside 2.4) with one
+browser-based suite where the stories are the tests. It also folds
+`addon-essentials` into core, shrinks the install, and keeps us aligned with the
+shadcn ecosystem tooling.
+
+Deliberately sequenced AFTER the shadcn/Tailwind v4 re-platform so the two major
+changes are not entangled, and so the visual-regression retooling it invites is
+a conscious decision rather than a rider.
+
+**Benefits:** native per-story a11y (axe) in CI; browser-mode component tests;
+lighter/faster install; current with the ecosystem; retires the interim
+test-runner axe stopgap.
+
+**Risks / costs:**
+
+- Major version bump. Config migration for `addon-essentials` (folded into
+  core), the `globalTypes.program` toolbar, and the `ScoutThemeProvider` preview
+  decorator; the `storybook upgrade` codemod handles most but not the custom
+  theming decorator.
+- Visual regression is currently `@storybook/test-runner` + jest-image-snapshot
+  - pinned Playwright container + LFS baselines. SB9's direction (Vitest browser
+    mode) uses Playwright's own snapshotting, so moving to it re-tools the pipeline
+    we just stabilized. Decide explicitly: keep the test-runner visual job, or
+    migrate it too.
+- The Vitest addon needs `@vitest/browser` + a Playwright provider, and the
+  existing jsdom Vitest suite (unit, contrast, parity) would need a Vitest
+  workspace split (a browser project and a node project).
+
+**Files:** `.storybook/main.ts`, `.storybook/preview.tsx`, `package.json`,
+`vitest.config.ts` (workspace), `.storybook/test-runner.ts` (retire or keep),
+`.github/workflows/*`.
+
+**Acceptance:**
+
+- Storybook 9 runs (`npm run storybook`, `npm run build-storybook`) with the
+  program toolbar and ScoutThemeProvider decorator intact.
+- The Vitest addon runs stories as browser tests with axe; a11y violations fail
+  CI. The interim test-runner axe pass is removed.
+- Contrast/parity/unit tests still pass (workspace split as needed).
+- Visual-regression decision recorded (kept on test-runner, or migrated).
+- CLAUDE.md and README updated for the new test commands.
+
+**Effort:** 1-2 days.
+
+**Prerequisites:** Vitest 3+ (have 3.2.6) and Node 20+ (have 22) are already
+satisfied. Land after the re-platform merges.
+
+---
+
 ## Tier 4: nice-to-have
 
 ### [x] 4.1 Visual regression (done, substituted for Chromatic)

@@ -70,6 +70,7 @@
     "tailwind-merge": "^2.5.4"
   },
   "devDependencies": {
+    "axe-playwright": "^2.1.0",
     "@fontsource-variable/montserrat": "^5.2.8",
     "@fontsource-variable/source-serif-4": "^5.2.9",
     "@storybook/addon-a11y": "^8.4.7",

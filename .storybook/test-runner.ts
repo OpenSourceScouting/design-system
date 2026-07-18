@@ -1,4 +1,6 @@
 import type { TestRunnerConfig } from "@storybook/test-runner";
+import { getStoryContext } from "@storybook/test-runner";
+import { injectAxe, checkA11y } from "axe-playwright";
 import { toMatchImageSnapshot } from "jest-image-snapshot";
 
 /**
@@ -30,6 +32,11 @@ const config: TestRunnerConfig = {
     expect.extend({ toMatchImageSnapshot });
   },
 
+  async preVisit(page) {
+    // Load axe once per page so postVisit can run the accessibility scan.
+    await injectAxe(page);
+  },
+
   async postVisit(page, context) {
     // Wait for fonts to load so glyph metrics are stable, then wait for the
     // network to go idle (any lazily loaded images/assets settle).
@@ -52,6 +59,24 @@ const config: TestRunnerConfig = {
         // regressions. Kept tight because the environment is pinned.
         failureThreshold: 0.02,
         failureThresholdType: "percent",
+      });
+    }
+
+    // Accessibility scan (real browser, every story). Runs AFTER the screenshots
+    // so a baseline-update pass (-u) is never blocked by an a11y failure. This is
+    // the interim stopgap on Storybook 8; TODO 3.12 replaces it with the SB9
+    // Vitest addon. A story can opt out with `parameters: { a11y: { disable: true } }`.
+    // color-contrast is disabled here on purpose: tests/contrast.test.ts already
+    // checks contrast exhaustively per program (base pairs + the /80 and /85
+    // composites), so this pass focuses on what jsdom cannot see: roles, names,
+    // labels, ARIA, and focusable-content structure.
+    const storyContext = await getStoryContext(page, context);
+    if (!storyContext.parameters?.a11y?.disable) {
+      await page.setViewportSize({ width: 1280, height: 1024 });
+      await checkA11y(page, "#storybook-root", {
+        detailedReport: true,
+        detailedReportOptions: { html: true },
+        axeOptions: { rules: { "color-contrast": { enabled: false } } },
       });
     }
   },
