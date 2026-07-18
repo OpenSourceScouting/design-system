@@ -18,6 +18,46 @@ Conventions for anyone picking up work here:
 
 ---
 
+## Outstanding from the shadcn re-platform (as of 2026-07-18)
+
+The shadcn/ui + Tailwind v4 re-platform (ADR 0002/0003, executed via
+`docs/shadcn-migration-plan.md`) is complete and merged to `main` (Phases 1-6):
+tokens in shadcn vocabulary + `--os-*`, v4 CSS-first build (`theme.css`), all
+primitives/forms/widgets on `cva` + Radix, legacy `--program-*` removed. Read
+`CLAUDE.md` for the current model. Immediate follow-ups:
+
+### [ ] R.1 Regenerate visual-regression baselines (blocks a green CI visual job)
+
+**Why:** Every component's rendering changed in the migration (v4 color-mix
+opacity, new token values, new widgets, rebuilt EventDialog), so the committed
+baselines under `.storybook/__image_snapshots__/` are stale and the visual job
+will report diffs until they are refreshed.
+
+**How:** They CANNOT be regenerated locally: the in-container Storybook build
+OOMs, and building on the host then screenshotting in the container yields blank
+images (both verified this session). Trigger the CI "Visual regression" workflow
+via `workflow_dispatch` with `update_baselines=true` (see
+`.storybook/VISUAL_REGRESSION.md`); it runs in the pinned Playwright container
+and uploads the regenerated PNGs as an artifact to download and commit. Stories
+added in the migration (overlays, navigation, Toaster) need first-time baselines
+too.
+
+**Effort:** ~30 min (mostly CI wait + committing the artifact).
+
+### Operational state
+
+- `main` has the merge commit but is NOT pushed. Push when ready.
+- Branches `feat/shadcn-replatform` (merged) and `spike/phase0-shadcn-tw4`
+  (throwaway Phase 0 spike) can be deleted.
+- The `@storybook/test-runner` now also runs a real-browser axe pass after the
+  screenshots (ADR 0004). It is an interim stopgap superseded by task 3.12
+  (Storybook 9 + Vitest addon). Do not re-enable `color-contrast` in that pass;
+  it is deferred to `tests/contrast.test.ts`.
+- Docs at `docs/decisions/` (0002 delta register, 0003 Tailwind v4, 0004 a11y
+  testing) capture the intentional deviations and testing strategy.
+
+---
+
 ## Tier 1: correctness and accessibility bugs (do first)
 
 ### [x] 1.1 Fix SSR / strict-mode side effect in ScoutThemeProvider
@@ -189,7 +229,7 @@ no `exports`, no `peerDependencies`. A council webmaster cannot
 
 **Why:** `Program` is a closed string-literal union (`"cub" | "scoutsbsa" | "venturing" | "seascouts"`). A council running a custom youth program (or a future fifth national program) cannot add a brand without forking the package. Additionally, the `forced-colors` block in `tokens.css` hard-codes all four program names with `[data-program="..."]` selectors, meaning any fifth program gets no high-contrast support automatically.
 
-**Files:** `src/lib/theme/ScoutThemeProvider.tsx`, `src/styles/tokens.css`, `tailwind-preset.cjs`, `src/index.ts`.
+**Files:** `src/lib/theme/ScoutThemeProvider.tsx`, `src/styles/tokens.css`, `src/styles/theme.css`, `src/index.ts`.
 
 **Acceptance:**
 
@@ -365,8 +405,9 @@ this audience.
 
 - Each program block has a paired `@media (prefers-color-scheme: dark)` set
   of overrides, OR a `[data-theme="dark"][data-program="cub"]` selector axis.
-- `globals.css` removes the hard-coded `color-scheme: light` and instead
-  declares both.
+- The `theme.css` base layer removes the hard-coded `color-scheme: light` and
+  instead declares both. (Dark composes onto the shadcn tokens: add
+  `[data-program].dark` blocks in `tokens.css`.)
 - Storybook toolbar gains a `theme: light | dark` global (alongside the
   existing `program` global).
 - Contrast tests (2.4) cover the dark palette too.
@@ -383,17 +424,17 @@ shadow). Motion is the missing felt difference: Cubs should bounce, Sea
 Scouts should glide, Venturing should snap. Adds brand depth at near-zero
 runtime cost.
 
-**Files:** `src/styles/tokens.css`, `tailwind.config.ts`, callers
+**Files:** `src/styles/tokens.css`, `src/styles/theme.css`, callers
 (`Button`, `Card`, `EventDialog`).
 
 **Acceptance:**
 
-- New tokens per program block:
-  - `--program-motion-easing`
-  - `--program-motion-duration-fast`
-  - `--program-motion-duration-base`
-- Tailwind extension: `transitionTimingFunction.program`,
-  `transitionDuration.program` and `program-slow`.
+- New `--os-*` tokens per program block:
+  - `--os-motion-easing`
+  - `--os-motion-duration-fast`
+  - `--os-motion-duration-base`
+- Map them in `theme.css` `@theme` (v4 namespaces `--ease-program`,
+  `--duration-program` / `-slow`); there is no `tailwind.config.ts`.
 - At least Button and Card use the program-themed motion variables in their
   transitions.
 - Reduced-motion still zeroes everything (already handled in tokens.css).
@@ -451,7 +492,7 @@ keeping them inside the token system prevents drift.
 is placed in a 400px sidebar on a 1440px screen. Container queries fix this.
 
 **Files:** `src/components/FeatureGrid.tsx`, `src/components/Calendar.tsx`,
-`tailwind.config.ts` (enable `@tailwindcss/container-queries`).
+Tailwind v4 (container queries are built in; no config or plugin needed).
 
 **Acceptance:**
 
@@ -541,7 +582,7 @@ new `examples/email-template/index.html`.
 
 ---
 
-### [ ] 3.9 RTL support audit
+### [ ] 3.13 RTL support audit
 
 **Why:** Scouting is global. US councils also serve Arabic/Hebrew speakers.
 
