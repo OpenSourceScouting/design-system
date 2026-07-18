@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Calendar, type CalendarEvent } from "./Calendar";
 
 const meta: Meta<typeof Calendar> = {
@@ -129,7 +129,7 @@ export const Empty: Story = {
  */
 export const MobileFallsBackToAgenda: Story = {
   args: { events: SAMPLE_EVENTS, defaultView: "month" },
-  parameters: {
-    viewport: { defaultViewport: "mobile1" },
+  globals: {
+    viewport: { value: "mobile1", isRotated: false },
   },
 };

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MadeWithBadge } from "./MadeWithBadge";
 
 const meta: Meta<typeof MadeWithBadge> = {
@@ -29,12 +29,16 @@ export const Light: Story = { args: { variant: "light" } };
 
 export const Dark: Story = {
   args: { variant: "dark" },
-  parameters: { backgrounds: { default: "dark" } },
   render: (args) => (
     <div style={{ background: "#1a1a1a", padding: 24, borderRadius: 8 }}>
       <MadeWithBadge {...args} />
     </div>
   ),
+  globals: {
+    backgrounds: {
+      value: "dark"
+    }
+  },
 };
 
 export const Sizes: Story = {

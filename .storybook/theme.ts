@@ -1,4 +1,4 @@
-import { create } from "@storybook/theming/create";
+import { create } from "storybook/theming/create";
 
 // Brand the Storybook sidebar with the Open Source Scouting identity.
 // brandImage resolves from staticDirs (../public) configured in main.ts.

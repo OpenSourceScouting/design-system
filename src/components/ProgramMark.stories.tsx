@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ProgramMark } from "./ProgramMark";
 import { PROGRAMS, ScoutThemeProvider } from "../lib/theme/ScoutThemeProvider";
 
