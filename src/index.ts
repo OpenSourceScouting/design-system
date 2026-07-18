@@ -134,6 +134,26 @@ export {
 export { Popover, PopoverTrigger, PopoverAnchor, PopoverContent } from "./components/Popover";
 export { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "./components/Tooltip";
 
+// Tier-1 structural widgets (shadcn recipes on Radix)
+export { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/Tabs";
+export {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "./components/Accordion";
+export {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+  NavigationMenuViewport,
+  NavigationMenuIndicator,
+  navigationMenuTriggerStyle,
+} from "./components/NavigationMenu";
+
 export { MadeWithBadge } from "./components/MadeWithBadge";
 export type {
   MadeWithBadgeProps,
