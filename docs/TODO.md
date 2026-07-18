@@ -26,7 +26,14 @@ tokens in shadcn vocabulary + `--os-*`, v4 CSS-first build (`theme.css`), all
 primitives/forms/widgets on `cva` + Radix, legacy `--program-*` removed. Read
 `CLAUDE.md` for the current model. Immediate follow-ups:
 
-### [ ] R.1 Regenerate visual-regression baselines (blocks a green CI visual job)
+### [x] R.1 Regenerate visual-regression baselines (blocks a green CI visual job)
+
+> Superseded 2026-07-18 (ADR 0004, Storybook 10 upgrade): the
+> `@storybook/test-runner` visual-regression pipeline was retired and its
+> baselines removed and purged from git history, so there is nothing left to
+> regenerate. Visual regression is parked for now (project is pre-1.0/alpha,
+> manual review in the interim); see the new Tier 4 follow-up task to rebuild
+> it on `addon-vitest`/Playwright.
 
 **Why:** Every component's rendering changed in the migration (v4 color-mix
 opacity, new token values, new widgets, rebuilt EventDialog), so the committed
@@ -49,12 +56,14 @@ too.
 - `main` has the merge commit but is NOT pushed. Push when ready.
 - Branches `feat/shadcn-replatform` (merged) and `spike/phase0-shadcn-tw4`
   (throwaway Phase 0 spike) can be deleted.
-- The `@storybook/test-runner` now also runs a real-browser axe pass after the
-  screenshots (ADR 0004). It is an interim stopgap superseded by task 3.12
-  (Storybook 9 + Vitest addon). Do not re-enable `color-contrast` in that pass;
-  it is deferred to `tests/contrast.test.ts`.
-- Docs at `docs/decisions/` (0002 delta register, 0003 Tailwind v4, 0004 a11y
-  testing) capture the intentional deviations and testing strategy.
+- The `@storybook/test-runner` real-browser axe pass that ran after the
+  screenshots was an interim stopgap; it has been replaced by
+  `@storybook/addon-vitest` on Storybook 10 (task 3.12), and the test-runner
+  itself has been retired. Do not re-enable `color-contrast` in the addon's
+  a11y check; it is deferred to `tests/contrast.test.ts`.
+- Docs at `docs/decisions/` (0002 delta register, 0003 Tailwind v4, 0004 adopt
+  Storybook 10, 0005 a11y testing, Draft) capture the intentional deviations
+  and testing strategy.
 
 ---
 
@@ -663,7 +672,23 @@ results as broken `<img>` tags instead of falling back to the placeholder.
 
 ---
 
-### [ ] 3.12 Upgrade to Storybook 9 and adopt the Vitest addon for a11y/component testing
+### [x] 3.12 Upgrade to Storybook 9 and adopt the Vitest addon for a11y/component testing
+
+> Done 2026-07-18: went all the way to Storybook 10.5.2 (8.6 -> 9.1 -> 10.5.2;
+> 9 was only a mandatory transit checkpoint, not the landing version). Adopted
+> `@storybook/addon-vitest`, so stories now run as tests in real Chromium with
+> axe. Vitest is split into two projects: a jsdom "unit" project (contrast,
+> token-parity, component unit/smoke tests, plus the fast jest-axe inner loop)
+> and a browser "storybook" project (stories + axe), with a11y violations
+> failing CI (`parameters.a11y.test = "error"`) and `color-contrast` disabled
+> there since it is owned by `tests/contrast.test.ts`. `@storybook/test-runner`
+> was retired entirely, including its visual-regression job and its axe pass;
+> the 171 stale baseline PNGs were removed and are being purged from git
+> history. Visual regression is parked (pre-1.0/alpha, manual review for now;
+> see the new Tier 4 follow-up). CI now installs Playwright Chromium before the
+> test step. Recorded in new ADR 0004 (Accepted); the a11y-testing ADR moved
+> from 0004 to 0005 and is now Status: Draft pending revisit after this
+> migration.
 
 **Why:** Storybook 9 makes component testing and accessibility testing
 first-class through the Vitest addon (the graduated `experimental-addon-test`):
@@ -733,25 +758,37 @@ running both baseline generation and CI inside the pinned Playwright container
 `.storybook/VISUAL_REGRESSION.md` and `.github/workflows/visual.yml`.
 **Effort:** done.
 
-### [ ] 4.2 `examples/` directory with reference integrations
+### [ ] 4.2 Rebuild visual regression on addon-vitest / Playwright
+
+**Why:** retired in the Storybook 10 upgrade (task 3.12, ADR 0004) along with
+`@storybook/test-runner`; parked since the project is pre-1.0/alpha and manual
+review covers it for now.
+
+**How:** use Playwright's own `toHaveScreenshot` in the browser "storybook"
+Vitest project, or a dedicated screenshot job; generate baselines in a pinned
+Linux container for determinism.
+
+**Effort:** ~1 day.
+
+### [ ] 4.3 `examples/` directory with reference integrations
 
 Subdirectories: `nextjs-app/`, `vanilla-html/`, `wordpress-block-theme/`,
 `mailchimp-email/`. Each is a minimal working consumer of the package.
 **Effort:** 1-2 days.
 
-### [ ] 4.3 Figma library generated from token JSON
+### [ ] 4.4 Figma library generated from token JSON
 
 Use Tokens Studio plugin to consume `dist/tokens/tokens.json`. Closes the
 designer ↔ engineer loop.
 **Effort:** 1 day (mostly Figma work).
 
-### [ ] 4.4 `prefers-contrast: more` overrides
+### [ ] 4.5 `prefers-contrast: more` overrides
 
 Boost contrast tokens when users opt in. WCAG 2.2 SC 1.4.6 (AAA), increasingly
 expected on government/nonprofit sites.
 **Effort:** 2 hours.
 
-### [ ] 4.5 Imagery component with brand contract
+### [ ] 4.6 Imagery component with brand contract
 
 `<ProgramImage program="cub" treatment="warm-overlay" aspect="16:9" />`.
 Encodes brand book photography rules.

@@ -54,12 +54,12 @@ const preview: Preview = {
     a11y: {
       // Fail the addon-vitest browser run on a11y violations (roles, names,
       // labels, ARIA, focus). This replaces the retired test-runner axe pass
-      // (ADR 0004 item 2).
+      // (ADR 0005 item 2).
       test: "error",
       // color-contrast is deferred to tests/contrast.test.ts, which checks it
       // exhaustively per program (base pairs + /80 and /85 composites). Leaving
       // it on here duplicates that work and produces noisier, less precise
-      // failures. Do not re-enable (ADR 0004).
+      // failures. Do not re-enable (ADR 0005).
       config: {
         rules: [{ id: "color-contrast", enabled: false }],
       },

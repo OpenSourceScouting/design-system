@@ -1,7 +1,17 @@
-# 0004. Accessibility testing strategy
+# 0005. Accessibility testing strategy
 
 Date: 2026-07-18
-Status: Accepted
+Status: Draft (under revision after the Storybook 10 migration, ADR 0004)
+
+> **Revisit required.** This ADR described the Storybook 8 arrangement. The
+> Storybook 10 upgrade (ADR 0004) changed how the layered strategy is
+> implemented: item 2 (the real-browser axe pass) moved from the retired
+> `@storybook/test-runner` to `@storybook/addon-vitest` (stories run as tests in
+> Chromium with axe; `color-contrast` stays disabled there, still owned by
+> `tests/contrast.test.ts`). Items 1, 3, and 4 are unchanged. The visual
+> regression pipeline referenced below was retired. This document is kept as a
+> Draft until the strategy is re-validated on the new stack and rewritten to
+> match; treat the details below as historical where they conflict with ADR 0004.
 
 ## Context
 
