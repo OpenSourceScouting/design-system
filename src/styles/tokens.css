@@ -8,6 +8,28 @@
 
    Each program is selected via `data-program="..."` on any ancestor element.
    Defaults to the parent Scouting America palette on :root.
+
+   -------------------------------------------------------------------------
+   MIGRATION NOTE (shadcn re-platform, ADR 0002/0003, Phase 1)
+
+   Two token vocabularies coexist here during the migration (expand/contract):
+
+     1. shadcn vocabulary (--background, --foreground, --primary, --secondary,
+        --muted, --accent, --destructive, --border, --input, --ring, --radius,
+        --card, --popover) plus the --os-* EXTENDED vocabulary for concepts
+        shadcn lacks (brand accent, contrast tiers, rule weight, decor, shadow,
+        display type). This is the NEW source of truth that components migrate
+        to in Phases 3-5.
+
+     2. legacy --program-* tokens, LEFT UNCHANGED so the 62 files still using
+        `bg-program-*` etc. via the v3 preset render byte-identically. These are
+        removed in the Phase 5/6 "contract" step once no component references
+        them.
+
+   The curated mapping (delta 4) is the important, non-obvious part: shadcn
+   --accent is the MUTED HOVER WASH (from surface-muted), NOT the brand accent
+   (gold/red/yellow). The brand accent lives in --os-accent. tests/token-*.test.ts
+   enforce this and the value parity between the two vocabularies.
    ============================================================================= */
 
 :root {
@@ -42,6 +64,44 @@
   /* keyline weight for kicker rules and section heads; drives editorial hierarchy without a colored rail */
   --program-rule-weight: 2px;
   --program-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.06), 0 1px 3px 0 rgb(0 0 0 / 0.08);
+
+  /* === shadcn vocabulary (parent brand) ================================== */
+  --background: 255 255 255; /* = surface */
+  --foreground: 35 37 40; /* = on-surface */
+  --card: 255 255 255;
+  --card-foreground: 35 37 40;
+  --popover: 255 255 255;
+  --popover-foreground: 35 37 40;
+  --primary: 0 63 135;
+  --primary-foreground: 255 255 255;
+  --secondary: 233 233 228; /* = surface-muted */
+  --secondary-foreground: 81 83 84; /* = on-surface-muted */
+  --muted: 233 233 228;
+  --muted-foreground: 81 83 84; /* = on-surface-soft, AA >=4.5 */
+  --accent: 233 233 228; /* delta 4: hover wash = surface-muted, NOT brand red */
+  --accent-foreground: 81 83 84;
+  --destructive: 206 17 38; /* sa-red; status color, identical across programs */
+  --destructive-foreground: 255 255 255;
+  --border: 214 206 189;
+  --input: 214 206 189; /* input border = border */
+  --ring: 0 63 135;
+  --radius: 0.375rem;
+
+  /* --- --os-* extended vocabulary (concepts shadcn lacks) --------------- */
+  --os-accent: 206 17 38; /* BRAND accent (Scouting America Red), delta 3 */
+  --os-accent-foreground: 255 255 255;
+  --os-on-primary-soft: 225 230 240; /* AA >=4.5 muted text on primary */
+  --os-on-surface-faint: 133 135 135; /* >=3:1 inactive/dim text */
+  --os-decor: 173 157 123;
+  --os-rule-weight: 2px;
+  --os-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.06), 0 1px 3px 0 rgb(0 0 0 / 0.08);
+  --os-display-weight: 700;
+  --os-display-tracking: 0em;
+  --os-display-style: normal;
+  --os-display-transform: none;
+  /* Shared type families (one pair across all programs); :root-only by design. */
+  --os-font-display: "Montserrat Variable", "Montserrat", system-ui, -apple-system, sans-serif;
+  --os-font-body: "Source Serif 4 Variable", "Source Serif 4", "Source Serif Pro", Georgia, serif;
 }
 
 /* ---------------------------------------------------------------------------
@@ -98,6 +158,40 @@
   --program-radius: 0.875rem; /* 14px, rounded but not bubble */
   --program-rule-weight: 3px; /* chunky, kid-bold */
   --program-shadow: 0 4px 14px -2px rgb(0 63 135 / 0.18), 0 2px 4px -2px rgb(0 63 135 / 0.1);
+
+  /* === shadcn vocabulary (Cub Scouts) =================================== */
+  --background: 255 252 244;
+  --foreground: 10 26 51;
+  --card: 255 252 244;
+  --card-foreground: 10 26 51;
+  --popover: 255 252 244;
+  --popover-foreground: 10 26 51;
+  --primary: 0 63 135;
+  --primary-foreground: 255 255 255;
+  --secondary: 255 244 209;
+  --secondary-foreground: 27 47 79;
+  --muted: 255 244 209;
+  --muted-foreground: 70 88 122; /* on-surface-soft, ~6.9:1 */
+  --accent: 255 244 209; /* delta 4: gold WASH (surface-muted), NOT gold fill */
+  --accent-foreground: 27 47 79;
+  --destructive: 206 17 38;
+  --destructive-foreground: 255 255 255;
+  --border: 0 63 135;
+  --input: 0 63 135;
+  --ring: 253 193 22;
+  --radius: 0.875rem;
+
+  --os-accent: 253 193 22; /* BRAND gold */
+  --os-accent-foreground: 0 63 135;
+  --os-on-primary-soft: 218 226 240;
+  --os-on-surface-faint: 120 130 150;
+  --os-decor: 253 193 22;
+  --os-rule-weight: 3px;
+  --os-shadow: 0 4px 14px -2px rgb(0 63 135 / 0.18), 0 2px 4px -2px rgb(0 63 135 / 0.1);
+  --os-display-weight: 900;
+  --os-display-tracking: -0.02em;
+  --os-display-style: normal;
+  --os-display-transform: none;
 }
 
 /* ---------------------------------------------------------------------------
@@ -143,6 +237,40 @@
   --program-radius: 0.25rem; /* 4px, crisp */
   --program-rule-weight: 2px; /* traditional */
   --program-shadow: 0 1px 2px 0 rgb(36 62 44 / 0.1), 0 2px 6px -2px rgb(36 62 44 / 0.08);
+
+  /* === shadcn vocabulary (Scouts BSA) =================================== */
+  --background: 245 241 230;
+  --foreground: 26 26 20;
+  --card: 245 241 230;
+  --card-foreground: 26 26 20;
+  --popover: 245 241 230;
+  --popover-foreground: 26 26 20;
+  --primary: 36 62 44;
+  --primary-foreground: 245 241 230;
+  --secondary: 214 206 189;
+  --secondary-foreground: 36 62 44;
+  --muted: 214 206 189;
+  --muted-foreground: 82 94 72; /* on-surface-soft, ~6.2:1 */
+  --accent: 214 206 189; /* delta 4: tan WASH (surface-muted), NOT the blue accent */
+  --accent-foreground: 36 62 44;
+  --destructive: 206 17 38;
+  --destructive-foreground: 255 255 255;
+  --border: 173 157 123;
+  --input: 173 157 123;
+  --ring: 0 63 135;
+  --radius: 0.25rem;
+
+  --os-accent: 0 63 135; /* BRAND accent (SA Blue, per accent note above) */
+  --os-accent-foreground: 255 255 255;
+  --os-on-primary-soft: 215 220 200;
+  --os-on-surface-faint: 138 139 124;
+  --os-decor: 173 157 123;
+  --os-rule-weight: 2px;
+  --os-shadow: 0 1px 2px 0 rgb(36 62 44 / 0.1), 0 2px 6px -2px rgb(36 62 44 / 0.08);
+  --os-display-weight: 700;
+  --os-display-tracking: 0em;
+  --os-display-style: normal;
+  --os-display-transform: none;
 }
 
 /* ---------------------------------------------------------------------------
@@ -179,6 +307,40 @@
   --program-radius: 0.125rem; /* 2px, near-sharp */
   --program-rule-weight: 2px; /* blocky geometric */
   --program-shadow: 0 8px 24px -8px rgb(0 51 31 / 0.3), 0 2px 4px -2px rgb(0 51 31 / 0.15);
+
+  /* === shadcn vocabulary (Venturing) ==================================== */
+  --background: 244 241 232;
+  --foreground: 11 31 20;
+  --card: 244 241 232;
+  --card-foreground: 11 31 20;
+  --popover: 244 241 232;
+  --popover-foreground: 11 31 20;
+  --primary: 0 107 63;
+  --primary-foreground: 255 255 255;
+  --secondary: 224 220 209;
+  --secondary-foreground: 0 51 31;
+  --muted: 224 220 209;
+  --muted-foreground: 71 91 79; /* on-surface-soft, ~6.4:1 */
+  --accent: 224 220 209; /* delta 4: stone WASH (surface-muted), NOT yellow fill */
+  --accent-foreground: 0 51 31;
+  --destructive: 206 17 38;
+  --destructive-foreground: 255 255 255;
+  --border: 0 107 63;
+  --input: 0 107 63;
+  --ring: 252 209 22;
+  --radius: 0.125rem;
+
+  --os-accent: 252 209 22; /* BRAND yellow */
+  --os-accent-foreground: 0 51 31;
+  --os-on-primary-soft: 220 235 225;
+  --os-on-surface-faint: 129 136 120;
+  --os-decor: 0 107 63;
+  --os-rule-weight: 2px;
+  --os-shadow: 0 8px 24px -8px rgb(0 51 31 / 0.3), 0 2px 4px -2px rgb(0 51 31 / 0.15);
+  --os-display-weight: 800;
+  --os-display-tracking: 0.08em;
+  --os-display-style: normal;
+  --os-display-transform: uppercase;
 }
 
 /* ---------------------------------------------------------------------------
@@ -215,6 +377,40 @@
   --program-radius: 0.0625rem; /* 1px, hairline */
   --program-rule-weight: 1px; /* drafted hairline */
   --program-shadow: 0 1px 0 0 rgb(0 51 102 / 0.12);
+
+  /* === shadcn vocabulary (Sea Scouts) =================================== */
+  --background: 240 244 248;
+  --foreground: 0 26 51;
+  --card: 240 244 248;
+  --card-foreground: 0 26 51;
+  --popover: 240 244 248;
+  --popover-foreground: 0 26 51;
+  --primary: 0 51 102;
+  --primary-foreground: 255 255 255;
+  --secondary: 154 179 213;
+  --secondary-foreground: 0 26 51;
+  --muted: 154 179 213;
+  --muted-foreground: 71 90 120; /* on-surface-soft, ~6.5:1 */
+  --accent: 154 179 213; /* delta 4: pale-blue WASH (surface-muted), NOT yellow fill */
+  --accent-foreground: 0 26 51;
+  --destructive: 206 17 38;
+  --destructive-foreground: 255 255 255;
+  --border: 0 51 102;
+  --input: 0 51 102;
+  --ring: 255 204 0;
+  --radius: 0.0625rem;
+
+  --os-accent: 255 204 0; /* BRAND yellow */
+  --os-accent-foreground: 0 51 102;
+  --os-on-primary-soft: 215 225 240;
+  --os-on-surface-faint: 118 135 160;
+  --os-decor: 154 179 213;
+  --os-rule-weight: 1px;
+  --os-shadow: 0 1px 0 0 rgb(0 51 102 / 0.12);
+  --os-display-weight: 600;
+  --os-display-tracking: -0.01em;
+  --os-display-style: italic;
+  --os-display-transform: none;
 }
 
 /* ---------------------------------------------------------------------------
@@ -250,6 +446,7 @@
   [data-program="venturing"],
   [data-program="seascouts"] {
     --program-shadow: none;
+    --os-shadow: none;
   }
 
   button,

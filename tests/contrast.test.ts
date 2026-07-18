@@ -56,7 +56,9 @@ function parsePalette(css: string, selector: string): Record<string, RGB> {
   }
   const body = match[2];
   const palette: Record<string, RGB> = {};
-  const declRe = /(--program-[\w-]+)\s*:\s*(\d+)\s+(\d+)\s+(\d+)\s*;/g;
+  // Capture ALL custom-property triplets: both the legacy --program-* tokens and
+  // the shadcn / --os-* vocabulary added in the Phase 1 re-platform.
+  const declRe = /(--[\w-]+)\s*:\s*(\d+)\s+(\d+)\s+(\d+)\s*;/g;
   let m: RegExpExecArray | null;
   while ((m = declRe.exec(body)) !== null) {
     palette[m[1]] = [Number(m[2]), Number(m[3]), Number(m[4])];
@@ -117,6 +119,59 @@ describe("tokens.css contrast ratios", () => {
         // so we assert the large-text AA floor (WCAG SC 1.4.3, 3:1) here rather
         // than a normal-text 4.5:1 the palette is not designed to meet.
         expect(ratio("--program-on-accent", "--program-accent")).toBeGreaterThanOrEqual(3.0);
+      });
+
+      // --- shadcn / --os-* vocabulary (Phase 1 re-platform) -----------------
+      // Same audited values under the new names; assert the thresholds hold so
+      // the migration cannot silently regress contrast before components port.
+      describe("shadcn vocabulary", () => {
+        it("foreground vs background >= 4.5 (AA body text)", () => {
+          expect(ratio("--foreground", "--background")).toBeGreaterThanOrEqual(4.5);
+        });
+
+        it("card-foreground vs card >= 4.5", () => {
+          expect(ratio("--card-foreground", "--card")).toBeGreaterThanOrEqual(4.5);
+        });
+
+        it("popover-foreground vs popover >= 4.5", () => {
+          expect(ratio("--popover-foreground", "--popover")).toBeGreaterThanOrEqual(4.5);
+        });
+
+        it("primary-foreground vs primary >= 4.5 (AA text on primary)", () => {
+          expect(ratio("--primary-foreground", "--primary")).toBeGreaterThanOrEqual(4.5);
+        });
+
+        it("secondary-foreground vs secondary >= 4.5", () => {
+          expect(ratio("--secondary-foreground", "--secondary")).toBeGreaterThanOrEqual(4.5);
+        });
+
+        it("muted-foreground vs background >= 4.5 (AA muted body text)", () => {
+          expect(ratio("--muted-foreground", "--background")).toBeGreaterThanOrEqual(4.5);
+        });
+
+        it("accent-foreground vs accent >= 4.5 (AA text on the hover wash)", () => {
+          // Delta 4: --accent is the muted wash, so it must carry AA text like
+          // any surface, unlike the saturated brand fill below.
+          expect(ratio("--accent-foreground", "--accent")).toBeGreaterThanOrEqual(4.5);
+        });
+
+        it("destructive-foreground vs destructive >= 4.5", () => {
+          expect(ratio("--destructive-foreground", "--destructive")).toBeGreaterThanOrEqual(4.5);
+        });
+
+        it("os-on-primary-soft vs primary >= 4.5 (AA muted text on primary)", () => {
+          expect(ratio("--os-on-primary-soft", "--primary")).toBeGreaterThanOrEqual(4.5);
+        });
+
+        it("os-on-surface-faint vs background >= 3.0 (inactive/dim text)", () => {
+          expect(ratio("--os-on-surface-faint", "--background")).toBeGreaterThanOrEqual(3.0);
+        });
+
+        it("os-accent-foreground vs os-accent >= 3.0 (brand accent, large-text)", () => {
+          // Brand gold/yellow only reaches AA at large sizes, same rationale as
+          // the legacy on-accent/accent assertion above.
+          expect(ratio("--os-accent-foreground", "--os-accent")).toBeGreaterThanOrEqual(3.0);
+        });
       });
     });
   }
