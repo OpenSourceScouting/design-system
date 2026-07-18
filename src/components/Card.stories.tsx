@@ -73,8 +73,8 @@ export const EyebrowKeylineAcrossPrograms: Story = {
   render: () => (
     <div className="grid gap-4 sm:grid-cols-2 max-w-3xl">
       {PROGRAMS.map((p) => (
-        <ScoutThemeProvider key={p} program={p}>
-          <Card variant="outlined">
+        <ScoutThemeProvider key={p} program={p} className="h-full">
+          <Card variant="outlined" className="h-full">
             <CardBody>
               <CardEyebrow>{PROGRAM_META[p].label}</CardEyebrow>
               <Heading level={3} size={4}>
