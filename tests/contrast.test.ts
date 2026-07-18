@@ -41,6 +41,21 @@ function contrastRatio(a: RGB, b: RGB): number {
 }
 
 /**
+ * Flatten a semi-transparent foreground over an opaque background (standard
+ * sRGB alpha compositing). Components apply opacity-tinted TEXT via utilities
+ * like `text-program-on-surface/85`; the base-token contrast tests above do not
+ * catch whether the COMPOSITE still clears AA, so this models what the user
+ * actually sees. Conventional/conservative approximation of the rendered pixel.
+ */
+function composite(fg: RGB, bg: RGB, alpha: number): RGB {
+  return [
+    Math.round(alpha * fg[0] + (1 - alpha) * bg[0]),
+    Math.round(alpha * fg[1] + (1 - alpha) * bg[1]),
+    Math.round(alpha * fg[2] + (1 - alpha) * bg[2]),
+  ];
+}
+
+/**
  * Extract a single palette (map of token name -> RGB triplet) from a CSS
  * selector block. `selector` is matched literally against the text before the
  * `{`. Only `--program-*` declarations holding three space-separated integers
@@ -56,7 +71,9 @@ function parsePalette(css: string, selector: string): Record<string, RGB> {
   }
   const body = match[2];
   const palette: Record<string, RGB> = {};
-  const declRe = /(--program-[\w-]+)\s*:\s*(\d+)\s+(\d+)\s+(\d+)\s*;/g;
+  // Capture ALL custom-property triplets: both the legacy --program-* tokens and
+  // the shadcn / --os-* vocabulary added in the Phase 1 re-platform.
+  const declRe = /(--[\w-]+)\s*:\s*(\d+)\s+(\d+)\s+(\d+)\s*;/g;
   let m: RegExpExecArray | null;
   while ((m = declRe.exec(body)) !== null) {
     palette[m[1]] = [Number(m[2]), Number(m[3]), Number(m[4])];
@@ -85,38 +102,79 @@ describe("tokens.css contrast ratios", () => {
         return contrastRatio(f, b);
       };
 
-      it("on-surface vs surface >= 4.5 (AA body text)", () => {
-        expect(ratio("--program-on-surface", "--program-surface")).toBeGreaterThanOrEqual(4.5);
+      // --- Opacity-tinted TEXT composites (what components actually render) --
+      // CLAUDE.md permits /80 and /85 text tints "for hierarchy"; verify the
+      // flattened composite still clears AA on this program's surface, since the
+      // base-token tests only cover fully opaque pairs.
+      describe("alpha-composited text over surface", () => {
+        const over = (fg: string, bg: string, alpha: number) => {
+          const f = p[fg];
+          const b = p[bg];
+          expect(f, `${fg} missing in ${name}`).toBeDefined();
+          expect(b, `${bg} missing in ${name}`).toBeDefined();
+          return contrastRatio(composite(f, b, alpha), b);
+        };
+
+        it("foreground @ 85% over background >= 4.5 (EventDialog body text)", () => {
+          expect(over("--foreground", "--background", 0.85)).toBeGreaterThanOrEqual(4.5);
+        });
+
+        it("foreground @ 80% over background >= 4.5 (muted body text)", () => {
+          expect(over("--foreground", "--background", 0.8)).toBeGreaterThanOrEqual(4.5);
+        });
       });
 
-      it("on-surface-soft vs surface >= 4.5 (AA muted body text)", () => {
-        expect(ratio("--program-on-surface-soft", "--program-surface")).toBeGreaterThanOrEqual(4.5);
-      });
+      // --- shadcn / --os-* vocabulary ---------------------------------------
+      // The audited program values under the shadcn names; assert thresholds so
+      // the migration cannot silently regress contrast before components port.
+      describe("shadcn vocabulary", () => {
+        it("foreground vs background >= 4.5 (AA body text)", () => {
+          expect(ratio("--foreground", "--background")).toBeGreaterThanOrEqual(4.5);
+        });
 
-      it("on-surface-faint vs surface >= 3.0 (inactive/dim text)", () => {
-        // The original seascouts value (#7E8FA8 on #F0F4F8) measured 2.98:1;
-        // the token was darkened to #7687A0 (3.31:1) when this test caught it.
-        expect(ratio("--program-on-surface-faint", "--program-surface")).toBeGreaterThanOrEqual(
-          3.0,
-        );
-      });
+        it("card-foreground vs card >= 4.5", () => {
+          expect(ratio("--card-foreground", "--card")).toBeGreaterThanOrEqual(4.5);
+        });
 
-      it("on-primary vs primary >= 4.5 (AA text on primary surfaces)", () => {
-        expect(ratio("--program-on-primary", "--program-primary")).toBeGreaterThanOrEqual(4.5);
-      });
+        it("popover-foreground vs popover >= 4.5", () => {
+          expect(ratio("--popover-foreground", "--popover")).toBeGreaterThanOrEqual(4.5);
+        });
 
-      it("on-primary-soft vs primary >= 4.5 (AA muted text on primary)", () => {
-        expect(ratio("--program-on-primary-soft", "--program-primary")).toBeGreaterThanOrEqual(4.5);
-      });
+        it("primary-foreground vs primary >= 4.5 (AA text on primary)", () => {
+          expect(ratio("--primary-foreground", "--primary")).toBeGreaterThanOrEqual(4.5);
+        });
 
-      it("on-accent vs accent >= 3.0 (large-text only)", () => {
-        // Threshold is 3.0, not 4.5, on purpose. The accent fill is gold/yellow
-        // in every program and its dark on-accent text only reaches AA (4.5:1)
-        // at large sizes (16px bold / 24px normal and up). The Button type
-        // system already forbids the small-size accent combination (task 1.4),
-        // so we assert the large-text AA floor (WCAG SC 1.4.3, 3:1) here rather
-        // than a normal-text 4.5:1 the palette is not designed to meet.
-        expect(ratio("--program-on-accent", "--program-accent")).toBeGreaterThanOrEqual(3.0);
+        it("secondary-foreground vs secondary >= 4.5", () => {
+          expect(ratio("--secondary-foreground", "--secondary")).toBeGreaterThanOrEqual(4.5);
+        });
+
+        it("muted-foreground vs background >= 4.5 (AA muted body text)", () => {
+          expect(ratio("--muted-foreground", "--background")).toBeGreaterThanOrEqual(4.5);
+        });
+
+        it("accent-foreground vs accent >= 4.5 (AA text on the hover wash)", () => {
+          // Delta 4: --accent is the muted wash, so it must carry AA text like
+          // any surface, unlike the saturated brand fill below.
+          expect(ratio("--accent-foreground", "--accent")).toBeGreaterThanOrEqual(4.5);
+        });
+
+        it("destructive-foreground vs destructive >= 4.5", () => {
+          expect(ratio("--destructive-foreground", "--destructive")).toBeGreaterThanOrEqual(4.5);
+        });
+
+        it("os-on-primary-soft vs primary >= 4.5 (AA muted text on primary)", () => {
+          expect(ratio("--os-on-primary-soft", "--primary")).toBeGreaterThanOrEqual(4.5);
+        });
+
+        it("os-on-surface-faint vs background >= 3.0 (inactive/dim text)", () => {
+          expect(ratio("--os-on-surface-faint", "--background")).toBeGreaterThanOrEqual(3.0);
+        });
+
+        it("os-accent-foreground vs os-accent >= 3.0 (brand accent, large-text)", () => {
+          // Brand gold/yellow only reaches AA at large sizes, same rationale as
+          // the legacy on-accent/accent assertion above.
+          expect(ratio("--os-accent-foreground", "--os-accent")).toBeGreaterThanOrEqual(3.0);
+        });
       });
     });
   }

@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Re-platformed onto shadcn/ui patterns (Radix + `cva` recipes) on Tailwind v4,
+  per ADR 0002 and 0003. Components are rebuilt on `cva`; the token layer moved
+  from the v3 preset to CSS-first `@theme` in `src/styles/theme.css`.
+- Tokens now use shadcn's semantic names (`--primary`, `--background`,
+  `--accent`, and so on) plus an `--os-*` set for brand concepts shadcn lacks.
+  The brand accent is `--os-accent`; shadcn `--accent` is the muted hover wash.
+- New Tier-1 widgets on Radix recipes: Dialog, AlertDialog, DropdownMenu,
+  Popover, Tooltip, Tabs, Accordion, NavigationMenu, and Sonner-based `Toaster`.
+- `EventDialog` rebuilt on the Dialog recipe; the native `<dialog>` was retired.
+- `::selection` uses the program primary (AA-safe) instead of the brand accent.
+- The contrast test now also checks the `/80` and `/85` text composites over
+  each program surface; a token-parity test guards per-program token sets.
+
+### Removed (breaking, pre-release)
+
+- The Tailwind v3 preset and the `./tailwind-preset` export. Consumers on
+  Tailwind v4 import `./tokens` and `./theme` in CSS instead (see README). A new
+  `./theme` export ships the `@theme` mapping.
+- The legacy `--program-*` CSS variables and the `program-*` Tailwind color
+  utilities (`bg-program-primary`, and so on). Use the shadcn tokens
+  (`bg-primary`, ...) and `--os-*` for the brand accent, decor, and rule weight.
+
 ### Added
 
 - Canonical Scouting America resource links (`SCOUTING_LINKS`) as a versioned

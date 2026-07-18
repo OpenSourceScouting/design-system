@@ -104,8 +104,8 @@ const BLEND_MODE: Record<ProgramMarkVariant, "multiply" | "screen" | "normal"> =
 };
 
 const PLACEHOLDER_TINT: Record<ProgramMarkVariant, string> = {
-  color: "text-program-primary",
-  reversed: "text-program-on-primary",
+  color: "text-primary",
+  reversed: "text-primary-foreground",
   mono: "text-current",
 };
 
@@ -157,7 +157,7 @@ export function ProgramMark({
   const ext = EXTENSION_PRIORITY[extIdx];
   const PrintFallbackIcon = PROGRAM_ICONS[active];
   // The reversed variant relies on `mix-blend-mode: screen` keying out the
-  // JPG's black background against a dark program-primary surface. Browsers
+  // JPG's black background against a dark primary surface. Browsers
   // strip background graphics from print by default, leaving white paper
   // behind the mark; `screen` against white paper bleaches the entire image
   // to white. We hide the reversed <img> in print and reveal a generic
@@ -197,7 +197,7 @@ export function ProgramMark({
           height={size}
           strokeWidth={1.75}
           // Hidden on screen; only the print stylesheet reveals it.
-          className={cn("hidden print:inline-block shrink-0 text-program-on-surface", className)}
+          className={cn("hidden print:inline-block shrink-0 text-foreground", className)}
           style={style}
         />
       )}

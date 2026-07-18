@@ -1,0 +1,17 @@
+/* -----------------------------------------------------------------------------
+   Published stylesheet entry (Tailwind v4). build-css.mjs compiles this into
+   dist/styles.css.
+
+   `source(none)` disables Tailwind's automatic (repo-wide) source detection so
+   the published CSS is deterministic and never picks up demo/Storybook-only
+   utilities. `@source "../"` then scopes the scan to src/ (all shipped
+   components, lib, and the plain token rules), guaranteeing every utility our
+   components use is present in the package while nothing extraneous is.
+
+   Shares the token values (tokens.css) and the theme mapping + base layer
+   (theme.css) with the dev entry (globals.css), so there is one source of truth.
+   --------------------------------------------------------------------------- */
+@import "tailwindcss" source(none);
+@import "./tokens.css";
+@import "./theme.css";
+@source "../";

@@ -42,8 +42,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
       aria-invalid={isInvalid || undefined}
       aria-describedby={describedBy ?? field?.describedBy}
       className={cn(
-        "mt-0.5 h-4 w-4 shrink-0 accent-program-primary",
-        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-program-ring",
+        "mt-0.5 h-4 w-4 shrink-0 accent-primary",
+        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         className,
       )}
       {...rest}
@@ -55,16 +55,13 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
   return (
     <label
       htmlFor={cid}
-      className={cn(
-        "flex items-start gap-2 text-sm text-program-on-surface",
-        isDisabled && "opacity-50",
-      )}
+      className={cn("flex items-start gap-2 text-sm text-foreground", isDisabled && "opacity-50")}
     >
       {box}
       <span>
         {label}
         {description ? (
-          <span className="block text-xs text-program-on-surface-soft">{description}</span>
+          <span className="block text-xs text-muted-foreground">{description}</span>
         ) : null}
       </span>
     </label>

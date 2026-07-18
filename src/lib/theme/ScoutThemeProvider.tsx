@@ -152,8 +152,11 @@ export function ScoutThemeProvider({
         data-program={program}
         className={className}
         style={{
-          backgroundColor: "rgb(var(--program-surface))",
-          color: "rgb(var(--program-on-surface))",
+          // shadcn vocabulary (Phase 1): value-identical to the legacy
+          // --background/on-surface (proven by token-mapping.test.ts) but
+          // survives the Phase 5 removal of the legacy tokens.
+          backgroundColor: "rgb(var(--background))",
+          color: "rgb(var(--foreground))",
         }}
       >
         {children}
@@ -168,4 +171,24 @@ export function useScoutTheme(): ScoutThemeContextValue {
     throw new Error("useScoutTheme must be used inside <ScoutThemeProvider>.");
   }
   return ctx;
+}
+
+/**
+ * Delta 9 helper. Radix `Portal` renders content at document.body, OUTSIDE the
+ * themed `[data-program]` subtree, so portalled popovers/menus/dialogs would
+ * otherwise fall back to the :root theme. Spread this onto every portalled
+ * `*.Content` element to re-stamp the active program and keep its tokens
+ * resolving:
+ *
+ *   function PopoverContent(props) {
+ *     const stamp = useProgramStamp();
+ *     return <Portal><Content {...stamp} {...props} /></Portal>;
+ *   }
+ *
+ * Factored so the re-stamp cannot be forgotten when adding a new portalled
+ * widget. Must be called inside a ScoutThemeProvider (the trigger's subtree).
+ */
+export function useProgramStamp(): { "data-program": Program } {
+  const { program } = useScoutTheme();
+  return { "data-program": program };
 }

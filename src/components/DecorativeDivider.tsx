@@ -56,7 +56,7 @@ export function DecorativeDivider({ program, motif, className }: DecorativeDivid
             : "rule");
 
   return (
-    <div aria-hidden className={cn("w-full h-4 flex items-center text-program-decor", className)}>
+    <div aria-hidden className={cn("w-full h-4 flex items-center text-os-decor", className)}>
       <svg
         viewBox="0 0 400 16"
         preserveAspectRatio="none"
@@ -85,7 +85,7 @@ export function DecorativeDivider({ program, motif, className }: DecorativeDivid
               cx={200}
               cy={8}
               r={3}
-              fill="rgb(var(--program-surface))"
+              fill="rgb(var(--background))"
               stroke="currentColor"
               strokeWidth={1}
             />

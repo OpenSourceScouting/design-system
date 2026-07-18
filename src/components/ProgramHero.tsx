@@ -60,7 +60,7 @@ export function ProgramHero({
     <section
       className={cn(
         "relative isolate overflow-hidden rounded-program",
-        "bg-program-surface text-program-on-surface",
+        "bg-background text-foreground",
         "px-6 sm:px-10 lg:px-16 py-10 sm:py-12 lg:py-16",
         className,
       )}
@@ -75,7 +75,7 @@ export function ProgramHero({
       {watermarkNode !== null && (
         <div
           aria-hidden
-          className="pointer-events-none absolute right-6 top-6 sm:right-12 sm:top-12 text-program-primary"
+          className="pointer-events-none absolute right-6 top-6 sm:right-12 sm:top-12 text-primary"
         >
           {watermarkNode}
         </div>
@@ -85,10 +85,10 @@ export function ProgramHero({
         <header className="flex items-center gap-3">
           <ProgramMark size={44} />
           <div className="flex flex-col">
-            <span className="display text-xs uppercase tracking-[0.18em] text-program-on-surface-soft">
+            <span className="display text-xs uppercase tracking-[0.18em] text-muted-foreground">
               {meta.label}
             </span>
-            <span className="text-xs text-program-on-surface-soft">{meta.ageRange}</span>
+            <span className="text-xs text-muted-foreground">{meta.ageRange}</span>
           </div>
           {eyebrow ? (
             <Badge variant="accent" className="ml-3">
@@ -102,11 +102,11 @@ export function ProgramHero({
         </Heading>
 
         {showTagline ? (
-          <p className="display text-lg sm:text-xl text-program-primary">{meta.tagline}</p>
+          <p className="display text-lg sm:text-xl text-primary">{meta.tagline}</p>
         ) : null}
 
         {lede ? (
-          <p className="font-body text-base sm:text-lg leading-relaxed text-program-on-surface/85 max-w-2xl">
+          <p className="font-body text-base sm:text-lg leading-relaxed text-foreground/85 max-w-2xl">
             {lede}
           </p>
         ) : null}

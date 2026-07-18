@@ -15,7 +15,7 @@ import { Icon, type IconProps } from "./Icon";
  * navigation, filter chips, list rows, breadcrumbs, etc.
  *
  * Color: line icons inherit `currentColor`; tint with any text-* utility (e.g.
- * `text-program-primary`). Unlike ProgramMark, recoloring is permitted because
+ * `text-primary`). Unlike ProgramMark, recoloring is permitted because
  * none of these are BSA trademarks.
  */
 

@@ -37,9 +37,9 @@ export const AllPrograms: Story = {
         <ScoutThemeProvider
           key={p}
           program={p}
-          className="rounded-program border border-program-border p-5 flex flex-col items-center gap-3"
+          className="rounded-program border border-border p-5 flex flex-col items-center gap-3"
         >
-          <div className="text-program-primary">
+          <div className="text-primary">
             <ProgramIcon size={56} />
           </div>
           <span className="display text-xs uppercase tracking-widest">{p}</span>
@@ -63,21 +63,21 @@ export const OverrideIcon: Story = {
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
       <ScoutThemeProvider
         program="venturing"
-        className="rounded-program border border-program-border p-5 flex flex-col items-center gap-2"
+        className="rounded-program border border-border p-5 flex flex-col items-center gap-2"
       >
         <ProgramIcon size={40} icon={Compass} />
         <span className="text-xs">Venturing as Compass</span>
       </ScoutThemeProvider>
       <ScoutThemeProvider
         program="scoutsbsa"
-        className="rounded-program border border-program-border p-5 flex flex-col items-center gap-2"
+        className="rounded-program border border-border p-5 flex flex-col items-center gap-2"
       >
         <ProgramIcon size={40} icon={Flag} />
         <span className="text-xs">Scouts BSA as Flag</span>
       </ScoutThemeProvider>
       <ScoutThemeProvider
         program="seascouts"
-        className="rounded-program border border-program-border p-5 flex flex-col items-center gap-2"
+        className="rounded-program border border-border p-5 flex flex-col items-center gap-2"
       >
         <ProgramIcon size={40} icon={Sailboat} />
         <span className="text-xs">Sea Scouts as Sailboat</span>

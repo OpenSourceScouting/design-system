@@ -25,7 +25,7 @@ export const Outlined: Story = {
         <Heading level={3} size={4}>
           Pinewood Derby Weekend
         </Heading>
-        <p className="mt-2 font-body text-sm leading-relaxed text-program-on-surface/80">
+        <p className="mt-2 font-body text-sm leading-relaxed text-foreground/80">
           Build, race, and cheer on your custom car. Pack 42 hosts the annual race in the troop
           hall.
         </p>
@@ -48,7 +48,7 @@ export const WithHeaderAndFooter: Story = {
         </Heading>
       </CardHeader>
       <CardBody>
-        <p className="font-body text-sm leading-relaxed text-program-on-surface/80">
+        <p className="font-body text-sm leading-relaxed text-foreground/80">
           Plan your patrol's role in the upcoming service project. Bring your handbook.
         </p>
       </CardBody>
@@ -63,7 +63,7 @@ export const WithHeaderAndFooter: Story = {
 
 /**
  * CardEyebrow is an editorial kicker riding a bottom keyline. The keyline
- * inherits `--program-rule-weight`, so the same component renders a 3px chunky
+ * inherits `--os-rule-weight`, so the same component renders a 3px chunky
  * rule for Cub Scouts, 2px for Scouts BSA and Venturing, and a 1px drafted
  * hairline for Sea Scouts, with no per-program branching in the component. Each
  * panel below forces its own program theme to show the four weights side by
@@ -73,16 +73,16 @@ export const EyebrowKeylineAcrossPrograms: Story = {
   render: () => (
     <div className="grid gap-4 sm:grid-cols-2 max-w-3xl">
       {PROGRAMS.map((p) => (
-        <ScoutThemeProvider key={p} program={p}>
-          <Card variant="outlined">
+        <ScoutThemeProvider key={p} program={p} className="h-full">
+          <Card variant="outlined" className="h-full">
             <CardBody>
               <CardEyebrow>{PROGRAM_META[p].label}</CardEyebrow>
               <Heading level={3} size={4}>
                 Lead Adventure of the Month
               </Heading>
-              <p className="mt-2 font-body text-sm leading-relaxed text-program-on-surface/80">
+              <p className="mt-2 font-body text-sm leading-relaxed text-foreground/80">
                 Notice the keyline weight under the kicker: {PROGRAM_META[p].label} sets{" "}
-                <code className="font-mono text-xs">--program-rule-weight</code> to its own value.
+                <code className="font-mono text-xs">--os-rule-weight</code> to its own value.
               </p>
             </CardBody>
           </Card>

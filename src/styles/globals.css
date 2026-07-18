@@ -1,4 +1,6 @@
 /* -----------------------------------------------------------------------------
+   Dev / Storybook / demo stylesheet entry (Tailwind v4).
+
    Fonts: Montserrat (display) + Source Serif 4 (body), both SIL OFL variable
    fonts. They are self-hosted via @fontsource-variable and loaded through JS
    imports at each app/Storybook entry point (demo/main.tsx,
@@ -7,44 +9,14 @@
 
    Library consumers bring their own fonts: the published stylesheet does NOT
    bundle font faces. Install the two @fontsource-variable packages (or provide
-   equivalent "Montserrat Variable" / "Source Serif 4 Variable" faces). See the
-   Fonts section of README.md. The font-family names in tokens.css are identical
-   regardless of how the faces are delivered, so tokens.css needs no change.
+   equivalent "Montserrat Variable" / "Source Serif 4 Variable" faces). The
+   font-family names in tokens.css are identical regardless of delivery.
+
+   This entry uses Tailwind's automatic source detection (it scans the repo for
+   used utility classes), which is what dev, Storybook, and the demo want. The
+   PUBLISHED stylesheet is built from library.css instead, which scopes the scan
+   to src/ so demo/Storybook-only utilities never leak into the package.
    --------------------------------------------------------------------------- */
+@import "tailwindcss";
 @import "./tokens.css";
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  html {
-    font-family: var(--program-font-body);
-    color-scheme: light;
-  }
-
-  body {
-    background-color: rgb(var(--program-surface));
-    color: rgb(var(--program-on-surface));
-    font-feature-settings: "kern", "liga", "calt";
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  :focus-visible {
-    outline: 2px solid rgb(var(--program-ring));
-    outline-offset: 2px;
-    border-radius: 2px;
-  }
-
-  ::selection {
-    background-color: rgb(var(--program-accent));
-    color: rgb(var(--program-on-accent));
-  }
-}
-
-/* Note: the `.display` typography helper is intentionally NOT defined here.
-   It lives as a plain (non-@layer) rule in tokens.css so that it survives
-   Tailwind's content-based purge and ships in both the "./styles" and
-   "./tokens" package exports without the consumer needing a content glob. */
+@import "./theme.css";

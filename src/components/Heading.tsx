@@ -35,7 +35,7 @@ export function Heading({
       className: cn(
         serif ? "font-body font-semibold tracking-tight" : "display",
         SIZE_STYLES[size ?? level],
-        "text-program-on-surface",
+        "text-foreground",
         className,
       ),
       ...rest,

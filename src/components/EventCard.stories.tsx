@@ -79,7 +79,7 @@ export const CustomDateBlock: Story = {
     renderDateBlock: (date, endDate) => (
       <div
         aria-hidden
-        className="shrink-0 w-20 rounded-program overflow-hidden bg-program-primary text-program-on-primary flex flex-col items-center justify-center py-2 border border-program-primary"
+        className="shrink-0 w-20 rounded-program overflow-hidden bg-primary text-primary-foreground flex flex-col items-center justify-center py-2 border border-primary"
       >
         <span className="display text-[10px] uppercase tracking-[0.2em]">
           {date.toLocaleDateString(undefined, { month: "short" })}

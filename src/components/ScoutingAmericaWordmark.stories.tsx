@@ -51,7 +51,7 @@ export const Mono: Story = {
 export const Reversed: Story = {
   args: { orientation: "wide", variant: "reversed", height: 64 },
   render: (args) => (
-    <div className="p-6 bg-program-primary rounded-program inline-flex items-center justify-center">
+    <div className="p-6 bg-primary rounded-program inline-flex items-center justify-center">
       <ScoutingAmericaWordmark {...args} />
     </div>
   ),
@@ -69,9 +69,7 @@ export const AllCombinations: Story = {
     return (
       <div className="space-y-8">
         <section className="space-y-3">
-          <h3 className="display text-xs uppercase tracking-widest text-program-on-surface-soft">
-            Wide
-          </h3>
+          <h3 className="display text-xs uppercase tracking-widest text-muted-foreground">Wide</h3>
           <div className="grid grid-cols-3 gap-6">
             <div className="flex items-center justify-center" style={{ height: wideCellHeight }}>
               <ScoutingAmericaWordmark orientation="wide" variant="color" height={wideMarkHeight} />
@@ -80,7 +78,7 @@ export const AllCombinations: Story = {
               <ScoutingAmericaWordmark orientation="wide" variant="mono" height={wideMarkHeight} />
             </div>
             <div
-              className="flex items-center justify-center p-3 bg-program-primary rounded-program"
+              className="flex items-center justify-center p-3 bg-primary rounded-program"
               style={{ height: wideCellHeight }}
             >
               <ScoutingAmericaWordmark
@@ -92,9 +90,7 @@ export const AllCombinations: Story = {
           </div>
         </section>
         <section className="space-y-3">
-          <h3 className="display text-xs uppercase tracking-widest text-program-on-surface-soft">
-            Tall
-          </h3>
+          <h3 className="display text-xs uppercase tracking-widest text-muted-foreground">Tall</h3>
           <div className="grid grid-cols-3 gap-6">
             <div className="flex items-center justify-center" style={{ height: tallCellHeight }}>
               <ScoutingAmericaWordmark orientation="tall" variant="color" height={tallMarkHeight} />
@@ -103,7 +99,7 @@ export const AllCombinations: Story = {
               <ScoutingAmericaWordmark orientation="tall" variant="mono" height={tallMarkHeight} />
             </div>
             <div
-              className="flex items-center justify-center p-3 bg-program-primary rounded-program"
+              className="flex items-center justify-center p-3 bg-primary rounded-program"
               style={{ height: tallCellHeight }}
             >
               <ScoutingAmericaWordmark

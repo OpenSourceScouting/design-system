@@ -54,8 +54,12 @@ function TokenRow({ varName, label }: { varName: string; label: string }) {
 export const ParentBrand: Story = {
   render: () => (
     <div>
-      <h3 className="display text-xl mb-4">Scouting America palette (always available)</h3>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+      <h3 className="display mb-4 text-xl">Scouting America palette (always available)</h3>
+      <p className="font-body mb-4 max-w-2xl text-sm text-muted-foreground">
+        The raw brand palette, exposed as the fixed <code>sa-*</code> utilities (e.g.{" "}
+        <code>bg-sa-blue</code>). These never theme-swap: use them for cross-program UI and status.
+      </p>
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
         {SA_PALETTE.map((c) => (
           <Swatch key={c.hex} {...c} />
         ))}
@@ -64,6 +68,13 @@ export const ParentBrand: Story = {
   ),
 };
 
+/**
+ * The shadcn semantic tokens plus the --os-* extended vocabulary, shown live per
+ * program. Note the delta-4 pair: `--accent` is the MUTED hover wash (used by
+ * menu/hover states), while the BRAND accent lives in `--os-accent`. Reach for
+ * `os-accent` when you want the gold/yellow/red brand pop; a stock shadcn
+ * `bg-accent` will render the wash, not the brand color.
+ */
 export const ProgramSemanticTokens: Story = {
   render: () => (
     <div className="grid gap-6 md:grid-cols-2">
@@ -71,24 +82,27 @@ export const ProgramSemanticTokens: Story = {
         <ScoutThemeProvider
           key={p}
           program={p}
-          className="p-5 rounded-program border border-program-border"
+          className="rounded-program border border-border p-5"
         >
-          <div className="display text-sm uppercase tracking-widest mb-4 text-program-on-surface-soft">
+          <div className="display mb-4 text-sm uppercase tracking-widest text-muted-foreground">
             {p}
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <TokenRow varName="--program-primary" label="Primary" />
-            <TokenRow varName="--program-on-primary" label="On Primary" />
-            <TokenRow varName="--program-on-primary-soft" label="On Primary Soft" />
-            <TokenRow varName="--program-accent" label="Accent" />
-            <TokenRow varName="--program-on-accent" label="On Accent" />
-            <TokenRow varName="--program-surface" label="Surface" />
-            <TokenRow varName="--program-on-surface" label="On Surface" />
-            <TokenRow varName="--program-on-surface-soft" label="On Surface Soft (AA)" />
-            <TokenRow varName="--program-on-surface-faint" label="On Surface Faint (≥3:1)" />
-            <TokenRow varName="--program-surface-muted" label="Surface Muted" />
-            <TokenRow varName="--program-border" label="Border" />
-            <TokenRow varName="--program-ring" label="Focus Ring" />
+            <TokenRow varName="--background" label="Background" />
+            <TokenRow varName="--foreground" label="Foreground" />
+            <TokenRow varName="--primary" label="Primary" />
+            <TokenRow varName="--primary-foreground" label="Primary Foreground" />
+            <TokenRow varName="--secondary" label="Secondary" />
+            <TokenRow varName="--muted" label="Muted" />
+            <TokenRow varName="--muted-foreground" label="Muted Foreground (AA)" />
+            <TokenRow varName="--accent" label="Accent WASH (delta 4)" />
+            <TokenRow varName="--os-accent" label="Brand Accent (os-accent)" />
+            <TokenRow varName="--os-accent-foreground" label="On Brand Accent" />
+            <TokenRow varName="--os-on-primary-soft" label="On Primary Soft" />
+            <TokenRow varName="--os-on-surface-faint" label="Faint (>=3:1)" />
+            <TokenRow varName="--destructive" label="Destructive" />
+            <TokenRow varName="--border" label="Border" />
+            <TokenRow varName="--ring" label="Focus Ring" />
           </div>
         </ScoutThemeProvider>
       ))}
@@ -107,36 +121,34 @@ const RULE_WEIGHTS: Record<
 };
 
 /**
- * Every program sets its own `--program-rule-weight`, which drives the keyline
- * under editorial kickers (CardEyebrow) and other rules. Cub reads heaviest at
- * 3px, Scouts BSA and Venturing sit at 2px, and Sea Scouts drops to a 1px
- * drafted hairline. The bars below are literal `border-b-rule` keylines pulling
- * the live token per theme, so weight differences are exact, not simulated.
+ * Every program sets its own `--os-rule-weight`, which drives the keyline under
+ * editorial kickers (CardEyebrow) and other rules. Cub reads heaviest at 3px,
+ * Scouts BSA and Venturing sit at 2px, and Sea Scouts drops to a 1px drafted
+ * hairline. The bars below are literal `border-b-rule` keylines pulling the live
+ * token per theme, so weight differences are exact, not simulated.
  */
 export const RuleWeight: Story = {
   render: () => (
     <div>
-      <h3 className="display text-xl mb-1">Program rule weight</h3>
-      <p className="font-mono text-xs opacity-60 mb-5">--program-rule-weight</p>
-      <div className="grid gap-6 sm:grid-cols-2 max-w-3xl">
+      <h3 className="display mb-1 text-xl">Program rule weight</h3>
+      <p className="font-mono mb-5 text-xs opacity-60">--os-rule-weight</p>
+      <div className="grid max-w-3xl gap-6 sm:grid-cols-2">
         {PROGRAMS.map((p) => (
           <ScoutThemeProvider
             key={p}
             program={p}
-            className="p-5 rounded-program border border-program-border"
+            className="rounded-program border border-border p-5"
           >
-            <div className="flex items-baseline justify-between mb-4">
-              <span className="display text-sm uppercase tracking-widest text-program-on-surface-soft">
+            <div className="mb-4 flex items-baseline justify-between">
+              <span className="display text-sm uppercase tracking-widest text-muted-foreground">
                 {RULE_WEIGHTS[p].label}
               </span>
-              <span className="font-mono text-xs text-program-on-surface-soft">
+              <span className="font-mono text-xs text-muted-foreground">
                 {RULE_WEIGHTS[p].weight}
               </span>
             </div>
-            <div className="border-b-rule border-program-primary pb-3" />
-            <p className="mt-3 font-body text-sm text-program-on-surface-soft">
-              {RULE_WEIGHTS[p].voice}
-            </p>
+            <div className="border-b-rule border-primary pb-3" />
+            <p className="font-body mt-3 text-sm text-muted-foreground">{RULE_WEIGHTS[p].voice}</p>
           </ScoutThemeProvider>
         ))}
       </div>

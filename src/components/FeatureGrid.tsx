@@ -31,16 +31,16 @@ export function FeatureGrid({ features, columns = 3, className }: FeatureGridPro
           <CardBody className="flex flex-col gap-3 h-full">
             {f.icon ? (
               <div className="flex flex-col gap-2">
-                <span aria-hidden className="text-program-primary [&>svg]:h-8 [&>svg]:w-8">
+                <span aria-hidden className="text-primary [&>svg]:h-8 [&>svg]:w-8">
                   {f.icon}
                 </span>
-                <span aria-hidden className="h-0 w-8 border-b-rule border-program-border/70" />
+                <span aria-hidden className="h-0 w-8 border-b-rule border-border/70" />
               </div>
             ) : null}
             <Heading level={3} size={4}>
               {f.title}
             </Heading>
-            <p className="font-body text-sm leading-relaxed text-program-on-surface/80 flex-1">
+            <p className="font-body text-sm leading-relaxed text-foreground/80 flex-1">
               {f.description}
             </p>
           </CardBody>

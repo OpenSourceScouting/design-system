@@ -17,9 +17,9 @@ export const All: Story = {
         <ScoutThemeProvider
           key={p}
           program={p}
-          className="p-5 rounded-program border border-program-border"
+          className="p-5 rounded-program border border-border"
         >
-          <div className="display text-xs uppercase tracking-widest mb-3 text-program-on-surface-soft">
+          <div className="display text-xs uppercase tracking-widest mb-3 text-muted-foreground">
             {p}
           </div>
           <DecorativeDivider />

@@ -73,8 +73,8 @@ export function EventCard({
       aria-hidden
       className={cn(
         "shrink-0 w-16 sm:w-20 rounded-program overflow-hidden",
-        "bg-program-primary text-program-on-primary flex flex-col items-center justify-center py-2",
-        "border border-program-primary",
+        "bg-primary text-primary-foreground flex flex-col items-center justify-center py-2",
+        "border border-primary",
       )}
     >
       <span className="display text-[10px] uppercase tracking-[0.2em]">{month}</span>
@@ -109,7 +109,7 @@ export function EventCard({
           <Heading level={3} size={4} className="leading-tight">
             {title}
           </Heading>
-          <div className="text-xs text-program-on-surface-soft font-body">
+          <div className="text-xs text-muted-foreground font-body">
             <span>{weekday}</span>
             <span aria-hidden> · </span>
             <span>{time}</span>
@@ -121,7 +121,7 @@ export function EventCard({
             ) : null}
           </div>
           {description ? (
-            <p className="font-body text-sm text-program-on-surface/80 leading-relaxed mt-1 line-clamp-3">
+            <p className="font-body text-sm text-foreground/80 leading-relaxed mt-1 line-clamp-3">
               {description}
             </p>
           ) : null}

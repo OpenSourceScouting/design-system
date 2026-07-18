@@ -68,20 +68,18 @@ export function RadioGroup({
       aria-invalid={error ? true : undefined}
     >
       {label ? (
-        <legend className="display mb-1 p-0 text-sm font-medium text-program-on-surface">
-          {label}
-        </legend>
+        <legend className="display mb-1 p-0 text-sm font-medium text-foreground">{label}</legend>
       ) : null}
       <RadioGroupContext.Provider value={{ name: groupName, value: current, setValue, disabled }}>
         <div className="flex flex-col gap-2">{children}</div>
       </RadioGroupContext.Provider>
       {help ? (
-        <p id={helpId} className="text-xs text-program-on-surface-soft">
+        <p id={helpId} className="text-xs text-muted-foreground">
           {help}
         </p>
       ) : null}
       {error ? (
-        <p id={errorId} role="alert" className="text-xs text-sa-red">
+        <p id={errorId} role="alert" className="text-xs text-destructive">
           {error}
         </p>
       ) : null}
@@ -111,7 +109,7 @@ export function Radio({ value, label, description, disabled, id, className }: Ra
     <label
       htmlFor={rid}
       className={cn(
-        "flex items-start gap-2 text-sm text-program-on-surface",
+        "flex items-start gap-2 text-sm text-foreground",
         isDisabled && "opacity-50",
         className,
       )}
@@ -125,14 +123,14 @@ export function Radio({ value, label, description, disabled, id, className }: Ra
         disabled={isDisabled}
         onChange={() => ctx.setValue(value)}
         className={cn(
-          "mt-0.5 h-4 w-4 shrink-0 accent-program-primary",
-          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-program-ring",
+          "mt-0.5 h-4 w-4 shrink-0 accent-primary",
+          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         )}
       />
       <span>
         {label}
         {description ? (
-          <span className="block text-xs text-program-on-surface-soft">{description}</span>
+          <span className="block text-xs text-muted-foreground">{description}</span>
         ) : null}
       </span>
     </label>

@@ -17,7 +17,7 @@ import { cn } from "../lib/utils/cn";
  * them here for a consistent look.
  *
  * Color: Lucide icons inherit `currentColor`, so tint with any text-* utility
- * (e.g. `text-program-primary`).
+ * (e.g. `text-primary`).
  *
  * Accessibility: icons default to decorative (rendered `aria-hidden`), which is
  * correct when the icon sits next to a text label. Pass `label` only when the

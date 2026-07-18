@@ -1,0 +1,119 @@
+/* -----------------------------------------------------------------------------
+   Tailwind v4 theme mapping (CSS-first; replaces tailwind-preset.cjs).
+
+   Maps design-token custom properties (defined per program in tokens.css) to
+   Tailwind's theme namespaces so the same utility classes are generated as the
+   retired v3 preset. `@theme inline` is deliberate: it inlines `rgb(var(--x))`
+   into each utility instead of emitting a frozen `--color-*` variable, so a
+   `data-program` change re-resolves every utility with no per-component work
+   (the multi-program mechanism, ADR 0002).
+
+   Two color layers, same as the old preset:
+     1. sa.*      : raw Scouting America palette (fixed; never theme-swapped).
+     2. program.* : legacy semantic tokens (still consumed by components until
+                    Phases 3-5 port them to the shadcn names below).
+   Plus the shadcn + --os-* vocabulary added in Phase 1.
+
+   Imported by both globals.css (dev/Storybook, broad source scan) and
+   library.css (published build, scoped source). tokens.css must be imported
+   before this file so the referenced custom properties exist.
+   --------------------------------------------------------------------------- */
+
+@theme inline {
+  /* --- Raw Scouting America palette (2024 Brand Guidelines p.14-15) ------ */
+  --color-sa-red: #ce1126;
+  --color-sa-blue: #003f87;
+  --color-sa-tan: #d6cebd;
+  --color-sa-gray: #515354;
+  --color-sa-white: #ffffff;
+  --color-sa-pale-blue: #9ab3d5;
+  --color-sa-dark-blue: #003366;
+  --color-sa-light-tan: #e9e9e4;
+  --color-sa-dark-tan: #ad9d7b;
+  --color-sa-pale-gray: #858787;
+  --color-sa-dark-gray: #232528;
+
+  /* --- shadcn vocabulary --------------------------------------------------- */
+  --color-background: rgb(var(--background));
+  --color-foreground: rgb(var(--foreground));
+  --color-card: rgb(var(--card));
+  --color-card-foreground: rgb(var(--card-foreground));
+  --color-popover: rgb(var(--popover));
+  --color-popover-foreground: rgb(var(--popover-foreground));
+  --color-primary: rgb(var(--primary));
+  --color-primary-foreground: rgb(var(--primary-foreground));
+  --color-secondary: rgb(var(--secondary));
+  --color-secondary-foreground: rgb(var(--secondary-foreground));
+  --color-muted: rgb(var(--muted));
+  --color-muted-foreground: rgb(var(--muted-foreground));
+  --color-accent: rgb(var(--accent));
+  --color-accent-foreground: rgb(var(--accent-foreground));
+  --color-destructive: rgb(var(--destructive));
+  --color-destructive-foreground: rgb(var(--destructive-foreground));
+  --color-border: rgb(var(--border));
+  --color-input: rgb(var(--input));
+  --color-ring: rgb(var(--ring));
+
+  /* --os-* extended vocabulary */
+  --color-os-accent: rgb(var(--os-accent));
+  --color-os-accent-foreground: rgb(var(--os-accent-foreground));
+  --color-os-on-primary-soft: rgb(var(--os-on-primary-soft));
+  --color-os-on-surface-faint: rgb(var(--os-on-surface-faint));
+  --color-os-decor: rgb(var(--os-decor));
+
+  /* --- Typography, radius, shadow ---------------------------------------- */
+  --font-display: var(--os-font-display);
+  --font-body: var(--os-font-body);
+  --radius-program: var(--radius); /* alias of the shadcn radius; == rounded-lg */
+  --shadow-program: var(--os-shadow);
+
+  /* shadcn radius scale, derived from the per-program --radius (Phase 3). Lets
+     recipes use rounded-sm/md/lg/xl and still track each program's radius. No
+     collision: components only used rounded-full and rounded-program before. */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* Rule keyline width tracks --os-rule-weight per program. v4 has no theme
+   namespace that emits directional border-width utilities, so define the ones
+   components use explicitly. */
+@utility border-rule {
+  border-width: var(--os-rule-weight);
+}
+@utility border-b-rule {
+  border-bottom-width: var(--os-rule-weight);
+}
+@utility border-t-rule {
+  border-top-width: var(--os-rule-weight);
+}
+
+@layer base {
+  html {
+    font-family: var(--os-font-body);
+    color-scheme: light;
+  }
+
+  body {
+    background-color: rgb(var(--background));
+    color: rgb(var(--foreground));
+    font-feature-settings: "kern", "liga", "calt";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--ring));
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Selection uses the program primary (AA-safe), not the brand accent: gold/
+     yellow selection with dark text only reaches ~3:1 for small body text. */
+  ::selection {
+    background-color: rgb(var(--primary));
+    color: rgb(var(--primary-foreground));
+  }
+}

@@ -12,5 +12,5 @@ To reconstruct it:
    `pdftotext -layout scouting-america-brand-guidelines-2024.pdf brand-text.txt`
 
 Token comments in `src/styles/tokens.css` cite page numbers from that PDF.
-`docs/BRAND-GUIDE.md` carries the distilled, shareable version of
+`docs/unofficial-brand-guide.md` carries the distilled, shareable version of
 the same rules.

@@ -1,6 +1,7 @@
 export {
   ScoutThemeProvider,
   useScoutTheme,
+  useProgramStamp,
   PROGRAMS,
   PROGRAM_META,
 } from "./lib/theme/ScoutThemeProvider";
@@ -86,6 +87,74 @@ export { Switch } from "./components/Switch";
 export type { SwitchProps } from "./components/Switch";
 export { RadioGroup, Radio } from "./components/RadioGroup";
 export type { RadioGroupProps, RadioProps } from "./components/RadioGroup";
+
+// Tier-1 overlay widgets (shadcn recipes on Radix)
+export {
+  Dialog,
+  DialogTrigger,
+  DialogClose,
+  DialogPortal,
+  DialogOverlay,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+} from "./components/Dialog";
+export {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogPortal,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "./components/AlertDialog";
+export {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuGroup,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuRadioGroup,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+} from "./components/DropdownMenu";
+export { Popover, PopoverTrigger, PopoverAnchor, PopoverContent } from "./components/Popover";
+export { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "./components/Tooltip";
+export { Toaster, toast } from "./components/Toaster";
+export type { ToasterProps } from "./components/Toaster";
+
+// Tier-1 structural widgets (shadcn recipes on Radix)
+export { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/Tabs";
+export {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "./components/Accordion";
+export {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+  NavigationMenuViewport,
+  NavigationMenuIndicator,
+  navigationMenuTriggerStyle,
+} from "./components/NavigationMenu";
 
 export { MadeWithBadge } from "./components/MadeWithBadge";
 export type {

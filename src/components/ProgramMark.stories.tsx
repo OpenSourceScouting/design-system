@@ -35,7 +35,7 @@ export const Color: Story = {
 export const Reversed: Story = {
   args: { variant: "reversed", size: 96 },
   render: (args) => (
-    <div className="p-6 bg-program-primary rounded-program inline-block">
+    <div className="p-6 bg-primary rounded-program inline-block">
       <ProgramMark {...args} />
     </div>
   ),
@@ -63,31 +63,31 @@ export const AllVariantsPerProgram: Story = {
         <ScoutThemeProvider
           key={p}
           program={p}
-          className="rounded-program border border-program-border p-5"
+          className="rounded-program border border-border p-5"
         >
-          <div className="display text-xs uppercase tracking-widest mb-4 text-program-on-surface-soft">
+          <div className="display text-xs uppercase tracking-widest mb-4 text-muted-foreground">
             {p}
           </div>
           <div className="grid grid-cols-3 gap-3 items-center">
             <div className="flex flex-col items-center gap-2">
               <ProgramMark variant="color" size={64} />
-              <span className="text-[10px] uppercase tracking-wider display text-program-on-surface-soft">
+              <span className="text-[10px] uppercase tracking-wider display text-muted-foreground">
                 color
               </span>
             </div>
             <div className="flex flex-col items-center gap-2">
-              <div className="p-2 bg-program-primary rounded-program">
+              <div className="p-2 bg-primary rounded-program">
                 <ProgramMark variant="reversed" size={48} />
               </div>
-              <span className="text-[10px] uppercase tracking-wider display text-program-on-surface-soft">
+              <span className="text-[10px] uppercase tracking-wider display text-muted-foreground">
                 reversed
               </span>
             </div>
             <div className="flex flex-col items-center gap-2">
-              <div className="text-program-primary">
+              <div className="text-primary">
                 <ProgramMark variant="mono" size={64} />
               </div>
-              <span className="text-[10px] uppercase tracking-wider display text-program-on-surface-soft">
+              <span className="text-[10px] uppercase tracking-wider display text-muted-foreground">
                 mono
               </span>
             </div>
@@ -116,7 +116,7 @@ export const Placeholders: Story = {
         <ScoutThemeProvider
           key={p}
           program={p}
-          className="rounded-program border border-program-border p-5 flex flex-col items-center gap-3"
+          className="rounded-program border border-border p-5 flex flex-col items-center gap-3"
         >
           <ProgramMark {...args} program={p} />
           <span className="display text-xs uppercase tracking-widest">{p}</span>

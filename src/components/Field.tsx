@@ -36,11 +36,13 @@ export function useFieldContext() {
 /** Shared control styling for the text-like inputs (TextInput, Textarea, Select). */
 export function controlClasses(invalid?: boolean) {
   return cn(
-    "w-full rounded-program border bg-program-surface px-3 py-2 text-sm text-program-on-surface",
-    "placeholder:text-program-on-surface-faint",
-    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-program-ring",
+    "w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground",
+    "placeholder:text-os-on-surface-faint",
+    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
     "disabled:opacity-50 disabled:pointer-events-none",
-    invalid ? "border-sa-red" : "border-program-border",
+    // Validation uses the destructive token (= sa-red value, shadcn-idiomatic);
+    // twMerge lets it override the default border-input above.
+    invalid && "border-destructive",
   );
 }
 
@@ -77,10 +79,10 @@ export function Field({
     <FieldContext.Provider value={{ id, describedBy, invalid: Boolean(error), required, disabled }}>
       <div className={cn("flex flex-col gap-1.5", className)}>
         {label ? (
-          <label htmlFor={id} className="display text-sm font-medium text-program-on-surface">
+          <label htmlFor={id} className="display text-sm font-medium text-foreground">
             {label}
             {required ? (
-              <span className="text-sa-red" aria-hidden>
+              <span className="text-destructive" aria-hidden>
                 {" "}
                 *
               </span>
@@ -89,12 +91,12 @@ export function Field({
         ) : null}
         {children}
         {help ? (
-          <p id={helpId} className="text-xs text-program-on-surface-soft">
+          <p id={helpId} className="text-xs text-muted-foreground">
             {help}
           </p>
         ) : null}
         {error ? (
-          <p id={errorId} role="alert" className="text-xs text-sa-red">
+          <p id={errorId} role="alert" className="text-xs text-destructive">
             {error}
           </p>
         ) : null}

@@ -40,8 +40,8 @@ const ROOT_ONLY_SHARED = new Set<string>([
   // One typography pair across all programs (Montserrat display, Source Serif 4
   // body). Per-program differentiation is weight/tracking/style, not family, so
   // the family tokens are shared and never re-declared per program.
-  "--program-font-display",
-  "--program-font-body",
+  "--os-font-display",
+  "--os-font-body",
 ]);
 
 const ROOT_SELECTOR = ":root";
@@ -52,13 +52,18 @@ const PROGRAM_SELECTORS = [
   '[data-program="seascouts"]',
 ];
 
-/** Collect the set of `--program-*` custom-property NAMES declared in a block. */
+/**
+ * Collect the set of custom-property NAMES declared in a block. Guards BOTH
+ * vocabularies during the migration: legacy --program-* and the shadcn / --os-*
+ * names. A `--x:` at the start of a declaration is matched; `var(--x)` inside a
+ * value is not (no trailing colon), so values never produce false names.
+ */
 function tokenNames(css: string, selector: string): Set<string> {
   const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const blockRe = new RegExp(`(^|\\n)\\s*${escaped}\\s*\\{([\\s\\S]*?)\\}`, "m");
   const match = css.match(blockRe);
   if (!match) throw new Error(`Could not find CSS block for selector: ${selector}`);
-  return new Set([...match[2].matchAll(/(--program-[\w-]+)\s*:/g)].map((m) => m[1]));
+  return new Set([...match[2].matchAll(/(--[\w-]+)\s*:/g)].map((m) => m[1]));
 }
 
 const rootTokens = tokenNames(TOKENS_CSS, ROOT_SELECTOR);
