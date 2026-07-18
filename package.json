@@ -70,12 +70,12 @@
     "tailwind-merge": "^2.5.4"
   },
   "devDependencies": {
-    "axe-playwright": "^2.1.0",
     "@fontsource-variable/montserrat": "^5.2.8",
     "@fontsource-variable/source-serif-4": "^5.2.9",
-    "@storybook/addon-a11y": "9.1.20",
-    "@storybook/react-vite": "9.1.20",
-    "@storybook/test-runner": "^0.22.0",
+    "@storybook/addon-a11y": "10.5.2",
+    "@storybook/addon-docs": "10.5.2",
+    "@storybook/react-vite": "10.5.2",
+    "@storybook/test-runner": "^0.24.4",
     "@tailwindcss/cli": "^4.3.3",
     "@tailwindcss/vite": "^4.3.3",
     "@testing-library/jest-dom": "^6.9.1",
@@ -86,6 +86,7 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
+    "axe-playwright": "^2.1.0",
     "concurrently": "^10.0.3",
     "cross-env": "^10.1.0",
     "http-server": "^14.1.1",
@@ -95,13 +96,12 @@
     "prettier": "^3.4.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "storybook": "9.1.20",
+    "storybook": "10.5.2",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.6.3",
     "vite": "^5.4.11",
     "vite-plugin-dts": "^5.0.3",
     "vitest": "^3.2.6",
-    "wait-on": "^9.0.10",
-    "@storybook/addon-docs": "9.1.20"
+    "wait-on": "^9.0.10"
   }
 }
