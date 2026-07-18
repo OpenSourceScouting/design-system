@@ -28,7 +28,7 @@ via the `variant` prop. Each variant maps to a filename stem:
 | variant prop  | Filename stem            | Use for                                    |
 | ------------- | ------------------------ | ------------------------------------------ |
 | `color`       | `{program}`              | Default. Full-color official rendition on light surfaces. |
-| `reversed`    | `{program}-reversed`     | White-on-dark for use on `bg-program-primary` (EventDialog header, RegistrationCTA, etc.). |
+| `reversed`    | `{program}-reversed`     | White-on-dark for use on `bg-primary` (EventDialog header, RegistrationCTA, etc.). |
 | `mono`        | `{program}-mono`         | Single-color. License permits "black or any dark color." |
 
 ## Supported file formats

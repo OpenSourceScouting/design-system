@@ -19,31 +19,31 @@ By participating you agree to abide by our
 
 ## Prerequisites
 
-| Tool    | Version | Notes                                                    |
-| ------- | ------- | -------------------------------------------------------- |
-| Node    | `>=22`  | The repo pins the 22 LTS via `.nvmrc` (`nvm use`).       |
-| npm     | `>=10`  | No pnpm or yarn. The committed `package-lock.json` wins. |
-| Git LFS | any 3.x | **Required.** Visual-regression baselines are in LFS.    |
+| Tool                | Version | Notes                                                    |
+| ------------------- | ------- | -------------------------------------------------------- |
+| Node                | `>=22`  | The repo pins the 22 LTS via `.nvmrc` (`nvm use`).       |
+| npm                 | `>=10`  | No pnpm or yarn. The committed `package-lock.json` wins. |
+| Playwright Chromium | n/a     | **Required.** See below; `npm run test` needs it.        |
 
-Git LFS is not optional. The 171 PNG baselines under
-`.storybook/__image_snapshots__/` are stored in Git LFS. If you clone without
-`git-lfs` installed, those files check out as tiny pointer text files and the
-visual tests will fail with confusing diffs.
+`npm run test` runs a Vitest project named `storybook` that executes every
+Storybook story as a test in a real Chromium instance (via
+`@storybook/addon-vitest`), including an axe accessibility pass. Without the
+Chromium binary installed, that project fails immediately and `npm run test`
+cannot pass locally.
 
 ## Setup
 
 ```bash
-# Install git-lfs first if you haven't (https://git-lfs.com):
-#   macOS:   brew install git-lfs
-#   Ubuntu:  sudo apt-get install git-lfs
-
 git clone <your-fork-url>
 cd cubscout-branding
-git lfs install          # one-time, enables the LFS filters
-git lfs pull             # ensure baseline PNGs are real images, not pointers
-nvm use                  # picks up .nvmrc (Node 22)
-npm ci                   # clean install from the lockfile
+nvm use                          # picks up .nvmrc (Node 22)
+npm ci                           # clean install from the lockfile
+npx playwright install chromium  # one-time, needed for the storybook test project
 ```
+
+CI installs the Chromium binary explicitly as a separate step before running
+`npm run test`; do the same locally so you are not surprised by a passing PR
+that fails on your machine (or vice versa).
 
 ### Brand assets (important, legal-sensitive)
 
@@ -61,8 +61,33 @@ license forbids. See the "Brand asset model" section of `CLAUDE.md`.
 
 ```bash
 npm run dev          # Vite showcase (App.tsx demo) at http://localhost:5173
-npm run storybook    # Storybook 8 component lab at http://localhost:6006
+npm run storybook    # Storybook 10 component lab at http://localhost:6006
 ```
+
+Restart Storybook after editing anything under `.storybook/`: HMR does not
+cover `main.ts` / `preview.tsx` changes.
+
+## Testing
+
+`npm run test` (`vitest run`) runs two Vitest projects defined in
+`vitest.config.ts`, and both must pass:
+
+- **`unit`** (jsdom, no browser): contrast-ratio math (`tests/contrast.test.ts`),
+  per-program token-parity (`tests/token-parity.test.ts`), and component
+  behavior/logic tests under `src/components/__tests__/`. Fast inner loop; run
+  it alone with `npx vitest --project unit`.
+- **`storybook`** (real Chromium, via `@storybook/addon-vitest`): every story in
+  the library runs as a test, with an axe accessibility pass (roles, names,
+  ARIA, focus) on top. Run it alone with `npx vitest --project=storybook`.
+
+**The key rule: a new component needs a story.** The story is what the
+`storybook` project scans, so it is the required accessibility coverage for
+that component; there is no separate jsdom a11y check to fall back on.
+Accessibility violations caught here fail CI. Color contrast is deliberately
+excluded from this pass and owned instead by `tests/contrast.test.ts` and the
+contrast kitchen-sink story: see
+[ADR 0005](../docs/decisions/0005-accessibility-testing-strategy.md) for the
+full division of labor and why it is split this way.
 
 ## Before you open a pull request
 
@@ -71,22 +96,63 @@ Run the same checks CI runs. All four must pass:
 ```bash
 npm run lint         # Prettier formatting check
 npm run typecheck    # tsc across the project, node, and test configs
-npm run test         # Vitest: contrast ratios, axe smoke tests, unit tests
+npm run test         # Vitest: unit project + storybook (real-browser) project
 npm run build        # verifies the library + CSS build is clean
 ```
 
 `npm run format` auto-fixes any formatting the linter flags. Formatting is
 Prettier-owned and mirrored in `.editorconfig`; do not hand-format against it.
 
-### Visual regression
+### Visual regression is parked
 
-If your change alters rendered output, the visual-regression suite will diff
-against the committed baselines and fail. That is expected. To review and
-update baselines, follow [`.storybook/VISUAL_REGRESSION.md`](../.storybook/VISUAL_REGRESSION.md)
-exactly: baselines must be regenerated inside the pinned Playwright container so
-font rendering matches CI, then committed (they land in Git LFS automatically).
-Never commit baselines generated on your host OS: antialiasing differences will
-make CI red for everyone.
+There is currently no automated visual (pixel-diff) regression suite. A
+previous `@storybook/test-runner` + `jest-image-snapshot` pipeline against
+committed PNG baselines was retired during the Storybook 10 migration: the
+test-runner approach doesn't carry forward cleanly onto
+`@storybook/addon-vitest`, and the project is pre-1.0 (alpha), so visual
+regressions are caught by manual review (`npm run storybook`, then eyeball
+across the program toolbar) instead. See
+[`.storybook/VISUAL_REGRESSION.md`](../.storybook/VISUAL_REGRESSION.md) for
+the full history and what would be involved in bringing it back. Do not add
+or update image baselines as part of a PR; there is no baseline mechanism to
+target.
+
+## Adding a component
+
+1. Create `src/components/YourThing.tsx`. Use the `cva` recipe idiom for
+   variants (see `Button`, `Badge`, `Card`) and resolve colors to the shadcn
+   semantic tokens or the `--os-*` extended tokens, never hardcoded colors.
+   Use `text-muted-foreground` or `text-os-on-surface-faint` for de-emphasized
+   text, not an opacity tint below `/80` (it fails contrast).
+2. Add `src/components/YourThing.stories.tsx` alongside it. This is not
+   optional: it is the accessibility coverage the `storybook` Vitest project
+   depends on (see Testing above).
+3. If the component is a Radix portalled widget (Dialog, Popover,
+   DropdownMenu, Tooltip, Select, and similar), spread `useProgramStamp()`
+   (from `ScoutThemeProvider`) onto every portalled `*.Content` so the themed
+   `data-program` attribute survives the portal to `document.body` (ADR 0002
+   delta 9).
+4. Export the component (and its prop types) from `src/index.ts`.
+5. If there is non-visual behavior worth testing (fallback logic, date math,
+   dev-mode warnings), add a unit test in `src/components/__tests__/`. This is
+   for logic, not accessibility: the story already covers a11y.
+6. Run `npm run typecheck`, `npm run lint`, and `npm run test` before opening
+   the PR.
+
+## Adding a program
+
+Scouting America's four program sub-brands plus the parent brand are additive:
+adding a fifth program (or a new parent-brand variant) should never require
+touching component code. To add one:
+
+1. Add a `[data-program="..."]` block to `src/styles/tokens.css` with the full
+   token set. `tests/token-parity.test.ts` enforces that every program block
+   defines an identical set of tokens, so copy an existing block as a starting
+   point and cite the brand-guidelines page number for each value.
+2. Add the program to `PROGRAMS` and `PROGRAM_META` in
+   `src/lib/theme/ScoutThemeProvider.tsx`.
+3. Add it to the palette arrays in the token tests
+   (`tests/contrast.test.ts`, `tests/token-parity.test.ts`).
 
 ## Commit and PR conventions
 
@@ -102,7 +168,7 @@ make CI red for everyone.
 
 ## Housekeeping
 
-Rebasing, amending, or refreshing binary baselines can leave orphaned objects
-that bloat `.git`. Run `npm run maintenance:git` occasionally to prune them
-(it only removes unreachable objects; committed history is never touched).
-`npm run clean` removes build output (`dist/`, `storybook-static/`, caches).
+Rebasing or amending can leave orphaned objects that bloat `.git`. Run
+`npm run maintenance:git` occasionally to prune them (it only removes
+unreachable objects; committed history is never touched). `npm run clean`
+removes build output (`dist/`, `storybook-static/`, caches).

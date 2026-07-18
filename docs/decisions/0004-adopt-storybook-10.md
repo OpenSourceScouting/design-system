@@ -33,10 +33,12 @@ bump.
 
 Adopt `@storybook/addon-vitest` as the test stack on Storybook 10: stories run as
 tests in real Chromium with axe. Vitest is split into two projects: a jsdom
-"unit" project (contrast, token parity, component unit/smoke, and the fast
-jest-axe inner loop) and a browser "storybook" project (stories + axe). a11y
-violations fail CI (`parameters.a11y.test = "error"`); `color-contrast` is
-disabled there because `tests/contrast.test.ts` owns it (ADR 0005).
+"unit" project (contrast, token parity, component unit/behavior) and a browser
+"storybook" project (stories + axe). a11y violations fail CI
+(`parameters.a11y.test = "error"`); `color-contrast` is disabled there because
+`tests/contrast.test.ts` owns it. The jsdom axe layer that existed during the
+migration was subsequently retired in ADR 0005 (the browser project is the single
+a11y source).
 
 Retire `@storybook/test-runner` entirely, including its visual-snapshot job. Do
 not rebuild visual regression now: it is parked (manual review for a pre-1.0
@@ -51,7 +53,7 @@ git history. This supersedes TODO R.1.
 - CI must install Playwright Chromium before the test step (the browser project
   needs it).
 - Accessibility coverage never went dark during the migration: the jsdom suite
-  (contrast, parity, jest-axe) is Storybook-version-independent and stayed green
+  (contrast, parity, unit tests) is Storybook-version-independent and stayed green
   throughout, and the 9 checkpoint remained a shippable fallback.
 - Visual regression is gone until deliberately rebuilt (a follow-up in
   `docs/TODO.md`). Acceptable pre-1.0; the trade is less pixel coverage for a far

@@ -177,7 +177,7 @@ accent means the element has no `data-program` ancestor (missing
 
 By default, `ProgramMark` loads files from `/marks/` on the same origin. If
 your app is deployed at a subpath (for example `https://pack42.org/events/`)
-or you host assets on a CDN, set the base path in one of three ways:
+or you host assets on a CDN, set the base path in one of these ways:
 
 ```tsx
 // 1. Per-provider (covers all ProgramMark instances inside it)
@@ -211,17 +211,20 @@ assignment, which works fine for non-SPA deployments.
 ## Architecture
 
 ```
-src/
+src/                       # the published library ONLY
 ├── styles/
 │   ├── tokens.css        # CSS custom properties per program (the source of truth)
-│   └── globals.css       # Tailwind layers + font imports + base styles
+│   ├── theme.css         # Tailwind v4 @theme mapping + @utility + base layer (the ./theme export)
+│   ├── globals.css       # dev/Storybook/demo entry: Tailwind layers + tokens + theme, broad source scan
+│   └── library.css       # published entry (scoped source scan) -> dist/styles.css
 ├── lib/
 │   ├── theme/
-│   │   └── ScoutThemeProvider.tsx   # React context + data-program attribute
-│   └── utils/
-│       ├── cn.ts         # clsx + tailwind-merge
-│       └── date.ts       # vanilla Date math (no date-fns)
-├── components/
+│   │   └── ScoutThemeProvider.tsx   # React context + data-program attribute; useProgramStamp, normalizeBasePath
+│   ├── utils/
+│   │   ├── cn.ts         # clsx + tailwind-merge
+│   │   └── date.ts       # vanilla Date math (no date-fns)
+│   └── links.ts          # SCOUTING_LINKS / SCOUTING_LINK_LIST canonical resource URLs
+├── components/            # one file per component, .stories.tsx alongside; a sample, not the full list
 │   ├── Button.tsx        # Primitives; variant="accent" size="sm" excluded at the type level (WCAG AA)
 │   ├── Card.tsx          # Card, CardBody, CardHeader, CardFooter, CardEyebrow
 │   ├── Badge.tsx
@@ -236,8 +239,21 @@ src/
 │   ├── EventCard.tsx         # Operational program patterns
 │   ├── RegistrationCTA.tsx
 │   ├── Calendar.tsx          # Month + agenda views; CalendarEvent supports featured
-│   └── EventDialog.tsx       # Native <dialog> modal for event detail
-└── App.tsx               # End-to-end demo with program switcher
+│   ├── EventDialog.tsx       # Built on the shadcn Dialog (Radix) recipe; the native <dialog> was retired
+│   ├── Field.tsx, TextInput.tsx, Textarea.tsx, Select.tsx, NativeSelect.tsx,
+│   │   Checkbox.tsx, Switch.tsx, RadioGroup.tsx     # form layer
+│   ├── Dialog.tsx, AlertDialog.tsx, DropdownMenu.tsx, Popover.tsx,
+│   │   Tooltip.tsx, Toaster.tsx, Tabs.tsx, Accordion.tsx,
+│   │   NavigationMenu.tsx    # Tier-1 shadcn recipes on Radix
+│   ├── Icon.tsx           # Lucide wrapper with sizing/stroke/a11y conventions
+│   └── MadeWithBadge.tsx
+├── stories/               # Introduction.mdx + Colors.stories.tsx (cross-component)
+└── index.ts               # public package entry (barrel)
+
+demo/                      # dev-only showcase; Vite root for `dev` + `build:demo`, NOT published
+├── index.html
+├── main.tsx               # font imports (@fontsource-variable) + globals.css
+└── App.tsx                # end-to-end demo with program switcher
 ```
 
 ## How theming works
@@ -288,7 +304,7 @@ accent use `bg-os-accent`; for validation use `text-destructive` /
 ## Configuring where assets are served from
 
 By default, `<ProgramMark>` loads files from `/marks/`. You can override that
-in three places, in priority order (highest wins):
+in four places, in priority order (highest wins):
 
 1. **Per-call prop**: `<ProgramMark basePath="/assets/brand/" />`
 2. **Per-app prop on the theme provider**: `<ScoutThemeProvider marksBasePath="https://cdn.example.org/scouting/">...</ScoutThemeProvider>`
@@ -509,20 +525,24 @@ here and noted in the `CHANGELOG.md`.
 
 ## Scripts
 
-| Command                   | Description                                                                                                                                                    |
-| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run dev`             | Vite dev server, runs the App.tsx demo at port 5173.                                                                                                           |
-| `npm run storybook`       | Storybook 10 component explorer at port 6006.                                                                                                                  |
-| `npm run build`           | `tsc -b && vite build && npm run build:css` (library dist + CSS artifacts).                                                                                    |
-| `npm run build:demo`      | Build the SPA showcase (copies public assets; for deployment).                                                                                                 |
-| `npm run build:css`       | Re-emit dist/styles.css and dist/tokens.css only.                                                                                                              |
-| `npm run typecheck`       | `tsc --noEmit` across three configs (project, node, and test tsconfig files).                                                                                  |
-| `npm run test`            | Vitest, two projects: jsdom unit tests (contrast, token parity, component smoke, jest-axe) and a real-Chromium Storybook project running every story with axe. |
-| `npm run build-storybook` | Static Storybook build for deployment.                                                                                                                         |
-| `npm run lint`            | Prettier formatting check (run in CI).                                                                                                                         |
-| `npm run format`          | Prettier auto-fix across the repo.                                                                                                                             |
-| `npm run clean`           | Remove build output (dist, storybook-static, caches, tsbuildinfo).                                                                                             |
-| `npm run maintenance:git` | Prune unreachable objects to shrink `.git` (safe; reachable history intact).                                                                                   |
+| Command                   | Description                                                                                                                                                                                                          |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`             | Vite dev server, runs the `demo/App.tsx` showcase at port 5173.                                                                                                                                                      |
+| `npm run storybook`       | Storybook 10 component explorer at port 6006.                                                                                                                                                                        |
+| `npm run build`           | `tsc -b && vite build && npm run build:css` (library dist + CSS artifacts).                                                                                                                                          |
+| `npm run build:demo`      | Build the SPA showcase (copies public assets; for deployment).                                                                                                                                                       |
+| `npm run build:css`       | Re-emit dist/styles.css and dist/tokens.css only.                                                                                                                                                                    |
+| `npm run typecheck`       | `tsc --noEmit` across three configs (project, node, and test tsconfig files).                                                                                                                                        |
+| `npm run test`            | Vitest, two projects: a jsdom "unit" project (contrast, token parity, component behavior/logic) and a real-Chromium "storybook" project that runs every story with an axe a11y pass (via `@storybook/addon-vitest`). |
+| `npm run build-storybook` | Static Storybook build for deployment.                                                                                                                                                                               |
+| `npm run lint`            | Prettier formatting check (run in CI).                                                                                                                                                                               |
+| `npm run format`          | Prettier auto-fix across the repo.                                                                                                                                                                                   |
+| `npm run clean`           | Remove build output (dist, storybook-static, caches, tsbuildinfo).                                                                                                                                                   |
+| `npm run maintenance:git` | Prune unreachable objects to shrink `.git` (safe; reachable history intact).                                                                                                                                         |
+
+The "storybook" Vitest project runs stories in real Chromium, so running
+`npm run test` locally requires a one-time `npx playwright install chromium`
+first.
 
 ## License & trademark notice
 

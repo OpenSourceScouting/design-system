@@ -10,9 +10,6 @@ storybook-static
 .env*
 !.env.example
 
-# Visual regression: baselines under .storybook/__image_snapshots__ ARE
-# committed, but the per-run diff output is throwaway. Ignore only the diffs.
-.storybook/__image_snapshots__/__diffs__/
 # Playwright browser downloads / results, if any leak into the tree.
 test-results/
 playwright-report/

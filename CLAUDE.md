@@ -14,7 +14,7 @@ from stock shadcn: see the delta register in `docs/decisions/0002-adopt-shadcn-p
 npm run dev           # Vite showcase at http://localhost:5173 (demo/App.tsx)
 npm run storybook     # Storybook 10 at http://localhost:6006 (component lab)
 npm run typecheck     # tsc --noEmit, three configs: project + node + test
-npm run test          # Vitest, two projects: jsdom "unit" (contrast, parity, unit + jest-axe) + browser "storybook" (stories-as-tests + axe in Chromium)
+npm run test          # Vitest, two projects: jsdom "unit" (contrast, parity, component logic) + browser "storybook" (stories-as-tests + axe in Chromium; needs `npx playwright install chromium`)
 npm run build         # tsc -b && vite build && npm run build:css (use to verify final correctness)
 npm run build-storybook
 ```
@@ -167,9 +167,9 @@ research/                      ← brand guidelines PDF + extracted text
     `play` functions to assert focus/keyboard behavior on interactive widgets.
 - Radix portalled widgets (Popover, Tooltip, DropdownMenu, Select) need the jsdom
   stubs in `tests/setup.ts` (ResizeObserver, scrollIntoView, pointer-capture) to
-  render in the jsdom project: open with `defaultOpen`, scan `document.body`, and
-  disable the axe `region` rule for the isolated-widget scan (see
-  `widgets.test.tsx`).
+  render in the jsdom `unit` project (open with `defaultOpen`, scan
+  `document.body`; see `widgets.test.tsx`). The jsdom project no longer runs axe;
+  a11y for these widgets is covered by their stories in the browser project.
 - Accessibility testing strategy: ADR 0005. Two contrast layers: token soundness
   in `contrast.test.ts` (all five palettes), and rendered-contrast application in
   `src/stories/ContrastKitchenSink.stories.tsx` (color-contrast re-enabled there

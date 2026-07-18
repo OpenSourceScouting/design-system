@@ -49,10 +49,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   into CI, plus an `.editorconfig` kept in sync.
 - `engines` field and `.nvmrc` pinning Node 22 LTS.
 - `npm run clean` and `npm run maintenance:git` housekeeping scripts.
+- A rendered-contrast kitchen-sink story (`src/stories/ContrastKitchenSink.stories.tsx`)
+  that re-enables the axe `color-contrast` rule across the four program themes
+  (the parent-brand palette is covered by the token test), proving components
+  apply tokens correctly (not just that the palette is sound), per ADR 0005.
 
 ### Changed
 
-- Visual-regression baselines are now stored in Git LFS to keep `.git` small.
+- Upgraded Storybook 8 to 10 (10.5.2), transiting a validated Storybook 9
+  checkpoint first; the config is now ESM-only, per ADR 0004.
+- Rebuilt the test stack on `@storybook/addon-vitest`. Vitest now runs two
+  projects: a jsdom `unit` project (contrast, token parity, component logic)
+  and a real-Chromium `storybook` project that runs every story as a test
+  with an axe accessibility pass; a11y violations fail CI, per ADR 0005.
+- CI now installs Playwright Chromium before running tests, since the browser
+  Vitest project needs the binary present.
+
+### Removed
+
+- `@storybook/test-runner` and the self-hosted visual-regression pipeline
+  (`jest-image-snapshot` plus committed PNG baselines). Visual regression is
+  parked for now (see `.storybook/VISUAL_REGRESSION.md`); the baseline images
+  were purged from git history.
+- `jest-axe`. The jsdom axe assertions are retired; the browser Vitest project
+  is the single accessibility source. Also removed the now-dead Git LFS rule
+  and objects for the retired visual-regression baselines.
 
 ## [0.1.0] - 2026-07-17
 
