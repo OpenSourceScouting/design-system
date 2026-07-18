@@ -10,8 +10,10 @@ export type AlertProps = HTMLAttributes<HTMLDivElement> & {
 /**
  * Note: tone colors intentionally come from the raw `sa.*` palette, not the
  * program tokens. System feedback should read the same regardless of which
- * program is theming the surrounding UI. Borders and surfaces still tint
- * subtly via the program tokens so the alert feels at home.
+ * program is theming the surrounding UI (this is why tone is a multi-slot
+ * record rather than a cva variant: ring/chip/chipText move together and are
+ * deliberately program-independent). The surface and body text use the shadcn
+ * card/foreground tokens so the alert still feels at home in each program.
  */
 const TONE: Record<
   NonNullable<AlertProps["tone"]>,
@@ -28,13 +30,13 @@ export function Alert({ tone = "info", title, icon, className, children, ...rest
   return (
     <div
       role="status"
-      className={cn("flex gap-3 p-4 rounded-program border bg-program-surface", t.ring, className)}
+      className={cn("flex gap-3 rounded-lg border bg-card p-4", t.ring, className)}
       {...rest}
     >
       <div
         aria-hidden
         className={cn(
-          "shrink-0 h-7 w-7 rounded-program grid place-items-center text-xs font-bold",
+          "grid h-7 w-7 shrink-0 place-items-center rounded-lg text-xs font-bold",
           t.chip,
           t.chipText,
         )}
@@ -42,8 +44,8 @@ export function Alert({ tone = "info", title, icon, className, children, ...rest
         {icon ?? "!"}
       </div>
       <div className="flex-1 text-sm leading-relaxed">
-        {title ? <div className="display text-base mb-0.5">{title}</div> : null}
-        <div className="text-program-on-surface/85">{children}</div>
+        {title ? <div className="display mb-0.5 text-base">{title}</div> : null}
+        <div className="text-foreground/85">{children}</div>
       </div>
     </div>
   );

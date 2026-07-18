@@ -82,6 +82,14 @@
   --font-body: var(--program-font-body);
   --radius-program: var(--program-radius);
   --shadow-program: var(--program-shadow);
+
+  /* shadcn radius scale, derived from the per-program --radius (Phase 3). Lets
+     recipes use rounded-sm/md/lg/xl and still track each program's radius. No
+     collision: components only used rounded-full and rounded-program before. */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
 /* Rule keyline width tracks --program-rule-weight per program. v4 has no
