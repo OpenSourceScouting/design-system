@@ -68,80 +68,40 @@ npm install ./opensourcescouting-design-system-0.1.0.tgz
 **Supported React versions:** React 18 and React 19 (peer dependency `react >= 18`).
 React and react-dom are peers; they must already be in your project.
 
-### Wire up Tailwind
+### Choose your setup
 
-> **⚠️ These wiring docs are out of date (Tailwind v3 preset). The package now
-> ships a Tailwind v4 CSS-first contract; the v3 preset and `tailwind-preset`
-> export have been removed.** A full rewrite of this section lands with Phase 6
-> of the shadcn re-platform (see `docs/shadcn-migration-plan.md`). Until then,
-> for Tailwind v4 wire it up in CSS instead of a JS preset:
->
-> ```css
-> /* your entry CSS */
-> @import "tailwindcss";
-> @import "@opensourcescouting/design-system/tokens"; /* the --program-*/shadcn variables */
-> @import "@opensourcescouting/design-system/theme";  /* the @theme mapping (preset replacement) */
-> ```
->
-> Or, to render the design system's components without your own Tailwind build,
-> just `import "@opensourcescouting/design-system/styles"` (see below). The v3
-> instructions that follow are retained only for reference until Phase 6.
+This package targets Tailwind CSS v4 and configures itself in CSS, not in a
+`tailwind.config.js`. There is no JS preset. Pick one of two paths depending on
+whether you write your own Tailwind utilities.
 
-Add the preset to your `tailwind.config.ts` (or `.js`). This injects all program
-color tokens, typography utilities, and shadow/radius/border tokens:
-
-```ts
-// tailwind.config.ts
-import scoutingPreset from "@opensourcescouting/design-system/tailwind-preset";
-
-export default {
-  presets: [scoutingPreset],
-  content: [
-    "./src/**/*.{ts,tsx}",
-    // include the package's own components so Tailwind sees their class names
-    "./node_modules/@opensourcescouting/design-system/dist/**/*.js",
-  ],
-};
-```
-
-### Import the styles
-
-Import the compiled stylesheet once, at your app entry point:
+**Path A: render our components, no Tailwind build of your own.** Import the
+compiled stylesheet once at your app entry. It carries every utility our
+components use, plus the token variables. Nothing else to configure.
 
 ```ts
 // main.tsx (or index.ts, _app.tsx, etc.)
 import "@opensourcescouting/design-system/styles";
 ```
 
-If you need only the raw CSS custom property definitions without the Tailwind
-utilities (useful for non-Tailwind projects), import the tokens file instead:
+This stylesheet only contains the classes our components use. Utilities you
+write in your own markup (`bg-primary`, `text-foreground`, and so on) are not in
+it. If you write your own, use Path B.
 
-```ts
-import "@opensourcescouting/design-system/tokens";
+**Path B: you run Tailwind v4 in your app.** Add the Tailwind Vite plugin, then
+import our tokens and theme into your entry CSS. Your build regenerates the
+program and shadcn utilities against your own source scan, so `bg-primary` and
+friends work in your markup and re-theme per program.
+
+```css
+/* your entry CSS, e.g. src/index.css */
+@import "tailwindcss";
+@import "@opensourcescouting/design-system/tokens"; /* the CSS variables, per program */
+@import "@opensourcescouting/design-system/theme"; /* maps those variables to utilities */
 ```
 
-> **What `@opensourcescouting/design-system/styles` contains (and does not contain):**
-> The published stylesheet includes only the Tailwind utility classes that the
-> design system's own components use internally. It does **not** run a full
-> Tailwind build over your project's source files. This means:
->
-> - Utilities you write yourself (`bg-program-primary`, `font-display`,
->   `text-program-on-surface`, etc.) will **not** be emitted by this stylesheet.
-> - You need a Tailwind build in your own project that loads the preset, with the
->   standard `@tailwind base; @tailwind components; @tailwind utilities;`
->   directives in your entry CSS.
->
-> Example `src/index.css` for a consumer that writes its own Tailwind utilities:
->
-> ```css
-> @tailwind base;
-> @tailwind components;
-> @tailwind utilities;
-> ```
->
-> If you are using Tailwind only to render design system components (no custom
-> utilities in your own code), importing `@opensourcescouting/design-system/styles` is
-> sufficient and you do not need a separate Tailwind build step.
+The `./tokens` export is the variables alone, for non-Tailwind projects or for
+reading token values directly. The `./theme` export adds the `@theme` mapping
+that turns them into utilities, and replaces the old v3 preset.
 
 ### Minimal working snippet
 
@@ -183,20 +143,26 @@ triplet (no `rgb()` wrapper). You can override any token by targeting the
 `[data-program]` attribute in your own stylesheet:
 
 ```css
-/* council.css -- override Cub Scouts accent to your council color */
+/* council.css: override the Cub Scouts brand accent to your council color */
 [data-program="cub"] {
-  --program-accent: 13 115 119; /* R G B, no commas (example: a council teal) */
+  --os-accent: 13 115 119; /* R G B, no commas (example: a council teal) */
 }
 ```
 
-Avoid red as an override on scout-facing surfaces: red is the parent brand's
-accent and doubles as the unthemed fallback (see below), so a red accent
-reads as either an error state or a broken theme.
+The brand accent (gold, yellow, red) lives in `--os-accent`, not the shadcn
+`--accent`. The shadcn `--accent` is the muted hover wash used by menus and
+hover states, so override `--os-accent` when you want to change the branded
+pop, and `--primary` for the main brand color. See the token reference in
+`docs/BRAND-GUIDE.md`.
 
-The space-separated format is required because Tailwind appends an opacity
-modifier at compile time: `bg-program-accent/80` becomes
-`rgb(var(--program-accent) / 0.8)`. If you use `rgb(220, 38, 38)` the
-opacity modifier breaks.
+Avoid red as an override on scout-facing surfaces. Red is the parent brand's
+accent and doubles as the unthemed fallback (see below), so a red accent reads
+as either an error state or a broken theme.
+
+The space-separated format is required because Tailwind v4 applies opacity
+modifiers with `color-mix`: `bg-os-accent/80` composites the token at 80%. A
+full `rgb(220, 38, 38)` value would still work, but the triplet keeps the
+whole token set consistent.
 
 Full list of overridable tokens is in `src/styles/tokens.css` (shipped as
 `dist/tokens.css` in the package).
@@ -276,12 +242,13 @@ src/
 
 ## How theming works
 
-Every theme-aware style resolves through a CSS custom property like
-`--program-primary`. Tailwind utilities (`bg-program-primary`,
-`text-program-on-surface`, etc.) are wired to those vars in
-`tailwind-preset.cjs` (the published preset). `tailwind.config.ts` in this
-repo just consumes that preset and adds the local content globs. The vars get
-re-bound by selecting an ancestor with the right `data-program="..."` attribute.
+Every theme-aware style resolves through a CSS custom property like `--primary`.
+The system uses shadcn's semantic token names (`--primary`, `--background`,
+`--accent`, and so on) plus an `--os-*` set for concepts shadcn does not cover,
+such as the brand accent. Tailwind utilities (`bg-primary`, `text-foreground`,
+and the rest) map to those variables in `src/styles/theme.css` (shipped as the
+`./theme` export). Selecting an ancestor with the right `data-program="..."`
+attribute re-binds the variables, so the same utility renders each program.
 
 ```tsx
 import { ScoutThemeProvider, Button } from "./src";
@@ -306,15 +273,17 @@ Full CMYK and Pantone data (including secondary tans, grays, and mark-reproducti
 
 ### The `sa-red` raw palette utility
 
-`tokens.css` defines a raw Tailwind color `sa-red` (`#CE1126`, Scouting America
-Red) as a standalone palette entry alongside the `program-*` token family.
-It is **reserved for true error and danger states only**, such as form validation
-errors, destructive action confirmations, and alert banners that signal failure.
+The theme defines a raw Tailwind color `sa-red` (`#CE1126`, Scouting America
+Red) as a fixed palette entry, separate from the themed tokens. The same value
+also backs `--destructive`. Reserve it for true error and danger states: form
+validation errors, destructive action confirmations, and alert banners that
+signal failure.
 
-Do not use `sa-red` as a general accent or brand color on program pages: the
-parent brand red reads as either an error state or a broken theme (it is also the
-`:root` fallback when no `data-program` ancestor exists). If you need a
-program-appropriate accent, use `bg-program-accent` instead.
+Do not use `sa-red` as a general accent or brand color on program pages. The
+parent brand red reads as either an error state or a broken theme, and it is the
+`:root` fallback when no `data-program` ancestor exists. For a program's brand
+accent use `bg-os-accent`; for validation use `text-destructive` /
+`border-destructive`.
 
 ## Configuring where assets are served from
 
@@ -424,7 +393,7 @@ stroke, `currentColor` tinting, and accessibility conventions:
 import { Icon } from "@opensourcescouting/design-system";
 import { Compass, Rocket } from "lucide-react";
 
-<Icon icon={Compass} className="text-program-primary" />   // decorative (aria-hidden)
+<Icon icon={Compass} className="text-primary" />   // decorative (aria-hidden)
 <Icon icon={Rocket} label="Launch" />                       // meaningful (role="img")
 ```
 
@@ -530,11 +499,11 @@ here and noted in the `CHANGELOG.md`.
 
 ## Accessibility
 
-- Focus rings use `--program-ring`, always visible (2px solid, 2px offset)
+- Focus rings use `--ring`, always visible (2px solid, 2px offset)
 - Color pairings tested against WCAG 2.1 AA for body text and large text
 - `prefers-reduced-motion` suppresses non-essential animation globally; the Button press translation uses `motion-safe:active:` so it never fires under reduced motion
 - All decorative SVG is `aria-hidden`; informative SVG has `aria-label`
-- Headings use semantic `<h1>`–`<h6>` independently of visual size
+- Headings use semantic `<h1>`-`<h6>` independently of visual size
 - `Button` with `variant="accent"` and `size="sm"` is excluded at the TypeScript type level; the gold accent fill does not pass WCAG AA at 12px. A dev-mode console warning catches untyped call sites.
 - `tokens.css` includes a `forced-colors: active` block for Windows High Contrast mode. It zeroes shadows, adds a `ButtonText` border to every button, and routes focus to the system `Highlight` pair so keyboard position is always visible regardless of program ring color.
 
