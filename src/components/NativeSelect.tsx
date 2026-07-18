@@ -58,7 +58,7 @@ export const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(fun
       <Icon
         icon={ChevronDown}
         size={18}
-        className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-program-on-surface-soft"
+        className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
       />
     </div>
   );

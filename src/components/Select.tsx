@@ -79,7 +79,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
         {...rest}
       >
         <RS.Value placeholder={placeholder} />
-        <RS.Icon className="text-program-on-surface-soft">
+        <RS.Icon className="text-muted-foreground">
           <ChevronDown size={18} />
         </RS.Icon>
       </RS.Trigger>
@@ -89,7 +89,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(function Select
           position="popper"
           sideOffset={4}
           className={cn(
-            "z-50 overflow-hidden rounded-program border border-program-border bg-program-surface text-program-on-surface shadow-program",
+            "z-50 overflow-hidden rounded-lg border border-border bg-popover text-popover-foreground shadow-program",
             "max-h-[var(--radix-select-content-available-height)] min-w-[var(--radix-select-trigger-width)]",
           )}
         >
@@ -117,15 +117,15 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(function S
       value={value}
       disabled={disabled}
       className={cn(
-        "relative flex cursor-pointer select-none items-center rounded-program py-2 pl-8 pr-3 text-sm text-program-on-surface outline-none",
-        "data-[highlighted]:bg-program-surface-muted",
+        "relative flex cursor-pointer select-none items-center rounded-lg py-2 pl-8 pr-3 text-sm text-popover-foreground outline-none",
+        "data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground",
         "data-[state=checked]:font-medium",
         "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         className,
       )}
     >
       <RS.ItemIndicator className="absolute left-2 inline-flex">
-        <Icon icon={Check} size={16} className="text-program-primary" />
+        <Icon icon={Check} size={16} className="text-primary" />
       </RS.ItemIndicator>
       <RS.ItemText>{children}</RS.ItemText>
     </RS.Item>

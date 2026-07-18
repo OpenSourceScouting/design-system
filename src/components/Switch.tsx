@@ -51,16 +51,16 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(function Switch
       onClick={toggle}
       className={cn(
         "relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors",
-        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-program-ring",
+        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         "disabled:opacity-50 disabled:pointer-events-none",
-        on ? "bg-program-primary" : "bg-program-border",
+        on ? "bg-primary" : "bg-border",
         className,
       )}
     >
       <span
         aria-hidden
         className={cn(
-          "inline-block h-5 w-5 rounded-full bg-program-surface shadow transition-transform",
+          "inline-block h-5 w-5 rounded-full bg-background shadow transition-transform",
           on ? "translate-x-5" : "translate-x-0.5",
         )}
       />
@@ -72,7 +72,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(function Switch
   return (
     <span className={cn("inline-flex items-center gap-2", isDisabled && "opacity-50")}>
       {button}
-      <label htmlFor={sid} className="text-sm text-program-on-surface">
+      <label htmlFor={sid} className="text-sm text-foreground">
         {label}
       </label>
     </span>
