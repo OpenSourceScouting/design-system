@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Button } from "./Button";
 import { Heading } from "./Heading";
 import { ProgramMark } from "./ProgramMark";
-import { useScoutTheme, PROGRAM_META } from "../lib/theme/ScoutThemeProvider";
+import { useScoutTheme, PROGRAM_META, resolveKnownProgram } from "../lib/theme/ScoutThemeProvider";
 import { cn } from "../lib/utils/cn";
 
 export type RegistrationCTAProps = {
@@ -46,7 +46,7 @@ export function RegistrationCTA({
   className,
 }: RegistrationCTAProps) {
   const { program } = useScoutTheme();
-  const meta = PROGRAM_META[program];
+  const meta = PROGRAM_META[resolveKnownProgram(program)];
 
   const resolvedHeadline = headline ?? `Ready to join ${meta.label}?`;
   const resolvedBody = body ?? meta.platform;

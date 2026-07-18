@@ -1,8 +1,10 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "../lib/utils/cn";
 
+export type AlertTone = "info" | "success" | "warning" | "danger";
+
 export type AlertProps = HTMLAttributes<HTMLDivElement> & {
-  tone?: "info" | "success" | "warning" | "danger";
+  tone?: AlertTone;
   title?: ReactNode;
   icon?: ReactNode;
 };
@@ -14,9 +16,13 @@ export type AlertProps = HTMLAttributes<HTMLDivElement> & {
  * record rather than a cva variant: ring/chip/chipText move together and are
  * deliberately program-independent). The surface and body text use the shadcn
  * card/foreground tokens so the alert still feels at home in each program.
+ *
+ * Exported so consumers can spread it and register extra tones from a wrapper
+ * component (task 2.9) without forking: e.g.
+ *   const TONES = { ...alertToneStyles, brand: { ring, chip, chipText } };
  */
-const TONE: Record<
-  NonNullable<AlertProps["tone"]>,
+export const alertToneStyles: Record<
+  AlertTone,
   { ring: string; chip: string; chipText: string }
 > = {
   info: { ring: "border-sa-blue/40", chip: "bg-sa-blue", chipText: "text-white" },
@@ -26,7 +32,7 @@ const TONE: Record<
 };
 
 export function Alert({ tone = "info", title, icon, className, children, ...rest }: AlertProps) {
-  const t = TONE[tone];
+  const t = alertToneStyles[tone];
   return (
     <div
       role="status"

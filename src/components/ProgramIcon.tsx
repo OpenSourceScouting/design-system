@@ -1,5 +1,11 @@
 import { Anchor, Mountain, PawPrint, Tent, type LucideIcon } from "lucide-react";
-import { useScoutTheme, PROGRAM_META, type Program } from "../lib/theme/ScoutThemeProvider";
+import {
+  useScoutTheme,
+  PROGRAM_META,
+  resolveKnownProgram,
+  type KnownProgram,
+  type Program,
+} from "../lib/theme/ScoutThemeProvider";
 import { Icon, type IconProps } from "./Icon";
 
 /**
@@ -19,7 +25,7 @@ import { Icon, type IconProps } from "./Icon";
  * none of these are BSA trademarks.
  */
 
-export const PROGRAM_ICONS: Record<Program, LucideIcon> = {
+export const PROGRAM_ICONS: Record<KnownProgram, LucideIcon> = {
   cub: PawPrint,
   scoutsbsa: Tent,
   venturing: Mountain,
@@ -39,7 +45,7 @@ export type ProgramIconProps = Omit<IconProps, "icon" | "label"> & {
 
 export function ProgramIcon({ program, icon, ariaLabel, ...iconProps }: ProgramIconProps) {
   const ctx = useScoutTheme();
-  const active = program ?? ctx.program;
+  const active = resolveKnownProgram(program ?? ctx.program);
   const glyph = icon ?? PROGRAM_ICONS[active];
   const label = ariaLabel ?? PROGRAM_META[active].label;
   return <Icon icon={glyph} label={label} {...iconProps} />;

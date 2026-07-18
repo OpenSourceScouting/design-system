@@ -234,7 +234,20 @@ no `exports`, no `peerDependencies`. A council webmaster cannot
 
 ---
 
-### [ ] 2.8 Open the Program union so third parties can register a fifth program
+### [x] 2.8 Open the Program union so third parties can register a fifth program
+
+> Done 2026-07-18: `Program` is now `KnownProgram | (string & {})` (KnownProgram
+> is the 4-literal union from PROGRAMS). Added `DEFAULT_PROGRAM` (scoutsbsa),
+> `isKnownProgram()`, and `resolveKnownProgram()`; PROGRAM_META / PROGRAM_ICONS
+> retyped to `Record<KnownProgram, ...>`. The four components that index those
+> maps (ProgramIcon, ProgramMark, ProgramHero, RegistrationCTA) resolve to a
+> known program for metadata/icons (graceful Scouts BSA fallback) while the raw
+> name still reaches `data-program` and the ProgramMark asset URL. forced-colors
+> block now targets `[data-program]` universally. New helpers/types exported
+> from index.ts; README gained a "Register a custom program" section; new tests
+> in ScoutThemeProvider.test.tsx cover the guards + no-crash fallback. theme.css
+> needed no change (it maps `var(--*)`, program-name-agnostic). Typecheck +
+> build pass.
 
 **Why:** `Program` is a closed string-literal union (`"cub" | "scoutsbsa" | "venturing" | "seascouts"`). A council running a custom youth program (or a future fifth national program) cannot add a brand without forking the package. Additionally, the `forced-colors` block in `tokens.css` hard-codes all four program names with `[data-program="..."]` selectors, meaning any fifth program gets no high-contrast support automatically.
 
@@ -251,7 +264,16 @@ no `exports`, no `peerDependencies`. A council webmaster cannot
 
 ---
 
-### [ ] 2.9 Open variant records on Button, Card, Badge, and Alert
+### [x] 2.9 Open variant records on Button, Card, Badge, and Alert
+
+> Done 2026-07-18: took the escape-hatch route. The `className` hatch already
+> existed on all four (merged via `cn`/tailwind-merge, so consumer classes land
+> ALONGSIDE variant defaults, not instead of them). The gap was reachability:
+> the style maps are now exported from the package entry so consumers can spread
+> them in a wrapper/cva without touching library source: `buttonVariants`,
+> `badgeVariants`, `cardVariants` (cva recipes) and `alertToneStyles` (Alert's
+> former private `TONE` record, renamed + exported, plus a new `AlertTone`
+> type). No variant behavior changed; stories untouched; typecheck + build pass.
 
 **Why:** `Button`'s `variant` prop is a closed enum (`"primary" | "secondary" | "accent" | "ghost"`). The same pattern applies to `Card`, `Badge`, and `Alert`. Consumers cannot add a variant (e.g. a council "danger" badge or an "outline-accent" button) without forking the component. A discriminated-union approach that hard-codes every string also makes the TS type errors cryptic for newcomers.
 

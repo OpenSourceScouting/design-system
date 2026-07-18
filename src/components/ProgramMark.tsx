@@ -3,6 +3,7 @@ import {
   useScoutTheme,
   PROGRAM_META,
   normalizeBasePath,
+  resolveKnownProgram,
   type Program,
 } from "../lib/theme/ScoutThemeProvider";
 import { PROGRAM_ICONS } from "./ProgramIcon";
@@ -121,8 +122,12 @@ export function ProgramMark({
   basePath,
 }: ProgramMarkProps) {
   const ctx = useScoutTheme();
+  // `active` keeps the raw (possibly custom) program so the asset URL probes
+  // /marks/{custom}...; `known` falls back to a built-in for the placeholder
+  // icon and the accessible label, which have no custom-program equivalent.
   const active = program ?? ctx.program;
-  const meta = PROGRAM_META[active];
+  const known = resolveKnownProgram(active);
+  const meta = PROGRAM_META[known];
   // Resolution priority: prop > theme provider > env var > default. The
   // provider already collapsed (provider value, env var, default) into a
   // single string; we just check for the per-call prop override here.
@@ -140,7 +145,7 @@ export function ProgramMark({
   const usePlaceholder = forcePlaceholder || ctx.forcePlaceholderMarks || exhausted;
 
   if (usePlaceholder) {
-    const Placeholder = PROGRAM_ICONS[active];
+    const Placeholder = PROGRAM_ICONS[known];
     return (
       <Placeholder
         role="img"
@@ -155,7 +160,7 @@ export function ProgramMark({
   }
 
   const ext = EXTENSION_PRIORITY[extIdx];
-  const PrintFallbackIcon = PROGRAM_ICONS[active];
+  const PrintFallbackIcon = PROGRAM_ICONS[known];
   // The reversed variant relies on `mix-blend-mode: screen` keying out the
   // JPG's black background against a dark primary surface. Browsers
   // strip background graphics from print by default, leaving white paper

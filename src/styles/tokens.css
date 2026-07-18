@@ -271,11 +271,11 @@
    3. Focus uses the system Highlight pair so keyboard position is always clear.
    --------------------------------------------------------------------------- */
 @media (forced-colors: active) {
+  /* Universal [data-program] selector (not the four names) so any custom
+     program a consumer registers gets high-contrast support automatically
+     (task 2.8). :root covers the parent-brand default. */
   :root,
-  [data-program="cub"],
-  [data-program="scoutsbsa"],
-  [data-program="venturing"],
-  [data-program="seascouts"] {
+  [data-program] {
     --os-shadow: none;
   }
 

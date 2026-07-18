@@ -173,6 +173,44 @@ parent Scouting America brand, whose accent is SA Red (#CE1126), so a red
 accent means the element has no `data-program` ancestor (missing
 `ScoutThemeProvider`) or the token CSS never loaded.
 
+### Register a custom program
+
+The four national programs ship built in, but `program` is an open string type
+(`KnownProgram | (string & {})`), so a council can add a fifth brand (a custom
+youth program, or a future national program) without forking the package:
+
+1. Define a `[data-program="yourprogram"]` block in your own stylesheet with the
+   full token set. Copy an existing block from `dist/tokens.css` as a template;
+   `[data-program]` blocks are the only per-program differentiation, so no
+   component code changes.
+2. Pass the name straight to the provider: `<ScoutThemeProvider program="yourprogram">`.
+   The raw name is stamped onto `data-program` verbatim, so your token block
+   themes the subtree (and portalled widgets, via the delta-9 re-stamp).
+
+```tsx
+<ScoutThemeProvider program="explorers">
+  <App />
+</ScoutThemeProvider>
+```
+
+```css
+/* council.css: a full custom program block (abbreviated) */
+[data-program="explorers"] {
+  --primary: 13 115 119;
+  --os-accent: 240 180 0;
+  /* ...the rest of the token set from dist/tokens.css... */
+}
+```
+
+Two built-in behaviors fall back to Scouts BSA (the `DEFAULT_PROGRAM`) for a
+custom program, because they have no per-program CSS: `PROGRAM_META` (label,
+tagline, age range: consumed by `ProgramHero` / `RegistrationCTA`) and the
+`PROGRAM_ICONS` placeholder glyphs. Supply your own copy via component props to
+override. Use the exported `isKnownProgram()` / `resolveKnownProgram()` helpers
+if your own code needs to branch on this. The `forced-colors` (Windows High
+Contrast) reset targets `[data-program]` universally, so your custom program
+gets high-contrast support automatically.
+
 ### Serve program marks from a subpath
 
 By default, `ProgramMark` loads files from `/marks/` on the same origin. If

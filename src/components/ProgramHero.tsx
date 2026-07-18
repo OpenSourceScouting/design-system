@@ -4,7 +4,7 @@ import { Button } from "./Button";
 import { Badge } from "./Badge";
 import { ProgramMark } from "./ProgramMark";
 import { DecorativeDivider } from "./DecorativeDivider";
-import { useScoutTheme, PROGRAM_META } from "../lib/theme/ScoutThemeProvider";
+import { useScoutTheme, PROGRAM_META, resolveKnownProgram } from "../lib/theme/ScoutThemeProvider";
 import { cn } from "../lib/utils/cn";
 
 export type ProgramHeroProps = {
@@ -41,7 +41,7 @@ export function ProgramHero({
   className,
 }: ProgramHeroProps) {
   const { program } = useScoutTheme();
-  const meta = PROGRAM_META[program];
+  const meta = PROGRAM_META[resolveKnownProgram(program)];
 
   // Resolve which node (if any) to render in the watermark slot.
   // `false` means suppress; `undefined` means use the built-in ProgramMark.

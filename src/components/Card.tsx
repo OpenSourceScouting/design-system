@@ -45,6 +45,8 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
   );
 });
 
+export { cardVariants };
+
 export function CardBody({ className, children }: { className?: string; children: ReactNode }) {
   return <div className={cn("p-5 sm:p-6", className)}>{children}</div>;
 }

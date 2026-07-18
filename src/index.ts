@@ -4,23 +4,26 @@ export {
   useProgramStamp,
   PROGRAMS,
   PROGRAM_META,
+  DEFAULT_PROGRAM,
+  isKnownProgram,
+  resolveKnownProgram,
 } from "./lib/theme/ScoutThemeProvider";
-export type { Program, ScoutThemeProviderProps } from "./lib/theme/ScoutThemeProvider";
+export type { Program, KnownProgram, ScoutThemeProviderProps } from "./lib/theme/ScoutThemeProvider";
 
-export { Button } from "./components/Button";
+export { Button, buttonVariants } from "./components/Button";
 export type { ButtonProps, ButtonVariant, ButtonSize } from "./components/Button";
 
-export { Card, CardBody, CardHeader, CardFooter, CardEyebrow } from "./components/Card";
+export { Card, CardBody, CardHeader, CardFooter, CardEyebrow, cardVariants } from "./components/Card";
 export type { CardProps } from "./components/Card";
 
-export { Badge } from "./components/Badge";
+export { Badge, badgeVariants } from "./components/Badge";
 export type { BadgeProps } from "./components/Badge";
 
 export { Heading } from "./components/Heading";
 export type { HeadingProps } from "./components/Heading";
 
-export { Alert } from "./components/Alert";
-export type { AlertProps } from "./components/Alert";
+export { Alert, alertToneStyles } from "./components/Alert";
+export type { AlertProps, AlertTone } from "./components/Alert";
 
 export { ProgramMark } from "./components/ProgramMark";
 export type { ProgramMarkProps, ProgramMarkVariant } from "./components/ProgramMark";

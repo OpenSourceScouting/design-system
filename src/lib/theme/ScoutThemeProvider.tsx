@@ -1,10 +1,50 @@
 import { createContext, useContext, useEffect, useMemo, type ReactNode } from "react";
 
 export const PROGRAMS = ["cub", "scoutsbsa", "venturing", "seascouts"] as const;
-export type Program = (typeof PROGRAMS)[number];
+
+/** The four built-in national programs that ship with brand tokens and metadata. */
+export type KnownProgram = (typeof PROGRAMS)[number];
+
+/**
+ * A program identifier. The four national programs autocomplete, but any string
+ * is accepted so a third party can register a custom program (a council youth
+ * program, or a future fifth national brand) by adding a matching
+ * `[data-program="..."]` block to their own CSS, with no fork of this package.
+ * See the README "Registering a custom program" section.
+ *
+ * `KnownProgram | (string & {})` is the standard TypeScript idiom for a
+ * "known literals + any string" union: bare `string` would swallow the literals
+ * and kill editor autocomplete, so we intersect the widening arm with `{}` to
+ * keep the four literals distinct in the union while still accepting arbitrary
+ * strings at assignment.
+ */
+export type Program = KnownProgram | (string & {});
+
+/**
+ * Fallback used when an unknown (custom) program is active and we need
+ * built-in metadata or a placeholder icon. Scouts BSA is the neutral default
+ * (see task 2.8): its tokens are the most brand-agnostic of the four.
+ */
+export const DEFAULT_PROGRAM: KnownProgram = "scoutsbsa";
+
+/** Type guard: is this string one of the four built-in programs? */
+export function isKnownProgram(program: string): program is KnownProgram {
+  return (PROGRAMS as readonly string[]).includes(program);
+}
+
+/**
+ * Narrow any {@link Program} to a {@link KnownProgram} for metadata / icon
+ * lookups. Custom programs fall back to {@link DEFAULT_PROGRAM} so components
+ * render a sensible default instead of crashing on an undefined record entry.
+ * The raw program value is still what gets stamped as `data-program`, so the
+ * consumer's custom token block continues to theme the subtree.
+ */
+export function resolveKnownProgram(program: Program): KnownProgram {
+  return isKnownProgram(program) ? program : DEFAULT_PROGRAM;
+}
 
 export const PROGRAM_META: Record<
-  Program,
+  KnownProgram,
   {
     label: string;
     tagline: string;
