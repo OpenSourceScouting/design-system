@@ -498,7 +498,21 @@ faithful to each program's print brand).
 
 ---
 
-### [ ] 3.2 Motion language tokens per program
+### [x] 3.2 Motion language tokens per program
+
+> Done 2026-07-19: added `--os-motion-easing`, `--os-motion-duration-fast`,
+> `--os-motion-duration-base` to :root + all four programs (parity test enforces
+> all-or-none). Personalities: Cub overshoot/bounce (back-out cubic-bezier),
+> Venturing snap (fast decisive ease-out), Sea Scouts glide (slow sine in-out),
+> Scouts BSA + parent steady/standard. Mapped in theme.css: `--ease-program` via
+> @theme (emits `ease-program`); durations via `@utility duration-program` /
+> `duration-program-fast` (v4 has no --duration-* namespace that tracks a var,
+> same as the border-rule precedent). Button uses the fast pair, Card the base
+> tempo (new base transition). Verified all three utilities compile into
+> dist/styles.css. Easy override: retune the `--os-motion-*` tokens per
+> `[data-program]` exactly like colors (documented in README "Motion"). Reduced
+> motion still zeroes durations globally (unchanged). Regenerated the committed
+> TOKENS module; parity + drift + Button/Card stories (Chromium) all green.
 
 **Why:** Personality is currently encoded as static traits (radius, weight,
 shadow). Motion is the missing felt difference: Cubs should bounce, Sea

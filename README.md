@@ -173,6 +173,33 @@ parent Scouting America brand, whose accent is SA Red (#CE1126), so a red
 accent means the element has no `data-program` ancestor (missing
 `ScoutThemeProvider`) or the token CSS never loaded.
 
+### Motion (per-program feel)
+
+Each program carries a motion language alongside its colors: Cub Scouts
+overshoots slightly (a playful bounce), Venturing snaps, Sea Scouts glides, and
+Scouts BSA stays steady. It is three overridable tokens per program:
+
+| Token                       | What it controls                        |
+| --------------------------- | --------------------------------------- |
+| `--os-motion-easing`        | the timing-function (the "feel")        |
+| `--os-motion-duration-base` | base tempo (surfaces, e.g. Card)        |
+| `--os-motion-duration-fast` | quick interactions (button press/hover) |
+
+They map to the `ease-program`, `duration-program`, and `duration-program-fast`
+utilities. Retune the feel per program the same way you override colors, no
+component changes:
+
+```css
+[data-program="cub"] {
+  --os-motion-easing: cubic-bezier(0.2, 0, 0, 1); /* calmer than the default bounce */
+  --os-motion-duration-base: 200ms;
+}
+```
+
+The defaults are intentionally conservative and meant to be adjusted. Users with
+`prefers-reduced-motion: reduce` get near-zero durations automatically (handled
+globally in `tokens.css`), so overrides never override that.
+
 ### Register a custom program
 
 The four national programs ship built in, but `program` is an open string type

@@ -33,7 +33,7 @@ export type ButtonProps = ButtonBaseProps &
  */
 const buttonVariants = cva(
   "display inline-flex items-center justify-center gap-2 select-none whitespace-nowrap " +
-    "transition-[transform,box-shadow,background-color,color] duration-150 " +
+    "transition-[transform,box-shadow,background-color,color] duration-program-fast ease-program " +
     "motion-safe:active:translate-y-[1px] disabled:opacity-50 disabled:pointer-events-none " +
     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring rounded-lg",
   {

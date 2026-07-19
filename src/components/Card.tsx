@@ -15,16 +15,19 @@ export type CardProps = HTMLAttributes<HTMLDivElement> & {
   featured?: boolean;
 };
 
-const cardVariants = cva("overflow-hidden rounded-lg", {
-  variants: {
-    variant: {
-      flat: "bg-muted/40",
-      outlined: "bg-card border border-border/60",
-      elevated: "bg-card shadow-program border border-border/30",
+const cardVariants = cva(
+  "overflow-hidden rounded-lg transition-[box-shadow,border-color,background-color] duration-program ease-program",
+  {
+    variants: {
+      variant: {
+        flat: "bg-muted/40",
+        outlined: "bg-card border border-border/60",
+        elevated: "bg-card shadow-program border border-border/30",
+      },
     },
+    defaultVariants: { variant: "outlined" },
   },
-  defaultVariants: { variant: "outlined" },
-});
+);
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
   { variant = "outlined", featured, className, children, ...rest },

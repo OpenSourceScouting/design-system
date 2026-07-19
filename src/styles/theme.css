@@ -67,6 +67,12 @@
   --radius-program: var(--radius); /* alias of the shadcn radius; == rounded-lg */
   --shadow-program: var(--os-shadow);
 
+  /* Per-program motion. The --ease-* namespace emits an `ease-program` utility;
+     the duration utilities are defined below (v4 has no --duration-* namespace
+     that tracks a CSS var, same situation as border-rule). Override the
+     underlying --os-motion-* tokens per [data-program] to retune the feel. */
+  --ease-program: var(--os-motion-easing);
+
   /* shadcn radius scale, derived from the per-program --radius (Phase 3). Lets
      recipes use rounded-sm/md/lg/xl and still track each program's radius. No
      collision: components only used rounded-full and rounded-program before. */
@@ -87,6 +93,17 @@
 }
 @utility border-t-rule {
   border-top-width: var(--os-rule-weight);
+}
+
+/* Per-program transition durations. Paired with `ease-program` (from @theme).
+   `duration-program` is the base tempo; `duration-program-fast` is for quick
+   interactions (button press/hover). Both track the per-program --os-motion-*
+   tokens, so a data-program change (or a consumer override) retunes them. */
+@utility duration-program {
+  transition-duration: var(--os-motion-duration-base);
+}
+@utility duration-program-fast {
+  transition-duration: var(--os-motion-duration-fast);
 }
 
 @layer base {
