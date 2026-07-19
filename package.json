@@ -30,6 +30,7 @@
     "./tokens.json": "./dist/tokens/tokens.json",
     "./tokens.scss": "./dist/tokens/tokens.scss",
     "./tokens.email.json": "./dist/tokens/tokens.email.json",
+    "./email.css": "./dist/email/styles.css",
     "./package.json": "./package.json"
   },
   "files": [

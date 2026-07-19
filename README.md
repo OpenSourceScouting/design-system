@@ -403,6 +403,24 @@ package and are addressable by subpath:
 Print (CMYK/Pantone) equivalents are a separate artifact,
 [`tokens.print.json`](./src/styles/tokens.print.json) (see above).
 
+## Email
+
+Email clients do not support CSS variables, external stylesheets, or modern
+layout, and many strip `<style>` blocks, so none of the React components or the
+Tailwind stylesheet apply. Email is built with table layout and **inline hex
+styles**. The package ships the brand values in email-ready shapes:
+
+- [`examples/email-template/index.html`](./examples/email-template/) is a
+  copy-pasteable, table-based HTML email with inline hex styles (a header band,
+  a bulletproof CTA button, a footer), themed for Cub Scouts. Swap the hex
+  values for another program to retheme.
+- `@opensourcescouting/design-system/tokens.email.json` is the hex-only, flat
+  per-program token map to pull those values from (no `var()`, no opacity
+  composites).
+- `@opensourcescouting/design-system/email.css` is a flat stylesheet of hex
+  utility classes (`.{program}-{token}-bg` / `-text`) for the email clients that
+  do honor an embedded `<style>` block. Inline styles remain the primary path.
+
 ## Configuring where assets are served from
 
 By default, `<ProgramMark>` loads files from `/marks/`. You can override that

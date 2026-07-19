@@ -683,7 +683,18 @@ Select (searchable/multi) belongs with the Tier 1 headless-widget decision.
 
 ---
 
-### [ ] 3.8 Email-safe HTML template + Mailchimp-friendly CSS bundle
+### [x] 3.8 Email-safe HTML template + Mailchimp-friendly CSS bundle
+
+> Done 2026-07-19: built on the 2.3/3.2 token pipeline. Added `renderEmailCss`
+> to scripts/tokens-data.mjs; build-css.mjs now emits `dist/email/styles.css`, a
+> flat stylesheet of hex utility classes (`.{program}-{token}-bg` / `-text`, no
+> var()), exposed at the `./email.css` subpath. Added
+> `examples/email-template/index.html`: a table-based HTML email with inline hex
+> styles (header band, bulletproof CTA button table, footer), Cub-themed, with a
+> comment block listing the hex values to swap per program (from
+> tokens.email.json). README gained an "## Email" section explaining the
+> inline-hex reality and pointing at all three artifacts (example HTML,
+> tokens.email.json, email.css). Verified the CSS emits with hex and zero var().
 
 **Why:** Email clients do not support CSS variables. Marketers cannot use
 this system in Mailchimp/Constant Contact without inline hex.

@@ -131,6 +131,34 @@ export function renderEmailJson(data) {
   );
 }
 
+/**
+ * Flat hex utility classes for HTML email, one set per palette (no CSS
+ * variables, since email clients do not support them). Class shape is
+ * `.{palette}-{token}-bg` / `.{palette}-{token}-text`. Many email clients strip
+ * `<style>` blocks, so inline styles (see examples/email-template) are the
+ * primary path; these classes serve the clients that DO honor embedded styles.
+ */
+export function renderEmailCss(data) {
+  const header =
+    "/* GENERATED from src/styles/tokens.css. Do not edit.\n" +
+    " * Flat hex utility classes for HTML email (no CSS variables). One set per\n" +
+    " * program: .{program}-{token}-bg / .{program}-{token}-text. Many email\n" +
+    " * clients strip <style>; prefer inline styles (see examples/email-template).\n" +
+    " */\n\n";
+  const blocks = Object.entries(data)
+    .map(([palette, block]) => {
+      const rules = Object.entries(block.colors)
+        .flatMap(([name, color]) => [
+          `.${palette}-${name}-bg { background-color: ${color.hex}; }`,
+          `.${palette}-${name}-text { color: ${color.hex}; }`,
+        ])
+        .join("\n");
+      return `/* ${palette} */\n${rules}`;
+    })
+    .join("\n\n");
+  return header + blocks + "\n";
+}
+
 /** SCSS map of the color tokens (hex) per palette, for SCSS/Sass consumers. */
 export function renderScss(data) {
   const header =

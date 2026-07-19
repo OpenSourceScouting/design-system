@@ -1,0 +1,146 @@
+<!doctype html>
+<!--
+  Email template example (task 3.8).
+
+  Email clients do not support CSS variables, external stylesheets, flexbox, or
+  grid reliably, and many strip <style> blocks entirely. So brand values are
+  INLINED as hex literals on table cells, the way real HTML email is built.
+
+  The hex values below are the Cub Scouts palette. To theme for another program,
+  swap them for that program's values from the generated
+  `@opensourcescouting/design-system/tokens.email.json` (or dist/tokens/tokens.email.json):
+
+    primary            #003F87   header band / links
+    primary-foreground #FFFFFF   text on the primary band
+    os-accent          #FDC116   CTA button fill
+    os-accent-foreground #003F87 text on the CTA
+    background         #FFFCF4   page + card background
+    foreground         #0A1A33   body text
+    muted-foreground   #46587A   footer / secondary text
+
+  Layout is a single 600px centered table (the email-safe pattern). Fonts fall
+  back to system stacks because Montserrat / Source Serif will not load in most
+  clients.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pack 42: Fall Camporee</title>
+  </head>
+  <body style="margin: 0; padding: 0; background-color: #f0f0ec">
+    <!-- Outer full-width table: sets the page background. -->
+    <table
+      role="presentation"
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      style="border-collapse: collapse"
+    >
+      <tr>
+        <td align="center" style="padding: 24px 12px">
+          <!-- Inner 600px card. -->
+          <table
+            role="presentation"
+            width="600"
+            cellpadding="0"
+            cellspacing="0"
+            style="
+              width: 600px;
+              max-width: 100%;
+              border-collapse: collapse;
+              background-color: #fffcf4;
+            "
+          >
+            <!-- Header band: primary fill, reversed text. -->
+            <tr>
+              <td
+                style="
+                  background-color: #003f87;
+                  padding: 28px 32px;
+                  font-family: Arial, Helvetica, sans-serif;
+                  color: #ffffff;
+                  font-size: 22px;
+                  font-weight: bold;
+                  letter-spacing: -0.01em;
+                "
+              >
+                Pack 42 Cub Scouts
+              </td>
+            </tr>
+            <!-- Body. -->
+            <tr>
+              <td
+                style="
+                  padding: 32px;
+                  font-family: Georgia, &quot;Times New Roman&quot;, serif;
+                  color: #0a1a33;
+                  font-size: 16px;
+                  line-height: 1.6;
+                "
+              >
+                <h1
+                  style="
+                    margin: 0 0 12px;
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-size: 24px;
+                    color: #0a1a33;
+                  "
+                >
+                  Fall Camporee is almost here
+                </h1>
+                <p style="margin: 0 0 16px">
+                  Join us for a weekend of campfires, hikes, and the pack cook-off. Families are
+                  welcome for the whole weekend.
+                </p>
+                <!-- CTA button: accent fill with accent-foreground text. Bulletproof
+                     button pattern (table + inline padding), not a styled <a>. -->
+                <table
+                  role="presentation"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="border-collapse: collapse; margin: 8px 0 4px"
+                >
+                  <tr>
+                    <td align="center" style="background-color: #fdc116; border-radius: 8px">
+                      <a
+                        href="https://example.org/register"
+                        style="
+                          display: inline-block;
+                          padding: 12px 28px;
+                          font-family: Arial, Helvetica, sans-serif;
+                          font-size: 16px;
+                          font-weight: bold;
+                          color: #003f87;
+                          text-decoration: none;
+                        "
+                      >
+                        Register your Scout
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!-- Footer: muted secondary text. -->
+            <tr>
+              <td
+                style="
+                  padding: 20px 32px 28px;
+                  font-family: Arial, Helvetica, sans-serif;
+                  color: #46587a;
+                  font-size: 12px;
+                  line-height: 1.5;
+                  border-top: 1px solid #d6cebd;
+                "
+              >
+                Pack 42 &middot; Chartered to the community.<br />
+                You are receiving this because you are a Pack 42 family.
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

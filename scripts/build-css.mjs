@@ -26,7 +26,13 @@ import { execFileSync } from "node:child_process";
 import { copyFileSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { parseTokens, renderJson, renderScss, renderEmailJson } from "./tokens-data.mjs";
+import {
+  parseTokens,
+  renderJson,
+  renderScss,
+  renderEmailJson,
+  renderEmailCss,
+} from "./tokens-data.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dist = path.join(root, "dist");
@@ -81,6 +87,11 @@ writeFileSync(path.join(tokensDir, "tokens.json"), renderJson(tokenData));
 writeFileSync(path.join(tokensDir, "tokens.scss"), renderScss(tokenData));
 writeFileSync(path.join(tokensDir, "tokens.email.json"), renderEmailJson(tokenData));
 
+// 5. Email: a flat hex stylesheet (no CSS variables) for HTML email.
+const emailDir = path.join(dist, "email");
+mkdirSync(emailDir, { recursive: true });
+writeFileSync(path.join(emailDir, "styles.css"), renderEmailCss(tokenData));
+
 console.log(
-  "build-css: wrote dist/styles.css, dist/tokens.css, dist/tokens.print.json, dist/tokens/{tokens.json,tokens.scss,tokens.email.json}, and .css.d.ts stubs",
+  "build-css: wrote dist/styles.css, dist/tokens.css, dist/tokens.print.json, dist/tokens/{tokens.json,tokens.scss,tokens.email.json}, dist/email/styles.css, and .css.d.ts stubs",
 );
