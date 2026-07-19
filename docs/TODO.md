@@ -290,7 +290,15 @@ no `exports`, no `peerDependencies`. A council webmaster cannot
 
 ---
 
-### [ ] 2.2 Self-hosted fonts as an optional package step
+### [x] 2.2 Self-hosted fonts as an optional package step
+
+> Done 2026-07-19: added `examples/self-host-fonts/main.tsx` (a copy-pasteable
+> app entry with the four `@fontsource-variable` imports for zero third-party
+> font requests, plus the tokens/theme imports and a ScoutThemeProvider) and an
+> example README. Linked from the README "Fonts" > "Library consumers" section.
+> `examples/` is outside the tsconfig include list, so it is not typechecked
+> (it references the published package name, which does not resolve locally);
+> it is Prettier-clean.
 
 **Why:** Default is jsDelivr (already done 2026-06-04). For consumers who
 want zero third-party requests, the workflow is documented in `README.md`

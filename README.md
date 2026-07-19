@@ -432,6 +432,9 @@ your choosing) as long as it registers faces under the exact family names
 `tokens.css` references. If those faces are absent the components still render,
 falling back to the platform system fonts.
 
+For a copy-pasteable app entry that wires up the four imports with zero
+third-party requests, see [`examples/self-host-fonts/`](./examples/self-host-fonts/).
+
 ## Icons
 
 The recommended icon set is [Lucide](https://lucide.dev) (ISC-licensed). The
