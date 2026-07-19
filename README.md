@@ -397,6 +397,22 @@ echo "VITE_MARKS_BASE_URL=https://cdn.pack42.org/brand/" > .env.local
 npm run build
 ```
 
+### SPA-fallback hosts (Netlify, Vercel, and similar)
+
+`<ProgramMark>` discovers an asset by trying each extension and treating a load
+failure as "missing." That breaks down on hosts that return **200 with an app
+shell** for unknown paths: every probe "succeeds" at the HTTP level. An HTML
+body still fails to decode as an image, so the placeholder still appears, but
+you waste up to five requests per mark; and a host that returns a real fallback
+image would render the wrong picture. Bypass probing on these hosts:
+
+- **`src`** (robust): `<ProgramMark src="/marks/cub.svg" />` renders that exact
+  URL, no probing.
+- **`preferExtension`**: `<ProgramMark preferExtension="svg" />` tries that
+  extension first, cutting the common case to one request.
+- **`forcePlaceholder`** / provider `forcePlaceholderMarks`: skip real assets
+  and render the placeholder.
+
 ## Swapping in real brand assets
 
 The `ProgramMark` component **auto-loads** official marks from `/marks/{program}.svg`

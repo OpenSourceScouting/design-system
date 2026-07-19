@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import {
   useScoutTheme,
   PROGRAM_META,
@@ -62,6 +62,22 @@ export type ProgramMarkProps = {
    * VITE_MARKS_BASE_URL or `/marks/`. May be relative or absolute.
    */
   basePath?: string;
+  /**
+   * Explicit, fully-resolved asset URL. When set, ProgramMark renders it
+   * directly and does NOT probe extensions or use basePath. Use this on
+   * SPA-fallback hosts (Netlify, Vercel, or any server that returns 200 + an
+   * HTML/app shell for missing files): there, probing cannot reliably detect a
+   * missing file, so point straight at the real asset. Still degrades to the
+   * placeholder if the URL fails to load as an image.
+   */
+  src?: string;
+  /**
+   * Try this file extension first, then fall back to the rest of the priority
+   * list (svg, webp, png, jpg, jpeg). Cuts the probe to a single request in the
+   * common case, so you make one network call instead of up to five. Ignored
+   * when `src` is set.
+   */
+  preferExtension?: string;
 };
 
 const EXTENSION_PRIORITY = ["svg", "webp", "png", "jpg", "jpeg"] as const;
@@ -120,6 +136,8 @@ export function ProgramMark({
   style,
   forcePlaceholder = false,
   basePath,
+  src,
+  preferExtension,
 }: ProgramMarkProps) {
   const ctx = useScoutTheme();
   // `active` keeps the raw (possibly custom) program so the asset URL probes
@@ -132,15 +150,23 @@ export function ProgramMark({
   // provider already collapsed (provider value, env var, default) into a
   // single string; we just check for the per-call prop override here.
   const effectiveBasePath = basePath ? normalizeBasePath(basePath) : ctx.marksBasePath;
+
+  // Probe order: an explicit `preferExtension` goes first (one request in the
+  // common case), then the standard priority list as fallback (deduped). When
+  // `src` is set we do not probe at all.
+  const extensions = useMemo(() => {
+    if (!preferExtension) return [...EXTENSION_PRIORITY];
+    return [preferExtension, ...EXTENSION_PRIORITY.filter((e) => e !== preferExtension)];
+  }, [preferExtension]);
+
   const [extIdx, setExtIdx] = useState(0);
   const [exhausted, setExhausted] = useState(false);
 
-  // Reset the extension probe when program, variant, or base path changes so
-  // we try the priority list again for the new asset.
+  // Reset the probe when the asset identity changes so we retry from the top.
   useEffect(() => {
     setExtIdx(0);
     setExhausted(false);
-  }, [active, variant, effectiveBasePath]);
+  }, [active, variant, effectiveBasePath, src, preferExtension]);
 
   const usePlaceholder = forcePlaceholder || ctx.forcePlaceholderMarks || exhausted;
 
@@ -159,7 +185,20 @@ export function ProgramMark({
     );
   }
 
-  const ext = EXTENSION_PRIORITY[extIdx];
+  const ext = extensions[extIdx];
+  const assetUrl = src ?? buildAssetUrl(effectiveBasePath, active, variant, ext);
+  // Advance to the next extension, or (on the last one, or when an explicit
+  // `src` was given so there is nothing to step through) fall back to the
+  // placeholder. Called on a decode error AND on a zero-dimension load: some
+  // SPA-fallback hosts return 200 + an app-shell body, which either fails to
+  // decode (onError) or decodes to nothing (naturalWidth 0); both are misses.
+  const handleMiss = () => {
+    if (!src && extIdx < extensions.length - 1) {
+      setExtIdx(extIdx + 1);
+    } else {
+      setExhausted(true);
+    }
+  };
   const PrintFallbackIcon = PROGRAM_ICONS[known];
   // The reversed variant relies on `mix-blend-mode: screen` keying out the
   // JPG's black background against a dark primary surface. Browsers
@@ -174,17 +213,16 @@ export function ProgramMark({
       <img
         // `key` forces the browser to re-fetch when we step to the next extension,
         // even though React might otherwise reuse the element.
-        key={`${effectiveBasePath}|${active}-${variant}-${ext}`}
-        src={buildAssetUrl(effectiveBasePath, active, variant, ext)}
+        key={`${src ?? effectiveBasePath}|${active}-${variant}-${ext}`}
+        src={assetUrl}
         alt={`${meta.label} mark`}
         width={size}
         height={size}
-        onError={() => {
-          if (extIdx < EXTENSION_PRIORITY.length - 1) {
-            setExtIdx(extIdx + 1);
-          } else {
-            setExhausted(true);
-          }
+        onError={handleMiss}
+        onLoad={(e) => {
+          // Guard against a "successful" load that carries no image (a 200 that
+          // decoded to nothing). A real asset has non-zero natural dimensions.
+          if (e.currentTarget.naturalWidth === 0) handleMiss();
         }}
         // No color utilities are applied here. The BSA Brand Center license
         // forbids derivative works on real assets; let the file render its

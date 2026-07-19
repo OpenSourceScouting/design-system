@@ -691,7 +691,20 @@ new `examples/email-template/index.html`.
 
 ---
 
-### [ ] 3.10 ProgramMark asset-probe hardening
+### [x] 3.10 ProgramMark asset-probe hardening
+
+> Done 2026-07-19: added `src` (explicit URL, no probing: the robust SPA-fallback
+> fix) and `preferExtension` (tries one extension first, so the common case is
+> one request instead of up to five) props. Added an `onLoad` naturalWidth===0
+> guard so a degenerate 200 counts as a miss too. NOTE on the premise: the probe
+> is `<img onError>`, not fetch-based, and a browser cannot decode an HTML body
+> as an image, so onError already fired and the placeholder already showed on
+> SPA-fallback hosts; the real un-detectable case is a host returning a valid
+> WRONG image, for which `src`/`forcePlaceholder` is the only remedy (documented
+> honestly). Content-Type validation was NOT added (would force a fetch() +
+> CORS; the explicit-src escape hatch is the correct fix). Warnings added to
+> README and public/marks/README.md. New unit tests cover default/prefer/src
+> resolution; placeholder fallback unchanged. Typecheck/lint/build green.
 
 **Why:** `ProgramMark` probes up to 15 URLs per render (3 variants x 5
 extensions: svg, webp, png, jpg, jpeg) to find a real asset. On SPA-fallback

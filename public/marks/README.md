@@ -68,6 +68,28 @@ You do not need every variant. `<ProgramMark>` falls back to a Lucide icon
 file is missing, so you can start with just the `color` variants and add
 `reversed` / `mono` later as you need them.
 
+## Hosting note: SPA-fallback servers
+
+`<ProgramMark>` finds an asset by trying each extension in turn and treating a
+load error as "missing" so it can step to the next one (and finally to the
+Lucide placeholder). That relies on a missing file returning an error.
+
+Some hosts do not do that. Netlify, Vercel, and any server configured to serve
+an app shell for unknown paths return **200 with an HTML body** for a missing
+file. The browser cannot decode that as an image, so it still counts as a miss
+and the placeholder still shows, but you pay up to five wasted HTML requests
+per mark first. Worse, a host that returns a real fallback *image* (a default
+"not found" graphic) would decode successfully and render the wrong picture.
+
+On such hosts, bypass probing:
+
+- **Pass an explicit `src`**: `<ProgramMark src="/marks/cub.svg" />` renders
+  that URL directly, no probing. This is the robust fix.
+- **Or pass `preferExtension`**: `<ProgramMark preferExtension="svg" />` tries
+  that extension first, cutting the common case to one request.
+- **Or `forcePlaceholder`** (per-instance) / **`forcePlaceholderMarks`** (on
+  `ScoutThemeProvider`): skip real assets entirely and render the placeholder.
+
 ## Wordmark filename convention
 
 `<ScoutingAmericaWordmark>` takes two props: `orientation` (`wide` | `tall`)
