@@ -7,6 +7,8 @@ storybook-static
 # Generated / vendored
 package-lock.json
 *.tsbuildinfo
+# Generated from tokens.css by scripts/build-tokens.mjs (guarded by tokens-artifacts.test.ts)
+src/lib/tokens/tokens.generated.ts
 
 # Binary and license-sensitive assets (never reformat)
 public/marks

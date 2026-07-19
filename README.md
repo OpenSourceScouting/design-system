@@ -339,6 +339,43 @@ parent brand red reads as either an error state or a broken theme, and it is the
 accent use `bg-os-accent`; for validation use `text-destructive` /
 `border-destructive`.
 
+## Tokens as data (JSON / SCSS / email)
+
+The tokens are not only Tailwind utilities and CSS variables. The same values
+are exposed as framework-neutral data so non-web tools (Figma, SCSS projects,
+email builders) and non-Tailwind code can use the exact brand values without
+hand-copying hex codes. `src/styles/tokens.css` remains the authored source of
+truth; everything below is generated from it (`npm run build:tokens` regenerates
+the typed module, and `npm run build` emits the file artifacts), so nothing
+drifts.
+
+**Typed data, for JavaScript/TypeScript.** Import `TOKENS`, the same way you
+import `SCOUTING_LINKS`. Use it when you need a brand value in JS rather than as
+a class: a chart color, a `<canvas>`, an SVG generator, React Native.
+
+```ts
+import { TOKENS } from "@opensourcescouting/design-system";
+
+TOKENS.cub.colors["os-accent"].hex; // "#FDC116"
+TOKENS.cub.colors.primary.rgb; // [0, 63, 135]
+```
+
+Keys are `root` (parent brand) plus the four programs; each has `colors` (every
+color token, as an `{ rgb, hex }` pair) and `values` (non-color tokens such as
+`radius` and `os-shadow`, as raw CSS strings).
+
+**File artifacts, for tools that read files, not imports.** These ship in the
+package and are addressable by subpath:
+
+| Subpath                                               | What                                              | For                                                                        |
+| ----------------------------------------------------- | ------------------------------------------------- | -------------------------------------------------------------------------- |
+| `@opensourcescouting/design-system/tokens.json`       | full token set per palette (rgb + hex + values)   | Figma / Tokens Studio, general tooling                                     |
+| `@opensourcescouting/design-system/tokens.scss`       | a `$sa-tokens` Sass map of the color tokens (hex) | SCSS/Sass projects                                                         |
+| `@opensourcescouting/design-system/tokens.email.json` | hex-only, flat per program                        | email builders (Mailchimp, Constant Contact) that cannot use CSS variables |
+
+Print (CMYK/Pantone) equivalents are a separate artifact,
+[`tokens.print.json`](./src/styles/tokens.print.json) (see above).
+
 ## Configuring where assets are served from
 
 By default, `<ProgramMark>` loads files from `/marks/`. You can override that

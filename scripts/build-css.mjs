@@ -23,9 +23,10 @@
  * `exports` map points each CSS subpath's "types" condition at these stubs.
  */
 import { execFileSync } from "node:child_process";
-import { copyFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { copyFileSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { parseTokens, renderJson, renderScss, renderEmailJson } from "./tokens-data.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dist = path.join(root, "dist");
@@ -68,6 +69,18 @@ const cssStub = "// Ambient stub for a side-effect CSS import. No runtime value.
 writeFileSync(path.join(dist, "styles.css.d.ts"), cssStub);
 writeFileSync(path.join(dist, "tokens.css.d.ts"), cssStub);
 
+// 4. Framework-neutral token FILE artifacts, for tools that consume tokens by
+//    file rather than by import (Figma/Tokens Studio, SCSS, email builders).
+//    Generated from the same tokens.css parse as the committed `TOKENS` export
+//    (scripts/tokens-data.mjs). Emitted here, AFTER `vite build`, because Vite
+//    empties dist/ at the start of its build and would wipe an earlier write.
+const tokenData = parseTokens(readFileSync(path.join(root, "src", "styles", "tokens.css"), "utf8"));
+const tokensDir = path.join(dist, "tokens");
+mkdirSync(tokensDir, { recursive: true });
+writeFileSync(path.join(tokensDir, "tokens.json"), renderJson(tokenData));
+writeFileSync(path.join(tokensDir, "tokens.scss"), renderScss(tokenData));
+writeFileSync(path.join(tokensDir, "tokens.email.json"), renderEmailJson(tokenData));
+
 console.log(
-  "build-css: wrote dist/styles.css, dist/tokens.css, dist/tokens.print.json, and .css.d.ts stubs",
+  "build-css: wrote dist/styles.css, dist/tokens.css, dist/tokens.print.json, dist/tokens/{tokens.json,tokens.scss,tokens.email.json}, and .css.d.ts stubs",
 );

@@ -316,7 +316,29 @@ under "Fonts" but not enforced or scriptable.
 
 ---
 
-### [ ] 2.3 Generate framework-neutral token artifacts
+### [x] 2.3 Generate framework-neutral token artifacts
+
+> Done 2026-07-19, LIGHTER additive version (agreed with maintainer, not the
+> full Style-Dictionary source-of-truth move). Rationale: moving the source into
+> tokens/source/\*.json would make tokens.css a generated file and strip the
+> brand-guideline citations that CLAUDE.md/ADR 0003 require, and it overlaps the
+> hand-authored tokens.print.json from 3.4, all for the marginal benefit of
+> "one source." Instead `src/styles/tokens.css` STAYS the authored source of
+> truth and everything is generated FROM it, so nothing drifts (guarded by
+> `tests/tokens-artifacts.test.ts`). Did NOT adopt style-dictionary (a bespoke
+> ~150-line parser in `scripts/tokens-data.mjs` covers the need without a new
+> dependency, matching the "no date-fns" minimalism).
+>
+> Shipped: a typed `TOKENS` export (barrel, mirroring SCOUTING_LINKS; backed by
+> the committed-generated `src/lib/tokens/tokens.generated.ts`, prettier-ignored)
+> plus three dist file artifacts at package subpaths: `./tokens.json` (full set,
+> rgb+hex+values), `./tokens.scss` (Sass color map), `./tokens.email.json`
+> (hex-only flat, the data half of 3.8). `build:tokens` script regenerates the
+> committed module; the file artifacts are emitted by build-css.mjs AFTER vite
+> build (vite empties dist/). README "Tokens as data" section; changeset added.
+> Deferred vs the original acceptance: no `.email` CSS (that is 3.8), tokens.css
+> is not itself generated, and a full standalone `@opensourcescouting/tokens`
+> package is left for if/when a component-free consumer appears.
 
 **Why:** Real audience is mixed: WordPress, Wix, Mailchimp, Figma, Canva,
 print designers. Tailwind utility classes do not reach them. A framework
@@ -405,12 +427,14 @@ should be able to browse components without cloning the repo.
 > opens a "version packages" PR from pending changesets on push to main,
 > publishes to npm on merge; needs an `NPM_TOKEN` secret and a GitHub remote,
 > neither present yet). Added `version-packages` + `release` npm scripts (avoided
-> the reserved `version` name). CONTRIBUTING.md created with the one-paragraph
-> changeset workflow plus ground rules. A real changeset for the 2.8/2.9 feature
-> lives at `.changeset/open-program-and-variant-api.md` (minor); `changeset
-status` confirms the minor bump. CHANGELOG already existed (Keep a Changelog);
-> noted the adoption there. NOTE: the CHANGELOG's `[Unreleased]` still claims
-> `CODE_OF_CONDUCT.md` and `SECURITY.md` exist; they do not (flagged separately).
+> the reserved `version` name). Added a "Changesets and releases" section (the
+> one-paragraph workflow) to the existing `.github/CONTRIBUTING.md`. A real
+> changeset for the 2.8/2.9 feature lives at
+> `.changeset/open-program-and-variant-api.md` (minor); `changeset status`
+> confirms the bump. CHANGELOG already existed (Keep a Changelog); noted the
+> adoption there. (Contributor docs CONTRIBUTING/CODE_OF_CONDUCT/SECURITY already
+> live under `.github/`, matching the CHANGELOG; my earlier "missing" flag was
+> wrong: I had only checked the repo root.)
 
 **Why:** A library that ships to councils needs versioned releases and
 human-readable change notes. Brand books are versioned (2024 edition); the

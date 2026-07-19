@@ -181,4 +181,10 @@ export type {
 export { SCOUTING_LINKS, SCOUTING_LINK_LIST } from "./lib/links";
 export type { ScoutingLink, ScoutingLinkKey } from "./lib/links";
 
+// Framework-neutral design-token data (generated from tokens.css). File
+// artifacts for non-JS tools ship at the ./tokens.json, ./tokens.scss, and
+// ./tokens.email.json subpaths.
+export { TOKENS } from "./lib/tokens";
+export type { TokenPalette, TokenColor } from "./lib/tokens";
+
 export { cn } from "./lib/utils/cn";
