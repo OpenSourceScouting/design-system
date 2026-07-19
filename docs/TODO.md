@@ -377,6 +377,11 @@ new `tests/contrast.test.ts`, `package.json` script.
 
 ### [ ] 2.5 Publish Storybook to a public URL
 
+> Deferred 2026-07-19: blocked. There is no GitHub remote configured and pushing
+> is out of scope, so a Pages-deploy workflow cannot be created meaningfully or
+> verified, and no live URL can be added to the README. Revisit once the repo is
+> pushed to a GitHub remote with Pages enabled.
+
 **Why:** `build-storybook` exists but no deploy. Marketers and designers
 should be able to browse components without cloning the repo.
 
