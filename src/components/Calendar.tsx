@@ -24,6 +24,12 @@ export type CalendarEvent = {
   category?: string;
   location?: string;
   description?: ReactNode;
+  /**
+   * When true, this is an all-day event: the time label is suppressed in agenda
+   * rows and month chips (a start-of-day Date would otherwise read as a
+   * misleading "12:00 AM"). The date and date range still show.
+   */
+  allDay?: boolean;
   /** When true, this event is the marquee/lead item and gets promoted styling in the agenda view. */
   featured?: boolean;
   /** Optional rich-detail fields surfaced by EventDialog. Calendar itself ignores these. */
@@ -50,6 +56,8 @@ export type CalendarProps = {
   weekStartsOn?: 0 | 1;
   onEventClick?: (event: CalendarEvent) => void;
   onDayClick?: (date: Date) => void;
+  /** Called when the view changes (toolbar toggle or the empty-agenda prompt). */
+  onViewChange?: (view: CalendarView) => void;
   className?: string;
 };
 
@@ -131,6 +139,7 @@ export function Calendar({
   weekStartsOn = 0,
   onEventClick,
   onDayClick,
+  onViewChange,
   className,
 }: CalendarProps) {
   const [view, setView] = useState<CalendarView>(defaultView);
@@ -139,6 +148,10 @@ export function Calendar({
   // The chosen view is preserved; narrow viewports just render agenda instead
   // of an unusable month grid, and the original choice returns on resize.
   const effectiveView = narrow ? "agenda" : view;
+  const changeView = (v: CalendarView) => {
+    setView(v);
+    onViewChange?.(v);
+  };
 
   const today = useMemo(() => startOfDay(new Date()), []);
   const sortedEvents = useMemo(
@@ -159,7 +172,7 @@ export function Calendar({
     >
       <CalendarHeader
         view={effectiveView}
-        onViewChange={setView}
+        onViewChange={changeView}
         cursor={cursor}
         onCursorChange={setCursor}
         showNav={effectiveView === "month"}
@@ -182,6 +195,9 @@ export function Calendar({
           from={today}
           days={agendaDays}
           onEventClick={onEventClick}
+          // Only offer the "switch to Month" affordance when the month grid is
+          // actually available (it is hidden on narrow viewports).
+          onSwitchToMonth={narrow ? undefined : () => changeView("month")}
         />
       )}
     </section>
@@ -490,9 +506,15 @@ function EventChip({
       {!(isMultiDay && !isStart) && (
         <span aria-hidden className="mt-[3px] h-1.5 w-1.5 shrink-0 rounded-program bg-os-decor" />
       )}
-      <span className="display text-[10px] text-muted-foreground shrink-0">
-        {isStart ? formatTime(event.date) : "→"}
-      </span>
+      {isStart ? (
+        event.allDay ? null : (
+          <span className="display text-[10px] text-muted-foreground shrink-0">
+            {formatTime(event.date)}
+          </span>
+        )
+      ) : (
+        <span className="display text-[10px] text-muted-foreground shrink-0">→</span>
+      )}
       <span className="truncate">{event.title}</span>
     </Wrapper>
   );
@@ -507,11 +529,13 @@ function AgendaList({
   from,
   days,
   onEventClick,
+  onSwitchToMonth,
 }: {
   events: CalendarEvent[];
   from: Date;
   days: number;
   onEventClick?: (event: CalendarEvent) => void;
+  onSwitchToMonth?: () => void;
 }) {
   const until = addDays(from, days);
   const visible = events.filter((e) => {
@@ -520,9 +544,24 @@ function AgendaList({
   });
 
   if (visible.length === 0) {
+    // The window is empty. If events exist outside it (earlier months, or
+    // beyond the window), point the user at the month grid to find them;
+    // otherwise there is genuinely nothing to browse.
+    const hasEventsOutsideWindow = events.length > 0;
     return (
       <div className="px-5 py-12 text-center text-muted-foreground font-body">
-        Nothing on the calendar in the next {days} days.
+        {hasEventsOutsideWindow ? (
+          <>
+            <p>No events in the next {days} days.</p>
+            {onSwitchToMonth && (
+              <Button size="sm" variant="ghost" className="mt-3" onClick={onSwitchToMonth}>
+                Switch to Month view to browse
+              </Button>
+            )}
+          </>
+        ) : (
+          "Nothing on the calendar."
+        )}
       </div>
     );
   }
@@ -601,8 +640,12 @@ function AgendaItem({
         {event.category && <Badge variant="subtle">{event.category}</Badge>}
         <span className="display text-xs text-muted-foreground">
           {formatDateRange(event.date, event.endDate)}
-          <span aria-hidden> · </span>
-          {formatTime(event.date)}
+          {!event.allDay && (
+            <>
+              <span aria-hidden> · </span>
+              {formatTime(event.date)}
+            </>
+          )}
         </span>
       </div>
       <div

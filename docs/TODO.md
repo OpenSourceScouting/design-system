@@ -735,7 +735,21 @@ results as broken `<img>` tags instead of falling back to the placeholder.
 
 ---
 
-### [ ] 3.11 Calendar ergonomics
+### [x] 3.11 Calendar ergonomics
+
+> Done 2026-07-19. (1) Agenda-anchored-to-today was ALREADY correct: AgendaList
+> is passed `from={today}`; `defaultMonth`/`cursor` only drive the month grid.
+> No change needed, verified. (2) Empty-window prompt: when the agenda window is
+> empty but `events` has entries outside it, render "No events in the next N
+> days." + a "Switch to Month view to browse" ghost button (suppressed on narrow
+> viewports where the month grid is unavailable); a fully empty `events` still
+> shows "Nothing on the calendar." Added an optional `onViewChange` prop (the
+> task referenced it as "existing"; it was not, so it is now added) that fires
+> from both the toolbar toggle and the prompt. (3) `CalendarEvent.allDay`
+> suppresses the time in agenda rows and month chips; date/range still show.
+> Added 4 unit tests + AllDayEvent/EmptyWindowPrompt stories (all 8 Calendar
+> stories pass in Chromium + axe). No date.ts change needed. Green across the
+> board.
 
 **Why:** Three independent usability gaps in the `Calendar` component:
 

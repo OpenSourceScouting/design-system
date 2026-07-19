@@ -122,6 +122,52 @@ export const Empty: Story = {
 };
 
 /**
+ * `allDay: true` suppresses the time label (a start-of-day date would otherwise
+ * read as a misleading "12:00 AM") while keeping the date. Compare the all-day
+ * row to the timed Pack Meeting below it.
+ */
+export const AllDayEvent: Story = {
+  args: {
+    defaultView: "agenda",
+    events: [
+      {
+        id: "allday",
+        date: new Date(Y, M, now.getDate() + 3),
+        title: "Scout Sunday (all day)",
+        category: "Observance",
+        allDay: true,
+      },
+      {
+        id: "timed",
+        date: new Date(Y, M, now.getDate() + 4, 18, 30),
+        title: "Pack Meeting",
+        category: "Weekly",
+        location: "Pack 42 Hall",
+      },
+    ],
+  },
+};
+
+/**
+ * When the agenda window is empty but events exist outside it (here, four
+ * months in the past), the calendar prompts the user to switch to Month view to
+ * find them rather than just saying "nothing scheduled".
+ */
+export const EmptyWindowPrompt: Story = {
+  args: {
+    defaultView: "agenda",
+    events: [
+      {
+        id: "past",
+        date: new Date(Y, M - 4, 10, 9, 0),
+        title: "Spring Recruitment Night",
+        category: "Pack Event",
+      },
+    ],
+  },
+};
+
+/**
  * Below the `sm` breakpoint the month grid is unusable (columns crush to
  * ~50px), so the calendar renders the agenda view and hides the Month toggle
  * even when `defaultView="month"` is requested. Resize the canvas above
