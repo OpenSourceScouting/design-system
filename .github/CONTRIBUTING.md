@@ -166,6 +166,18 @@ touching component code. To add one:
 - Respect the accessibility guardrails documented in `CLAUDE.md` and the README
   (contrast tokens, no `variant="accent" size="sm"`, no sub-`/80` text tints).
 
+## Changesets and releases
+
+We use [Changesets](https://github.com/changesets/changesets) to version the
+package and generate release notes, so **any PR that changes published behavior
+must include a changeset**: run `npx changeset`, choose the bump type (`patch`
+for fixes, `minor` for additions; we are pre-1.0, so breaking changes are still
+`minor`), and write a short human-readable summary. That creates a markdown file
+under `.changeset/` which you commit alongside your code. On merge to `main` the
+`Release` workflow collects pending changesets into a "version packages" PR;
+merging that PR bumps the version, updates `CHANGELOG.md`, and publishes to npm.
+Docs-only, tooling-only, and test-only changes do not need a changeset.
+
 ## Housekeeping
 
 Rebasing or amending can leave orphaned objects that bloat `.git`. Run
