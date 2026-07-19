@@ -106,6 +106,12 @@ export function normalizeBasePath(path: string): string {
 
 type ScoutThemeContextValue = {
   program: Program;
+  /**
+   * Optional custom theme layer (e.g. "dark"), stamped as `data-theme`
+   * alongside `data-program`. The library ships NO theme values itself; this is
+   * the extension hook for a unit or project to layer its own token overrides.
+   */
+  theme?: string;
   marksBasePath: string;
   /**
    * When true, every ProgramMark in this subtree renders its placeholder SVG
@@ -121,6 +127,26 @@ const ScoutThemeContext = createContext<ScoutThemeContextValue | null>(null);
 export type ScoutThemeProviderProps = {
   program: Program;
   children: ReactNode;
+  /**
+   * Optional custom theme layer, stamped as `data-theme` on the wrapper (on
+   * `<html>` when `applyToDocument`) and re-stamped onto portalled widgets via
+   * `useProgramStamp`, so a custom theme survives inside dialogs/menus/tooltips.
+   *
+   * The library ships no theme values of its own (Scouting America has no dark
+   * mode, and this package aligns to the official design system). This is the
+   * hook for a unit or project to add one without forking: set `theme` and
+   * supply the token overrides in your own CSS, scoped to `[data-theme]`.
+   *
+   *   <ScoutThemeProvider program="cub" theme="dark">…</ScoutThemeProvider>
+   *
+   *   [data-theme="dark"] { --background: 12 15 20; --foreground: 240 244 248; }
+   *   // or scope per program:
+   *   [data-theme="dark"][data-program="cub"] { --primary: … }
+   *
+   * Because theming is CSS-variable overrides selected by attribute, a custom
+   * theme composes with any program and needs no component changes.
+   */
+  theme?: string;
   /**
    * Base URL or path where program marks live. May be a relative path
    * (`/marks/`, `/assets/brand/`) or an absolute URL
@@ -151,6 +177,7 @@ export type ScoutThemeProviderProps = {
 export function ScoutThemeProvider({
   program,
   children,
+  theme,
   marksBasePath,
   forcePlaceholderMarks = false,
   applyToDocument = false,
@@ -159,12 +186,13 @@ export function ScoutThemeProvider({
   const value = useMemo<ScoutThemeContextValue>(
     () => ({
       program,
+      theme,
       marksBasePath: normalizeBasePath(
         marksBasePath ?? readEnvBasePath() ?? DEFAULT_MARKS_BASE_PATH,
       ),
       forcePlaceholderMarks,
     }),
-    [program, marksBasePath, forcePlaceholderMarks],
+    [program, theme, marksBasePath, forcePlaceholderMarks],
   );
 
   // Mutating <html> is a side effect: it must not run during render (React 18
@@ -186,10 +214,27 @@ export function ScoutThemeProvider({
     };
   }, [applyToDocument, program]);
 
+  // Same treatment for the optional custom theme layer, kept as a separate
+  // effect so each attribute restores its own prior value independently.
+  useEffect(() => {
+    if (!applyToDocument || theme === undefined) return;
+    const root = document.documentElement;
+    const previous = root.getAttribute("data-theme");
+    root.setAttribute("data-theme", theme);
+    return () => {
+      if (previous === null) {
+        root.removeAttribute("data-theme");
+      } else {
+        root.setAttribute("data-theme", previous);
+      }
+    };
+  }, [applyToDocument, theme]);
+
   return (
     <ScoutThemeContext.Provider value={value}>
       <div
         data-program={program}
+        data-theme={theme}
         className={className}
         style={{
           // shadcn vocabulary (Phase 1): value-identical to the legacy
@@ -227,8 +272,12 @@ export function useScoutTheme(): ScoutThemeContextValue {
  *
  * Factored so the re-stamp cannot be forgotten when adding a new portalled
  * widget. Must be called inside a ScoutThemeProvider (the trigger's subtree).
+ *
+ * Also re-stamps the custom `data-theme` layer (when set) so a consumer's theme
+ * (e.g. dark mode) applies inside portalled content too, not just the main
+ * subtree. `data-theme` is omitted when no theme is active.
  */
-export function useProgramStamp(): { "data-program": Program } {
-  const { program } = useScoutTheme();
-  return { "data-program": program };
+export function useProgramStamp(): { "data-program": Program; "data-theme"?: string } {
+  const { program, theme } = useScoutTheme();
+  return { "data-program": program, "data-theme": theme };
 }

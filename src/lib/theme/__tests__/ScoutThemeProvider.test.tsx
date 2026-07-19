@@ -3,6 +3,7 @@ import { render, renderHook, screen } from "@testing-library/react";
 import {
   ScoutThemeProvider,
   useScoutTheme,
+  useProgramStamp,
   isKnownProgram,
   resolveKnownProgram,
   DEFAULT_PROGRAM,
@@ -82,6 +83,53 @@ describe("ScoutThemeProvider", () => {
           </ScoutThemeProvider>,
         ),
       ).not.toThrow();
+    });
+  });
+
+  // The custom-theme hook: the library ships no theme values, but a consumer can
+  // layer one (e.g. dark mode) via the `theme` prop + their own [data-theme] CSS.
+  describe("custom theme layer (data-theme hook)", () => {
+    it("stamps data-theme on the wrapper alongside data-program", () => {
+      render(
+        <ScoutThemeProvider program="cub" theme="dark">
+          <span>child</span>
+        </ScoutThemeProvider>,
+      );
+      const el = screen.getByText("child").closest("[data-program]");
+      expect(el).toHaveAttribute("data-program", "cub");
+      expect(el).toHaveAttribute("data-theme", "dark");
+    });
+
+    it("omits data-theme when no theme is set", () => {
+      render(
+        <ScoutThemeProvider program="cub">
+          <span>child</span>
+        </ScoutThemeProvider>,
+      );
+      expect(screen.getByText("child").closest("[data-program]")).not.toHaveAttribute("data-theme");
+    });
+
+    it("useProgramStamp re-stamps program and theme so portals keep the theme", () => {
+      const { result } = renderHook(() => useProgramStamp(), {
+        wrapper: ({ children }) => (
+          <ScoutThemeProvider program="venturing" theme="dark">
+            {children}
+          </ScoutThemeProvider>
+        ),
+      });
+      expect(result.current).toEqual({ "data-program": "venturing", "data-theme": "dark" });
+    });
+
+    it("applyToDocument sets and cleans up data-theme on <html>", () => {
+      expect(document.documentElement.hasAttribute("data-theme")).toBe(false);
+      const { unmount } = render(
+        <ScoutThemeProvider program="seascouts" theme="dark" applyToDocument>
+          <span>child</span>
+        </ScoutThemeProvider>,
+      );
+      expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+      unmount();
+      expect(document.documentElement.hasAttribute("data-theme")).toBe(false);
     });
   });
 });

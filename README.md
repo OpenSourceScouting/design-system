@@ -238,6 +238,41 @@ if your own code needs to branch on this. The `forced-colors` (Windows High
 Contrast) reset targets `[data-program]` universally, so your custom program
 gets high-contrast support automatically.
 
+### Custom themes (e.g. dark mode)
+
+The library intentionally ships **no dark mode**: Scouting America has no dark
+palette and this package aligns to the official design system. But because
+theming is just CSS-variable overrides selected by attribute, an individual unit
+or project can layer its own theme without forking. Pass a `theme` to
+`ScoutThemeProvider` and supply the token overrides in your own CSS, scoped to
+`[data-theme]`:
+
+```tsx
+<ScoutThemeProvider program="cub" theme="dark">
+  <App />
+</ScoutThemeProvider>
+```
+
+```css
+/* your app CSS: a dark layer, composed on top of the program tokens */
+[data-theme="dark"] {
+  --background: 12 15 20;
+  --foreground: 240 244 248;
+  /* ...override the tokens you want dark... */
+}
+/* scope to one program if the dark values differ per brand: */
+[data-theme="dark"][data-program="seascouts"] {
+  --primary: 90 140 200;
+}
+```
+
+`theme` is stamped as `data-theme` on the provider's element (and on `<html>`
+with `applyToDocument`), and is re-stamped onto portalled widgets (dialogs,
+menus, tooltips) via `useProgramStamp`, so your theme applies inside overlays
+too, not just the main subtree. It composes with any program and needs no
+component changes. Toggling `theme` between values (or to `undefined`) is how
+you build a light/dark switch.
+
 ### Serve program marks from a subpath
 
 By default, `ProgramMark` loads files from `/marks/` on the same origin. If

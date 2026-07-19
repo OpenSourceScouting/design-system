@@ -475,7 +475,20 @@ code should mirror that.
 
 ## Tier 3: design-system polish (real value-add, not corrections)
 
-### [ ] 3.1 Dark mode per program
+### [~] 3.1 Dark mode per program (DEFERRED; extension hook shipped instead)
+
+> Deferred 2026-07-19 by maintainer decision: Scouting America has no dark mode
+> and this package aligns to the official design system, so shipping opinionated
+> per-program dark palettes is out of scope until there is real demand. What was
+> asked for and DONE instead: the extension hooks so an individual unit/project
+> can implement a custom theme (dark or otherwise) without forking. Added a
+> `theme` prop to ScoutThemeProvider (stamped as `data-theme` alongside
+> `data-program`), threaded through context (`useScoutTheme().theme`), managed on
+> `<html>` under `applyToDocument`, and (the important part) re-stamped onto
+> portalled widgets via `useProgramStamp`, so a consumer's `[data-theme]` layer
+> applies inside dialogs/menus/tooltips too. Documented in README "Custom themes
+> (e.g. dark mode)"; tests + changeset added. The token-parity test's dark-mode
+> future-proofing note still stands if first-party dark mode is revived later.
 
 **Why:** Scouting happens outdoors at night. Dark mode is not a luxury for
 this audience.
