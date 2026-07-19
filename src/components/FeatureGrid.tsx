@@ -26,39 +26,49 @@ export type FeatureGridProps = {
   renderFeature?: (feature: Feature, index: number) => ReactNode;
 };
 
+// Container-query column counts (Tailwind v4, no plugin): the grid responds to
+// its OWN width, not the viewport, so a <FeatureGrid columns={4}> in a narrow
+// sidebar collapses to fewer columns even on a wide screen. The `@container`
+// wrapper below establishes the query context; these `@md`/`@2xl`/`@4xl`
+// variants query that wrapper. Card target width stays ~210px at every step.
 const COLS: Record<NonNullable<FeatureGridProps["columns"]>, string> = {
-  2: "sm:grid-cols-2",
-  3: "sm:grid-cols-2 lg:grid-cols-3",
-  4: "sm:grid-cols-2 lg:grid-cols-4",
+  2: "@md:grid-cols-2",
+  3: "@md:grid-cols-2 @2xl:grid-cols-3",
+  4: "@md:grid-cols-2 @2xl:grid-cols-3 @4xl:grid-cols-4",
 };
 
 export function FeatureGrid({ features, columns = 3, className, renderFeature }: FeatureGridProps) {
   return (
-    <div className={cn("grid grid-cols-1 gap-5", COLS[columns], className)}>
-      {features.map((f, i) =>
-        renderFeature ? (
-          <Fragment key={i}>{renderFeature(f, i)}</Fragment>
-        ) : (
-          <Card key={i} variant="outlined" className="h-full">
-            <CardBody className="flex flex-col gap-3 h-full">
-              {f.icon ? (
-                <div className="flex flex-col gap-2">
-                  <span aria-hidden className="text-primary [&>svg]:h-8 [&>svg]:w-8">
-                    {f.icon}
-                  </span>
-                  <span aria-hidden className="h-0 w-8 border-b-rule border-border/70" />
-                </div>
-              ) : null}
-              <Heading level={3} size={4}>
-                {f.title}
-              </Heading>
-              <p className="font-body text-sm leading-relaxed text-foreground/80 flex-1">
-                {f.description}
-              </p>
-            </CardBody>
-          </Card>
-        ),
-      )}
+    // The `@container` wrapper is the query context; the inner grid reads its
+    // width. Consumer `className` lands on the wrapper (where width/margin
+    // belong), so sizing the wrapper drives the column count.
+    <div className={cn("@container", className)}>
+      <div className={cn("grid grid-cols-1 gap-5", COLS[columns])}>
+        {features.map((f, i) =>
+          renderFeature ? (
+            <Fragment key={i}>{renderFeature(f, i)}</Fragment>
+          ) : (
+            <Card key={i} variant="outlined" className="h-full">
+              <CardBody className="flex flex-col gap-3 h-full">
+                {f.icon ? (
+                  <div className="flex flex-col gap-2">
+                    <span aria-hidden className="text-primary [&>svg]:h-8 [&>svg]:w-8">
+                      {f.icon}
+                    </span>
+                    <span aria-hidden className="h-0 w-8 border-b-rule border-border/70" />
+                  </div>
+                ) : null}
+                <Heading level={3} size={4}>
+                  {f.title}
+                </Heading>
+                <p className="font-body text-sm leading-relaxed text-foreground/80 flex-1">
+                  {f.description}
+                </p>
+              </CardBody>
+            </Card>
+          ),
+        )}
+      </div>
     </div>
   );
 }

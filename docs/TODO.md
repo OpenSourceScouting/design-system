@@ -581,7 +581,21 @@ keeping them inside the token system prevents drift.
 
 ---
 
-### [ ] 3.5 Container queries on layout components
+### [x] 3.5 Container queries on layout components
+
+> Done 2026-07-19. FeatureGrid: wrapped the grid in an `@container` context and
+> moved column counts to container variants (`@md`/`@2xl`/`@4xl:grid-cols-*`),
+> so it responds to its own width, not the viewport (consumer `className` now
+> lands on the container wrapper, where width/margin belong). Verified the
+> `@container` + variants compile into dist/styles.css. Calendar: replaced the
+> viewport `matchMedia` narrow-detection with a container-based ResizeObserver
+> (`useIsNarrowContainer`) on the calendar element, with a `width > 0` guard so
+> jsdom (width 0) and SSR stay on the month view; this also relates to 1.5 (the
+> agenda fallback is now container-driven). Added a FeatureGrid `NarrowContainer`
+> story and renamed the Calendar mobile story to `NarrowContainerFallsBackToAgenda`
+> (now a fixed-width wrapper, not a viewport global, so it demonstrates the
+> container behavior directly). All unit tests + FeatureGrid/Calendar Chromium
+> stories green.
 
 **Why:** Tailwind viewport breakpoints break when a `<FeatureGrid columns={4}>`
 is placed in a 400px sidebar on a 1440px screen. Container queries fix this.

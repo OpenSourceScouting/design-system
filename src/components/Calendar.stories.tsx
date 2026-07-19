@@ -168,14 +168,19 @@ export const EmptyWindowPrompt: Story = {
 };
 
 /**
- * Below the `sm` breakpoint the month grid is unusable (columns crush to
- * ~50px), so the calendar renders the agenda view and hides the Month toggle
- * even when `defaultView="month"` is requested. Resize the canvas above
- * 640px to watch the month grid and toggle come back.
+ * When the calendar's own container is under 640px the month grid is unusable
+ * (columns crush to ~50px), so it renders the agenda view and hides the Month
+ * toggle even when `defaultView="month"` is requested. This is container-based
+ * (a ResizeObserver on the calendar), not viewport-based: here a ~420px wrapper
+ * on a wide canvas triggers the fallback, the same way a narrow sidebar would.
  */
-export const MobileFallsBackToAgenda: Story = {
+export const NarrowContainerFallsBackToAgenda: Story = {
   args: { events: SAMPLE_EVENTS, defaultView: "month" },
-  globals: {
-    viewport: { value: "mobile1", isRotated: false },
-  },
+  decorators: [
+    (Story) => (
+      <div className="max-w-[420px] rounded-lg border border-border/60 p-2">
+        <Story />
+      </div>
+    ),
+  ],
 };

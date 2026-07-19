@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
 import { Button } from "./Button";
 import { Badge } from "./Badge";
 import { Heading } from "./Heading";
@@ -83,21 +83,29 @@ function rotate<T>(arr: T[], n: number): T[] {
 }
 
 /**
- * True below Tailwind's `sm` breakpoint (640px). The month grid needs ~88px
- * per column; under 640px the cells crush event chips into unreadable slivers,
- * so the calendar falls back to the agenda view on narrow viewports.
- * Starts false so SSR and the first client render agree; the effect corrects
- * it before paint matters.
+ * True when the calendar's OWN container is below 640px. The month grid needs
+ * ~88px per column; under 640px the cells crush event chips into unreadable
+ * slivers, so the calendar falls back to the agenda view. A ResizeObserver on
+ * the calendar element (not the viewport) means the fallback tracks the box the
+ * calendar actually sits in, so a calendar in a 400px sidebar on a 1440px screen
+ * still falls back. Starts false so SSR and the first client render agree; the
+ * `width > 0` guard keeps a not-yet-measured (or jsdom, width 0) container on
+ * the month view rather than spuriously flipping to agenda.
  */
-function useIsNarrowViewport(): boolean {
+function useIsNarrowContainer(ref: RefObject<HTMLElement | null>): boolean {
   const [narrow, setNarrow] = useState(false);
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 639px)");
-    const update = () => setNarrow(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
+    const el = ref.current;
+    if (!el) return;
+    const measure = () => {
+      const width = el.getBoundingClientRect().width;
+      setNarrow(width > 0 && width < 640);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [ref]);
   return narrow;
 }
 
@@ -144,7 +152,8 @@ export function Calendar({
 }: CalendarProps) {
   const [view, setView] = useState<CalendarView>(defaultView);
   const [cursor, setCursor] = useState<Date>(() => startOfMonth(defaultMonth ?? new Date()));
-  const narrow = useIsNarrowViewport();
+  const containerRef = useRef<HTMLElement>(null);
+  const narrow = useIsNarrowContainer(containerRef);
   // The chosen view is preserved; narrow viewports just render agenda instead
   // of an unusable month grid, and the original choice returns on resize.
   const effectiveView = narrow ? "agenda" : view;
@@ -164,6 +173,7 @@ export function Calendar({
 
   return (
     <section
+      ref={containerRef}
       className={cn(
         "rounded-program border border-border/60 bg-background overflow-hidden",
         className,

@@ -139,6 +139,31 @@ export const Four: Story = {
 };
 
 /**
+ * Container queries: the grid responds to its OWN width, not the viewport. This
+ * `columns={4}` grid sits in a ~360px box (think a sidebar) and collapses to a
+ * single column even on a wide screen, where a viewport-based grid would still
+ * show four cramped columns.
+ */
+export const NarrowContainer: Story = {
+  args: {
+    columns: 4,
+    features: [
+      { title: "Adventure", icon: ICONS.adventure, description: "Camp, hike, and explore." },
+      { title: "Leadership", icon: ICONS.leadership, description: "Lead a patrol." },
+      { title: "Service", icon: ICONS.service, description: "Help other people." },
+      { title: "Friendship", icon: ICONS.leadership, description: "Build a den that lasts." },
+    ],
+  },
+  decorators: [
+    (Story) => (
+      <div className="max-w-[360px] rounded-lg border border-border/60 p-3">
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+/**
  * `renderFeature` replaces the default card entirely while keeping the grid
  * layout. Here each cell becomes a linked "teaser" tile with a background
  * treatment and a Learn more affordance, the kind of custom content the fixed
