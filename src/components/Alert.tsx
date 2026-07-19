@@ -21,15 +21,13 @@ export type AlertProps = HTMLAttributes<HTMLDivElement> & {
  * component (task 2.9) without forking: e.g.
  *   const TONES = { ...alertToneStyles, brand: { ring, chip, chipText } };
  */
-export const alertToneStyles: Record<
-  AlertTone,
-  { ring: string; chip: string; chipText: string }
-> = {
-  info: { ring: "border-sa-blue/40", chip: "bg-sa-blue", chipText: "text-white" },
-  success: { ring: "border-sa-blue/40", chip: "bg-[#006B3F]", chipText: "text-white" },
-  warning: { ring: "border-[#996633]/40", chip: "bg-[#FCD116]", chipText: "text-sa-dark-gray" },
-  danger: { ring: "border-sa-red/40", chip: "bg-sa-red", chipText: "text-white" },
-};
+export const alertToneStyles: Record<AlertTone, { ring: string; chip: string; chipText: string }> =
+  {
+    info: { ring: "border-sa-blue/40", chip: "bg-sa-blue", chipText: "text-white" },
+    success: { ring: "border-sa-blue/40", chip: "bg-[#006B3F]", chipText: "text-white" },
+    warning: { ring: "border-[#996633]/40", chip: "bg-[#FCD116]", chipText: "text-sa-dark-gray" },
+    danger: { ring: "border-sa-red/40", chip: "bg-sa-red", chipText: "text-white" },
+  };
 
 export function Alert({ tone = "info", title, icon, className, children, ...rest }: AlertProps) {
   const t = alertToneStyles[tone];

@@ -8,12 +8,23 @@ export {
   isKnownProgram,
   resolveKnownProgram,
 } from "./lib/theme/ScoutThemeProvider";
-export type { Program, KnownProgram, ScoutThemeProviderProps } from "./lib/theme/ScoutThemeProvider";
+export type {
+  Program,
+  KnownProgram,
+  ScoutThemeProviderProps,
+} from "./lib/theme/ScoutThemeProvider";
 
 export { Button, buttonVariants } from "./components/Button";
 export type { ButtonProps, ButtonVariant, ButtonSize } from "./components/Button";
 
-export { Card, CardBody, CardHeader, CardFooter, CardEyebrow, cardVariants } from "./components/Card";
+export {
+  Card,
+  CardBody,
+  CardHeader,
+  CardFooter,
+  CardEyebrow,
+  cardVariants,
+} from "./components/Card";
 export type { CardProps } from "./components/Card";
 
 export { Badge, badgeVariants } from "./components/Badge";
