@@ -49,6 +49,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   into CI, plus an `.editorconfig` kept in sync.
 - `engines` field and `.nvmrc` pinning Node 22 LTS.
 - `npm run clean` and `npm run maintenance:git` housekeeping scripts.
+- Adopted [Changesets](https://github.com/changesets/changesets) for versioning
+  and release notes, with a `Release` workflow that opens a version PR and
+  publishes to npm on merge. `CONTRIBUTING.md` documents the workflow. Entries
+  above predate the adoption; future release notes are generated from changeset
+  files under `.changeset/`.
 - A rendered-contrast kitchen-sink story (`src/stories/ContrastKitchenSink.stories.tsx`)
   that re-enables the axe `color-contrast` rule across the four program themes
   (the parent-brand palette is covered by the token test), proving components

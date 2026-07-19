@@ -384,7 +384,20 @@ should be able to browse components without cloning the repo.
 
 ---
 
-### [ ] 2.6 Add CHANGELOG and Changesets
+### [x] 2.6 Add CHANGELOG and Changesets
+
+> Done 2026-07-19: `@changesets/cli` installed, `changeset init` run, and
+> `.changeset/config.json` set to `access: "public"` (scoped package) on
+> `baseBranch: main`. Added `.github/workflows/release.yml` (changesets/action:
+> opens a "version packages" PR from pending changesets on push to main,
+> publishes to npm on merge; needs an `NPM_TOKEN` secret and a GitHub remote,
+> neither present yet). Added `version-packages` + `release` npm scripts (avoided
+> the reserved `version` name). CONTRIBUTING.md created with the one-paragraph
+> changeset workflow plus ground rules. A real changeset for the 2.8/2.9 feature
+> lives at `.changeset/open-program-and-variant-api.md` (minor); `changeset
+status` confirms the minor bump. CHANGELOG already existed (Keep a Changelog);
+> noted the adoption there. NOTE: the CHANGELOG's `[Unreleased]` still claims
+> `CODE_OF_CONDUCT.md` and `SECURITY.md` exist; they do not (flagged separately).
 
 **Why:** A library that ships to councils needs versioned releases and
 human-readable change notes. Brand books are versioned (2024 edition); the

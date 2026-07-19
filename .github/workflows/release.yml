@@ -1,0 +1,47 @@
+name: Release
+
+# Versioned releases via Changesets. On every push to main this either:
+#   1. opens (or updates) a "Version Packages" PR that consumes the pending
+#      changeset files, bumps the version, and updates CHANGELOG.md; or
+#   2. when that PR is merged (so no changesets remain and package.json is
+#      ahead of the published version), publishes the package to npm.
+# Requires an NPM_TOKEN repository secret with publish rights to the
+# @opensourcescouting scope. The built-in GITHUB_TOKEN opens the PR.
+on:
+  push:
+    branches: [main]
+
+# Never run two releases at once; a second push waits for the first to finish.
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    name: version or publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # push the version bump / create tags
+      pull-requests: write # open the "Version Packages" PR
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create Release PR or publish
+        uses: changesets/action@v1
+        with:
+          version: npm run version-packages
+          publish: npm run release
+          commit: "chore(release): version packages"
+          title: "chore(release): version packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
