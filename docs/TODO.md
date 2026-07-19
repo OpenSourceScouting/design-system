@@ -489,6 +489,7 @@ code should mirror that.
 > applies inside dialogs/menus/tooltips too. Documented in README "Custom themes
 > (e.g. dark mode)"; tests + changeset added. The token-parity test's dark-mode
 > future-proofing note still stands if first-party dark mode is revived later.
+> Decision recorded in ADR 0006.
 
 **Why:** Scouting happens outdoors at night. Dark mode is not a luxury for
 this audience.
