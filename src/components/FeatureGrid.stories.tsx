@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FeatureGrid } from "./FeatureGrid";
+import { cn } from "../lib/utils/cn";
 
 const meta: Meta<typeof FeatureGrid> = {
   title: "Marketing/FeatureGrid",
@@ -134,5 +135,46 @@ export const Four: Story = {
         description: "Build a den, patrol, or crew that lasts.",
       },
     ],
+  },
+};
+
+/**
+ * `renderFeature` replaces the default card entirely while keeping the grid
+ * layout. Here each cell becomes a linked "teaser" tile with a background
+ * treatment and a Learn more affordance, the kind of custom content the fixed
+ * default card cannot express. The whole tile is one link, labelled per
+ * feature for screen readers.
+ */
+export const CustomRenderProp: Story = {
+  args: {
+    columns: 3,
+    features: [
+      { title: "Camping", description: "Weekend campouts and week-long summer camp." },
+      { title: "High Adventure", description: "Backpacking, sailing, and mountain treks." },
+      { title: "STEM", description: "Robotics, coding, and hands-on science." },
+    ],
+    renderFeature: (f) => (
+      <a
+        href="#"
+        aria-label={`Learn more about ${typeof f.title === "string" ? f.title : "this program"}`}
+        className={cn(
+          "group relative flex h-48 flex-col justify-end gap-1 overflow-hidden rounded-lg bg-primary p-5",
+          "text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+        )}
+      >
+        {/* A background "image" treatment stands in for a real photo here. */}
+        <span
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-br from-white/10 to-black/35"
+        />
+        <span className="display relative text-lg">{f.title}</span>
+        <span className="relative font-body text-sm text-primary-foreground/90">
+          {f.description}
+        </span>
+        <span className="relative mt-1 text-sm font-semibold underline underline-offset-4 group-hover:no-underline">
+          Learn more
+        </span>
+      </a>
+    ),
   },
 };

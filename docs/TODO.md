@@ -586,7 +586,17 @@ Tailwind v4 (container queries are built in; no config or plugin needed).
 
 ---
 
-### [ ] 3.6 Open FeatureGrid's per-feature card structure via render slots
+### [x] 3.6 Open FeatureGrid's per-feature card structure via render slots
+
+> Done 2026-07-19: added `renderFeature?: (feature, index) => ReactNode`. When
+> supplied it replaces the per-cell card entirely (wrapped in a keyed Fragment
+> so the returned element is the direct grid child); the grid wrapper
+> (columns/gap) is unchanged, and the default card JSX is byte-for-byte
+> untouched when the prop is omitted. `Feature` was already exported from
+> index.ts. Added a `CustomRenderProp` story (linked teaser tiles, bg-primary so
+> white text stays AA-safe, whole tile is one aria-labelled link). All 4
+> FeatureGrid stories pass in Chromium + axe; typecheck/lint/build green;
+> changeset added.
 
 **Why:** `FeatureGrid` renders each feature as a fixed-structure card (icon, heading, body text). Consumers cannot change the card layout, add a CTA link, swap the icon for an image, or inject additional metadata without forking the component. This limits real-world adoption where feature cards routinely need custom content (event counts, links, photos).
 
