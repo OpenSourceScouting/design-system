@@ -1,6 +1,6 @@
 <p align="center">
   <img
-    src="./public/oss/opensourcescouting-logo-color.png"
+    src="https://raw.githubusercontent.com/opensourcescouting/design-system/main/public/oss/opensourcescouting-logo-color.png"
     alt="Open Source Scouting"
     width="160"
     height="160"
@@ -40,6 +40,7 @@ codebase.
 | Picking up a backlog task                      | [`TODO.md`](./docs/TODO.md)                                     |
 | Understanding why the architecture is this way | [`docs/decisions/`](./docs/decisions/)                          |
 | A coding agent working inside this codebase    | [`CLAUDE.md`](./CLAUDE.md)                                      |
+| Stuck, or reporting a bug                      | [Getting help](#getting-help)                                   |
 
 ## Quick start
 
@@ -59,10 +60,11 @@ From the npm registry (once published):
 npm install @opensourcescouting/design-system
 ```
 
-Or directly from a packed tarball during early adoption:
+Or directly from a packed tarball during early adoption (the filename carries
+the current version, e.g. `opensourcescouting-design-system-<version>.tgz`):
 
 ```bash
-npm install ./opensourcescouting-design-system-0.1.0.tgz
+npm install ./opensourcescouting-design-system-<version>.tgz
 ```
 
 **Supported React versions:** React 18 and React 19 (peer dependency `react >= 18`).
@@ -122,6 +124,12 @@ provides program metadata through React context. Components that read program
 metadata (such as `ProgramHero`, `ProgramMark`, and `RegistrationCTA`) require
 a `ScoutThemeProvider` ancestor.
 
+> **Wrap your app in `ScoutThemeProvider`.** Forgetting it is the most common
+> setup mistake: components render unthemed (a stray red accent is the usual
+> tell) and the metadata-reading components throw. If accent buttons show up
+> red when you expected a program color, that missing provider is why (more in
+> [Override colors for your council](#override-colors-for-your-council)).
+
 Notable `ScoutThemeProvider` props:
 
 - **`applyToDocument`** (boolean, default `false`): applies `data-program` to
@@ -135,6 +143,14 @@ Notable `ScoutThemeProvider` props:
   OSS preview builds, or any context where the licensed BSA marks cannot
   lawfully be displayed. A per-instance `forcePlaceholder` prop on `ProgramMark`
   takes precedence over this subtree-wide flag.
+
+  **Recommended default for public / open-source deployments.** With it off,
+  `ProgramMark` probes `/marks/` for real asset files and falls back to the
+  placeholder when they 404, which is correct behavior but produces console
+  404 noise on any site that ships no marks (and most public deployments
+  cannot lawfully ship the licensed marks). Set `forcePlaceholderMarks` at
+  the provider to skip the probe entirely: it is both the quieter option and
+  the correct trademark posture for public sites.
 
 ### Override colors for your council
 
@@ -403,9 +419,9 @@ accent use `bg-os-accent`; for validation use `text-destructive` /
 
 ## Tokens as data (JSON / SCSS / email)
 
-The tokens are not only Tailwind utilities and CSS variables. The same values
-are exposed as framework-neutral data so non-web tools (Figma, SCSS projects,
-email builders) and non-Tailwind code can use the exact brand values without
+The tokens ship in three forms: Tailwind utilities, CSS variables, and
+framework-neutral data. That last form lets non-web tools (Figma, SCSS projects,
+email builders) and non-Tailwind code use the exact brand values without
 hand-copying hex codes. `src/styles/tokens.css` remains the authored source of
 truth; everything below is generated from it (`npm run build:tokens` regenerates
 the typed module, and `npm run build` emits the file artifacts), so nothing
@@ -690,7 +706,7 @@ here and noted in the `CHANGELOG.md`.
 ## Accessibility
 
 - Focus rings use `--ring`, always visible (2px solid, 2px offset)
-- Color pairings tested against WCAG 2.1 AA for body text and large text
+- Color pairings tested against WCAG 2.1 AA (the accessibility contrast bar most compliance policies require) for body text and large text
 - `prefers-reduced-motion` suppresses non-essential animation globally; the Button press translation uses `motion-safe:active:` so it never fires under reduced motion
 - All decorative SVG is `aria-hidden`; informative SVG has `aria-label`
 - Headings use semantic `<h1>`-`<h6>` independently of visual size
@@ -717,6 +733,18 @@ here and noted in the `CHANGELOG.md`.
 The "storybook" Vitest project runs stories in real Chromium, so running
 `npm run test` locally requires a one-time `npx playwright install chromium`
 first.
+
+## Getting help
+
+- **Something not working, or a bug?** Open an issue:
+  [github.com/opensourcescouting/design-system/issues](https://github.com/opensourcescouting/design-system/issues).
+  A bug-report template is provided.
+- **Want a new component or feature?** File a feature-request issue with the
+  use case.
+- **Contributing code?** Read [`CONTRIBUTING.md`](./.github/CONTRIBUTING.md)
+  first (setup, conventions, and the changeset requirement).
+- **Found a security issue?** Do not open a public issue; follow
+  [`SECURITY.md`](./.github/SECURITY.md).
 
 ## License & trademark notice
 
