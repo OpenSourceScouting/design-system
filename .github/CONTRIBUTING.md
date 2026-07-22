@@ -173,10 +173,22 @@ package and generate release notes, so **any PR that changes published behavior
 must include a changeset**: run `npx changeset`, choose the bump type (`patch`
 for fixes, `minor` for additions; we are pre-1.0, so breaking changes are still
 `minor`), and write a short human-readable summary. That creates a markdown file
-under `.changeset/` which you commit alongside your code. On merge to `main` the
-`Release` workflow collects pending changesets into a "version packages" PR;
-merging that PR bumps the version, updates `CHANGELOG.md`, and publishes to npm.
-Docs-only, tooling-only, and test-only changes do not need a changeset.
+under `.changeset/` which you commit alongside your code. Docs-only,
+tooling-only, and test-only changes do not need a changeset.
+
+**Releases are deliberate, not automatic.** Merging to `main` only accumulates
+changesets; nothing is published. When a release is ready, a maintainer runs the
+`Release` workflow from the Actions tab (`workflow_dispatch`, main only). The
+workflow re-runs the full CI gate, then (behind the `npm-publish` environment's
+required-reviewer approval) consumes the changesets, commits the version bump
+and `CHANGELOG.md`, publishes to npm with Sigstore provenance, generates a
+CycloneDX SBOM (Syft), attests the tarball and SBOM, and creates a GitHub
+Release with both attached. A `dry-run` input previews the whole release
+(version, build, pack, SBOM, `npm publish --dry-run`) without publishing
+anything. While `.changeset/pre.json` is present the package is in prerelease
+mode and publishes under the `alpha` dist-tag; exit it with
+`npx changeset pre exit` (committed like any change) before cutting a stable
+release.
 
 ## Housekeeping
 

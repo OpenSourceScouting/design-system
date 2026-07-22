@@ -58,6 +58,7 @@ git history. This supersedes TODO R.1.
 - Visual regression is gone until deliberately rebuilt (a follow-up in
   `docs/TODO.md`). Acceptable pre-1.0; the trade is less pixel coverage for a far
   smaller, maintained toolchain and ~5 MB reclaimed from history.
-- ADR 0005 (accessibility testing strategy) is now a Draft: item 2 moved to the
-  Vitest addon and must be re-validated and rewritten on the new stack.
+- ADR 0005 (accessibility testing strategy) was re-derived for the Vitest addon
+  and re-accepted on the new stack (item 2 moved from the retired test-runner
+  axe pass to `@storybook/addon-vitest`).
 - The auto-suggested `@storybook/addon-mcp` was declined to keep the install lean.

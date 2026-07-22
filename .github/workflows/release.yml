@@ -1,29 +1,108 @@
 name: Release
 
-# Versioned releases via Changesets. On every push to main this either:
-#   1. opens (or updates) a "Version Packages" PR that consumes the pending
-#      changeset files, bumps the version, and updates CHANGELOG.md; or
-#   2. when that PR is merged (so no changesets remain and package.json is
-#      ahead of the published version), publishes the package to npm.
-# Requires an NPM_TOKEN repository secret with publish rights to the
-# @opensourcescouting scope. The built-in GITHUB_TOKEN opens the PR.
-on:
-  push:
-    branches: [main]
+# Deliberate, manually-triggered releases (NOT automatic on merge to main).
+#
+# Merges to main only accumulate changeset files; nothing publishes. When a
+# release is ready, a maintainer runs this workflow from the Actions tab:
+#
+#   1. `verify` re-runs the full CI gate on the exact commit being released.
+#   2. `release` (gated by the `npm-publish` environment, which should be
+#      configured with a required reviewer and restricted to `main`):
+#        a. consumes pending changesets (`changeset version`), commits the
+#           bump + CHANGELOG, and pushes to main
+#        b. builds the library and packs the tarball
+#        c. generates a CycloneDX SBOM with Syft
+#        d. publishes to npm with Sigstore provenance (while `.changeset/pre.json`
+#           is present, changesets publishes under the `alpha` dist-tag)
+#        e. attests the tarball + SBOM (GitHub keyless artifact attestations)
+#        f. creates a GitHub Release (marked pre-release for alpha versions)
+#           with the tarball and SBOM attached and the changelog entry as notes
+#
+# The `dry-run` input runs verify + version + build + pack + SBOM and a
+# `npm publish --dry-run`, but pushes nothing, publishes nothing, and creates
+# no release. Use it to preview exactly what would ship.
+#
+# One-time repository setup this workflow depends on:
+#   - an `npm-publish` environment (Settings > Environments) with a required
+#     reviewer and deployment branch rule limited to `main`, holding an
+#     `NPM_TOKEN` secret (granular npm automation token, publish-only, scoped
+#     to @opensourcescouting/design-system)
+#   - npm provenance requires this repository to be public on GitHub
 
-# Never run two releases at once; a second push waits for the first to finish.
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+on:
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: "Preview the release (version, build, pack, SBOM, npm publish --dry-run) without pushing, publishing, or creating a release"
+        type: boolean
+        default: false
+
+# Never run two releases at once; a second dispatch waits for the first.
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
 
 jobs:
-  release:
-    name: version or publish
+  verify:
+    name: verify (full CI gate)
     runs-on: ubuntu-latest
+    steps:
+      - name: Refuse to release from a non-main ref
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "::error::Releases must be dispatched from main (got ${GITHUB_REF})."
+          exit 1
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint (Prettier)
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Test
+        run: npm run test
+
+      - name: Build library
+        run: npm run build
+
+      - name: Build Storybook
+        run: npm run build-storybook
+
+  release:
+    name: version, sign, publish
+    needs: verify
+    runs-on: ubuntu-latest
+    # The environment is the human approval gate: configure it with a required
+    # reviewer so every publish (and dry-run) gets an explicit confirmation
+    # click, and scope NPM_TOKEN to it so PR-triggered workflows can never
+    # mount the credential.
+    environment: npm-publish
     permissions:
-      contents: write # push the version bump / create tags
-      pull-requests: write # open the "Version Packages" PR
+      contents: write # push the version commit + tag, create the GitHub Release
+      id-token: write # Sigstore keyless signing (npm provenance + attestations)
+      attestations: write # GitHub artifact attestations for tarball + SBOM
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Full history so the version commit sits on real history and
+          # `git push` fast-forwards cleanly.
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -35,13 +114,123 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Create Release PR or publish
-        uses: changesets/action@v1
+      - name: Consume changesets (version bump + CHANGELOG)
+        run: |
+          npx changeset version
+          # changeset version edits package.json but not the npm lockfile;
+          # sync package-lock.json's own version field without reinstalling.
+          npm install --package-lock-only --ignore-scripts
+
+      - name: Read release version
+        id: meta
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          # A hyphen in the semver marks a prerelease (e.g. 0.2.0-alpha.0).
+          if [[ "${VERSION}" == *-* ]]; then
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Extract this version's section from CHANGELOG.md for the GitHub
+      # Release notes: everything after the "## <version>" heading up to the
+      # next "## " heading.
+      - name: Extract release notes
+        run: |
+          awk -v ver="${{ steps.meta.outputs.version }}" '
+            $0 == "## " ver { grab = 1; next }
+            grab && /^## /  { exit }
+            grab            { print }
+          ' CHANGELOG.md > RELEASE_NOTES.md
+          if ! [ -s RELEASE_NOTES.md ]; then
+            echo "::error::No CHANGELOG.md section found for ${{ steps.meta.outputs.version }}."
+            exit 1
+          fi
+          cat RELEASE_NOTES.md
+
+      - name: Build library
+        run: npm run build
+
+      - name: Pack tarball
+        id: pack
+        run: |
+          TARBALL=$(npm pack --silent | tail -n 1)
+          echo "tarball=${TARBALL}" >> "$GITHUB_OUTPUT"
+          ls -la "${TARBALL}"
+
+      # SBOM of the project directory (package-lock resolution), CycloneDX
+      # JSON. This covers the full build environment, a superset of the
+      # published runtime dependencies.
+      - name: Generate SBOM (Syft, CycloneDX)
+        uses: anchore/sbom-action@v0
         with:
-          version: npm run version-packages
-          publish: npm run release
-          commit: "chore(release): version packages"
-          title: "chore(release): version packages"
+          path: .
+          format: cyclonedx-json
+          output-file: design-system-${{ steps.meta.outputs.version }}.sbom.cdx.json
+          upload-artifact: true
+          upload-release-assets: false
+
+      - name: Preview publish (dry run)
+        if: inputs.dry-run
+        run: |
+          npm publish "${{ steps.pack.outputs.tarball }}" --dry-run --tag dry-run
+          echo "Dry run complete: nothing was pushed, published, or released." >> "$GITHUB_STEP_SUMMARY"
+          echo "Would have published v${{ steps.meta.outputs.version }} (prerelease: ${{ steps.meta.outputs.prerelease }})." >> "$GITHUB_STEP_SUMMARY"
+
+      # ---- Mutating steps below run only on a real release ----
+
+      - name: Push version commit
+        if: ${{ !inputs.dry-run }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Stage ONLY the versioning files. The working tree also holds
+          # build artifacts at this point (RELEASE_NOTES.md, the tarball,
+          # the SBOM) which must not be committed.
+          git add package.json package-lock.json CHANGELOG.md .changeset
+          # If the version bump was already applied and committed (e.g. run
+          # locally and pushed, so CI's `changeset version` was a no-op),
+          # there is nothing to commit; publishing the current version is
+          # still correct, so continue rather than fail.
+          if git diff --cached --quiet; then
+            echo "Version already applied on main; nothing to commit."
+          else
+            git commit -m "chore(release): version packages (v${{ steps.meta.outputs.version }})"
+            git push origin HEAD:main
+          fi
+
+      # `changeset publish` publishes to npm and creates the v{version} git
+      # tag. NPM_CONFIG_PROVENANCE enables Sigstore provenance here in CI
+      # without breaking local `npm run release` (which stays possible but is
+      # discouraged; releases should come from this workflow).
+      - name: Publish to npm (with provenance)
+        if: ${{ !inputs.dry-run }}
+        run: npx changeset publish
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"
+
+      - name: Push release tag
+        if: ${{ !inputs.dry-run }}
+        run: git push origin --tags
+
+      - name: Attest tarball and SBOM
+        if: ${{ !inputs.dry-run }}
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            ${{ steps.pack.outputs.tarball }}
+            design-system-${{ steps.meta.outputs.version }}.sbom.cdx.json
+
+      - name: Create GitHub Release
+        if: ${{ !inputs.dry-run }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "v${{ steps.meta.outputs.version }}" \
+            --title "v${{ steps.meta.outputs.version }}" \
+            --notes-file RELEASE_NOTES.md \
+            $([ "${{ steps.meta.outputs.prerelease }}" = "true" ] && echo --prerelease) \
+            "${{ steps.pack.outputs.tarball }}" \
+            "design-system-${{ steps.meta.outputs.version }}.sbom.cdx.json"

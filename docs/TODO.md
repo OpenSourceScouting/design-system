@@ -423,10 +423,15 @@ should be able to browse components without cloning the repo.
 
 > Done 2026-07-19: `@changesets/cli` installed, `changeset init` run, and
 > `.changeset/config.json` set to `access: "public"` (scoped package) on
-> `baseBranch: main`. Added `.github/workflows/release.yml` (changesets/action:
-> opens a "version packages" PR from pending changesets on push to main,
-> publishes to npm on merge; needs an `NPM_TOKEN` secret and a GitHub remote,
-> neither present yet). Added `version-packages` + `release` npm scripts (avoided
+> `baseBranch: main`. Added `.github/workflows/release.yml`. NOTE (updated
+> 2026-07-19): the release workflow was subsequently reworked from the stock
+> `changesets/action` auto-on-merge model to a deliberate, manually-triggered
+> `workflow_dispatch` flow gated by the `npm-publish` environment (required
+> reviewer), which also signs with npm provenance, generates a CycloneDX SBOM
+> (Syft), attests the artifacts, and creates a GitHub Release. Merges to main no
+> longer publish anything; releasing is an explicit dispatch. Still needs an
+> `NPM_TOKEN` secret and a GitHub remote, neither present yet. See CONTRIBUTING.md
+> for the current flow. Added `version-packages` + `release` npm scripts (avoided
 > the reserved `version` name). Added a "Changesets and releases" section (the
 > one-paragraph workflow) to the existing `.github/CONTRIBUTING.md`. A real
 > changeset for the 2.8/2.9 feature lives at
@@ -849,8 +854,7 @@ results as broken `<img>` tags instead of falling back to the placeholder.
 > history. Visual regression is parked (pre-1.0/alpha, manual review for now;
 > see the new Tier 4 follow-up). CI now installs Playwright Chromium before the
 > test step. Recorded in new ADR 0004 (Accepted); the a11y-testing ADR moved
-> from 0004 to 0005 and is now Status: Draft pending revisit after this
-> migration.
+> from 0004 to 0005 and was re-derived and re-accepted on the new stack.
 
 **Why:** Storybook 9 makes component testing and accessibility testing
 first-class through the Vitest addon (the graduated `experimental-addon-test`):
@@ -955,6 +959,47 @@ expected on government/nonprofit sites.
 `<ProgramImage program="cub" treatment="warm-overlay" aspect="16:9" />`.
 Encodes brand book photography rules.
 **Effort:** half-day.
+
+### [ ] 4.7 Map component (provider-agnostic, deferred)
+
+**Why:** Scouting sites regularly show maps (unit meeting locations, unit
+locators, campsite/trip maps). Most consumers will reach for Google Maps, but a
+council may use Leaflet/OpenStreetMap to avoid API-key billing, and a pack site
+may want only a static image.
+
+**Decision / scope (agreed with maintainer 2026-07-19, deferred, not started):**
+Do NOT wrap a map SDK. A map draws its own tiles/controls on a canvas/WebGL
+surface, so it cannot be themed via our CSS-variable model the way a `Button`
+can, and bundling (or even peer-depping) `@vis.gl/react-google-maps` would
+couple the package to one vendor and pull in an external service (API keys,
+billing, GDPR/consent) that belongs to the consuming app. This also conflicts
+with the dependency-externalization rule in `CLAUDE.md`. Instead ship the
+brandable presentation layer around a provider-supplied map:
+
+- `MapFrame`: a themed container (Card/keyline treatment, `rounded-program`,
+  aspect-ratio box, loading/empty states, attribution footer). Map goes in
+  `children`; provider-agnostic.
+- `ProgramMapMarker`: a pin built from `ProgramMark`, themed per program,
+  exposed both as an SVG string (for any map's custom-marker API) and as a React
+  node (for overlay-based maps). This is the highest-value, design-system-only
+  piece.
+- A themed info window / callout reusing the `Popover` styling.
+- Per-program Google Maps style JSON as a token artifact (e.g.
+  `dist/tokens/maps.google.json`), generated from the palette like the existing
+  `tokens.email.json` / `tokens.scss` outputs, so map tiles can be themed with
+  NO runtime dependency. Consumer passes it to their own map instance.
+
+The pattern mirrors the email bundle (task 3.8): ship themed tokens/assets that
+any tool consumes, not a component that hard-binds one SDK. The consuming app
+owns the actual map SDK integration and API key.
+
+**Files (when built):** new `src/components/MapFrame.tsx`,
+`src/components/ProgramMapMarker.tsx`, `src/components/MapCallout.tsx`;
+`scripts/tokens-data.mjs` + `scripts/build-css.mjs` for the map-style artifact;
+stories alongside; README "Maps" section; export from `src/index.ts`.
+
+**Effort:** 1-2 days (marker + frame + style-token artifact; more if a themed
+callout and multi-provider examples are included).
 
 ---
 

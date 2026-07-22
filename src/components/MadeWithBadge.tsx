@@ -29,7 +29,7 @@ export type MadeWithBadgeProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "
 
 const GREEN = "#245235";
 const AMBER = "#d0932b";
-const PROJECT_URL = "https://github.com/opensourcescouting/design-system";
+const PROJECT_URL = "https://github.com/OpenSourceScouting/design-system";
 
 const SIZES: Record<
   MadeWithBadgeSize,
@@ -81,6 +81,11 @@ export const MadeWithBadge = forwardRef<HTMLAnchorElement, MadeWithBadgeProps>(
 
     const base: CSSProperties = {
       display: "inline-flex",
+      // Keep the shield/pill shape even as a direct child of a stretching
+      // parent (a CSS grid cell or a flex column with default align-items:
+      // stretch would otherwise blow the badge out to full width). inline-flex
+      // alone does not defend against that; fit-content does.
+      width: "fit-content",
       alignItems: "center",
       gap: s.glyph * 0.4,
       padding: `${s.padY}px ${s.padX}px`,

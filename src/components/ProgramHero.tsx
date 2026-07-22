@@ -1,20 +1,42 @@
 import type { ReactNode } from "react";
 import { Heading } from "./Heading";
-import { Button } from "./Button";
+import { Button, buttonVariants } from "./Button";
 import { Badge } from "./Badge";
 import { ProgramMark } from "./ProgramMark";
 import { DecorativeDivider } from "./DecorativeDivider";
 import { useScoutTheme, PROGRAM_META, resolveKnownProgram } from "../lib/theme/ScoutThemeProvider";
 import { cn } from "../lib/utils/cn";
 
+/**
+ * A hero call-to-action. Provide `href` for navigation (renders a real anchor),
+ * `onClick` for JS handlers, or both (anchor whose click also runs `onClick`,
+ * e.g. for analytics). An action with neither still renders as a disabled-looking
+ * button that does nothing, so always supply at least one.
+ */
+export type ProgramHeroAction = { label: string; onClick?: () => void; href?: string };
+
 export type ProgramHeroProps = {
   eyebrow?: ReactNode;
   headline: ReactNode;
   /** Long-form lede paragraph. Set in body serif for readability. */
   lede?: ReactNode;
-  primaryAction?: { label: string; onClick?: () => void; href?: string };
-  secondaryAction?: { label: string; onClick?: () => void; href?: string };
-  /** When true, the program tagline from PROGRAM_META is rendered under the headline. */
+  primaryAction?: ProgramHeroAction;
+  secondaryAction?: ProgramHeroAction;
+  /**
+   * When true, a program identity block (ProgramMark + program label + age
+   * range, e.g. "Scouts BSA / Ages 11-17") is rendered above the headline.
+   *
+   * Defaults to `false`: most real consumers (a pack, council, or community
+   * site) already establish their identity in their own masthead and do not
+   * want the program's identity injected into their hero. Turn it on for
+   * showcase/demo surfaces that exist to display per-program theming.
+   */
+  showProgramIdentity?: boolean;
+  /**
+   * When true, the program tagline from PROGRAM_META (e.g. "Be Prepared.") is
+   * rendered under the headline. Defaults to `false` so a consumer's hero never
+   * displays a Scouting America marketing slogan it did not explicitly ask for.
+   */
   showTagline?: boolean;
   /**
    * Override the decorative background watermark in the hero.
@@ -30,13 +52,47 @@ export type ProgramHeroProps = {
   className?: string;
 };
 
+/**
+ * Renders a hero action. When `href` is present it renders a real anchor styled
+ * as a button: correct semantics, works before hydration on prerendered pages,
+ * and right/middle-click behave as links. `onClick`-only actions render a
+ * <button>. When both are given the anchor still fires `onClick` (e.g. for
+ * analytics) while the browser handles navigation. The className mirrors the
+ * Button recipe via the shared `buttonVariants` so the two are visually identical.
+ */
+function HeroAction({
+  action,
+  variant,
+}: {
+  action: ProgramHeroAction;
+  variant: "primary" | "secondary";
+}) {
+  if (action.href) {
+    return (
+      <a
+        href={action.href}
+        onClick={action.onClick}
+        className={cn(buttonVariants({ variant, size: "lg" }))}
+      >
+        <span>{action.label}</span>
+      </a>
+    );
+  }
+  return (
+    <Button size="lg" variant={variant} onClick={action.onClick}>
+      {action.label}
+    </Button>
+  );
+}
+
 export function ProgramHero({
   eyebrow,
   headline,
   lede,
   primaryAction,
   secondaryAction,
-  showTagline = true,
+  showProgramIdentity = false,
+  showTagline = false,
   watermark,
   className,
 }: ProgramHeroProps) {
@@ -82,20 +138,26 @@ export function ProgramHero({
       )}
 
       <div className="relative flex flex-col gap-8 max-w-3xl">
-        <header className="flex items-center gap-3">
-          <ProgramMark size={44} />
-          <div className="flex flex-col">
-            <span className="display text-xs uppercase tracking-[0.18em] text-muted-foreground">
-              {meta.label}
-            </span>
-            <span className="text-xs text-muted-foreground">{meta.ageRange}</span>
-          </div>
-          {eyebrow ? (
-            <Badge variant="accent" className="ml-3">
-              {eyebrow}
-            </Badge>
-          ) : null}
-        </header>
+        {(showProgramIdentity || eyebrow) && (
+          <header className="flex items-center gap-3">
+            {showProgramIdentity ? (
+              <>
+                <ProgramMark size={44} />
+                <div className="flex flex-col">
+                  <span className="display text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                    {meta.label}
+                  </span>
+                  <span className="text-xs text-muted-foreground">{meta.ageRange}</span>
+                </div>
+              </>
+            ) : null}
+            {eyebrow ? (
+              <Badge variant="accent" className={showProgramIdentity ? "ml-3" : undefined}>
+                {eyebrow}
+              </Badge>
+            ) : null}
+          </header>
+        )}
 
         <Heading level={1} size={1} className="text-balance">
           {headline}
@@ -113,16 +175,8 @@ export function ProgramHero({
 
         {(primaryAction || secondaryAction) && (
           <div className="flex flex-wrap gap-3 pt-1">
-            {primaryAction ? (
-              <Button size="lg" variant="primary" onClick={primaryAction.onClick}>
-                {primaryAction.label}
-              </Button>
-            ) : null}
-            {secondaryAction ? (
-              <Button size="lg" variant="secondary" onClick={secondaryAction.onClick}>
-                {secondaryAction.label}
-              </Button>
-            ) : null}
+            {primaryAction ? <HeroAction action={primaryAction} variant="primary" /> : null}
+            {secondaryAction ? <HeroAction action={secondaryAction} variant="secondary" /> : null}
           </div>
         )}
 
