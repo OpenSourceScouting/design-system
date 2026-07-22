@@ -1,9 +1,33 @@
 {
   "name": "@opensourcescouting/design-system",
-  "version": "0.1.0",
+  "version": "0.2.0-alpha.0",
   "type": "module",
   "description": "Reusable design system for Scouting America and its four program sub-brands: Cub Scouts, Scouts BSA, Venturing, Sea Scouts.",
   "license": "MIT",
+  "author": "Open Source Scouting",
+  "keywords": [
+    "scouting",
+    "scouting-america",
+    "cub-scouts",
+    "design-system",
+    "react",
+    "tailwindcss",
+    "shadcn",
+    "components",
+    "theming",
+    "accessibility"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/opensourcescouting/design-system.git"
+  },
+  "homepage": "https://github.com/opensourcescouting/design-system#readme",
+  "bugs": {
+    "url": "https://github.com/opensourcescouting/design-system/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "sideEffects": [
     "**/*.css"
   ],
@@ -34,7 +58,9 @@
     "./package.json": "./package.json"
   },
   "files": [
-    "dist"
+    "dist",
+    "NOTICE.md",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "dev": "vite",
