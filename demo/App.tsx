@@ -343,10 +343,15 @@ export function App() {
           carries its own generous internal padding, and the two stack
           invisibly against the same-colored page surface. */}
       <main className="max-w-6xl mx-auto px-4 pt-2 sm:pt-4 pb-8 sm:pb-12 flex flex-col gap-12">
+        {/* The demo is a per-program theming showcase, so it opts into the
+            identity block and tagline that real consumer heroes now omit by
+            default (DS-1, DS-3). */}
         <ProgramHero
           eyebrow="Fall 2026"
           headline={content.headline}
           lede={content.lede}
+          showProgramIdentity
+          showTagline
           primaryAction={{ label: "Find a Unit" }}
           secondaryAction={{ label: content.secondaryCta }}
         />

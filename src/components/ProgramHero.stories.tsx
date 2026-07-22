@@ -10,13 +10,36 @@ export default meta;
 
 type Story = StoryObj<typeof ProgramHero>;
 
+/**
+ * The default consumer-facing hero: no program identity block and no tagline
+ * (DS-1, DS-3). Actions use `href`, so they render as real anchors that work
+ * before hydration on prerendered pages (DS-2).
+ */
 export const Default: Story = {
   args: {
     eyebrow: "Fall 2026",
     headline: "Where curious minds become confident leaders.",
     lede: "From overnight camping to STEM workshops, every meeting is a chance to try something new, build a real skill, and bring it home to share with the people you love.",
-    primaryAction: { label: "Find a Unit" },
-    secondaryAction: { label: "Watch a Meeting" },
+    primaryAction: { label: "Find a Unit", href: "#find-a-unit" },
+    secondaryAction: { label: "Watch a Meeting", href: "#watch" },
+  },
+};
+
+/**
+ * Showcase posture: `showProgramIdentity` renders the ProgramMark + program
+ * label + age range, and `showTagline` injects the program slogan. Use this
+ * only on surfaces that exist to demonstrate per-program theming, not on a
+ * consumer's marketing hero.
+ */
+export const WithProgramIdentity: Story = {
+  args: {
+    eyebrow: "Fall 2026",
+    headline: "Where curious minds become confident leaders.",
+    lede: "From overnight camping to STEM workshops, every meeting is a chance to try something new.",
+    showProgramIdentity: true,
+    showTagline: true,
+    primaryAction: { label: "Find a Unit", href: "#find-a-unit" },
+    secondaryAction: { label: "Watch a Meeting", href: "#watch" },
   },
 };
 
