@@ -1,6 +1,6 @@
 <p align="center">
   <img
-    src="https://raw.githubusercontent.com/opensourcescouting/design-system/main/public/oss/opensourcescouting-logo-color.png"
+    src="https://raw.githubusercontent.com/OpenSourceScouting/design-system/main/public/oss/opensourcescouting-logo-color.png"
     alt="Open Source Scouting"
     width="160"
     height="160"
@@ -737,7 +737,7 @@ first.
 ## Getting help
 
 - **Something not working, or a bug?** Open an issue:
-  [github.com/opensourcescouting/design-system/issues](https://github.com/opensourcescouting/design-system/issues).
+  [github.com/OpenSourceScouting/design-system/issues](https://github.com/OpenSourceScouting/design-system/issues).
   A bug-report template is provided.
 - **Want a new component or feature?** File a feature-request issue with the
   use case.

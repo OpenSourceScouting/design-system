@@ -5,7 +5,7 @@ import { create } from "storybook/theming/create";
 export default create({
   base: "light",
   brandTitle: "Open Source Scouting",
-  brandUrl: "https://github.com/opensourcescouting/design-system",
+  brandUrl: "https://github.com/OpenSourceScouting/design-system",
   brandImage: "/oss/opensourcescouting-logo-color.png",
   brandTarget: "_blank",
   colorPrimary: "#245235",

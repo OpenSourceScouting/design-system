@@ -29,7 +29,7 @@ export type MadeWithBadgeProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "
 
 const GREEN = "#245235";
 const AMBER = "#d0932b";
-const PROJECT_URL = "https://github.com/opensourcescouting/design-system";
+const PROJECT_URL = "https://github.com/OpenSourceScouting/design-system";
 
 const SIZES: Record<
   MadeWithBadgeSize,

@@ -19,11 +19,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/opensourcescouting/design-system.git"
+    "url": "git+https://github.com/OpenSourceScouting/design-system.git"
   },
-  "homepage": "https://github.com/opensourcescouting/design-system#readme",
+  "homepage": "https://github.com/OpenSourceScouting/design-system#readme",
   "bugs": {
-    "url": "https://github.com/opensourcescouting/design-system/issues"
+    "url": "https://github.com/OpenSourceScouting/design-system/issues"
   },
   "publishConfig": {
     "access": "public"
