@@ -178,8 +178,8 @@ Initial public release.
 
 ### Added
 
-- React + Tailwind component library for the Scouting America parent brand and
-  four program sub-brands (Cub Scouts, Scouts BSA, Venturing, Sea Scouts).
+- React + Tailwind component library that themes the Scouting America parent
+  brand and four program sub-brands (Cub Scouts, Scouts BSA, Venturing, Sea Scouts).
 - CSS-variable-driven theming selected by the `data-program` attribute, with a
   `ScoutThemeProvider` and `useScoutTheme()` hook.
 - Components: Button, Card, CardEyebrow, Calendar, CalendarEvent, EventDialog,

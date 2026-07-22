@@ -1,4 +1,4 @@
-# Scouting America Design System: backlog
+# Open Source Scouting Design System: backlog
 
 Self-contained task list for follow-up work identified in the 2026-06-04 review.
 Each task is independently executable. Pick by priority tier; within a tier the
