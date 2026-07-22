@@ -1,8 +1,11 @@
-# Scouting America Design System: Claude Context
+# Open Source Scouting Design System: Claude Context
 
-React + Tailwind component library for Scouting America's parent brand and four
-program sub-brands (Cub Scouts, Scouts BSA, Venturing, Sea Scouts). Built from
-the official 2024 Brand Guidelines (`research/scouting-america-brand-guidelines-2024.pdf`).
+React + Tailwind component library that themes the Scouting America parent brand
+and four program sub-brands (Cub Scouts, Scouts BSA, Venturing, Sea Scouts).
+Built from the official 2024 Brand Guidelines
+(`research/scouting-america-brand-guidelines-2024.pdf`). This is a community
+project by Open Source Scouting: it is not affiliated with, endorsed by, or
+sponsored by Scouting America (see `NOTICE.md` and the README notice).
 
 Built on shadcn/ui patterns (Radix + Tailwind + `cn` + `cva`) on Tailwind v4,
 per ADR 0002 and 0003. The guiding rule is to minimize and codify the deltas

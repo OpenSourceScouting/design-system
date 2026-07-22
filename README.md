@@ -7,13 +7,13 @@
   />
 </p>
 
-<h1 align="center">Scouting America Design System</h1>
+<h1 align="center">Open Source Scouting Design System</h1>
 
 <p align="center">by <strong>Open Source Scouting</strong></p>
 
-A React + Tailwind component library for the Scouting America parent brand and
-its four program sub-brands: **Cub Scouts**, **Scouts BSA**, **Venturing**, and
-**Sea Scouts**.
+A React + Tailwind component library that themes the Scouting America parent
+brand and its four program sub-brands: **Cub Scouts**, **Scouts BSA**,
+**Venturing**, and **Sea Scouts**.
 
 Built directly from the [Scouting America 2024 Brand Guidelines](https://pathwaytoadventure.org/wp-content/uploads/2024/05/Scouting-America-Brand-Guidelines-2024-BC.pdf).
 

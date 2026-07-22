@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping improve the Scouting America Design System. This is a
+Thanks for helping improve the Open Source Scouting Design System. This is a
 community project maintained by registered Scouting volunteers. It is not an
 official Scouting America product (see the notice in the [README](../README.md)).
 
