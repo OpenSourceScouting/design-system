@@ -1,5 +1,75 @@
 # Changelog
 
+## 0.2.0
+
+### Minor Changes
+
+- 5758896: Calendar ergonomics. `CalendarEvent` gains an `allDay` flag that suppresses the
+  time label in agenda rows and month chips (a start-of-day date no longer reads
+  as a misleading "12:00 AM"). When the agenda window is empty but events exist
+  outside it, the calendar now prompts "Switch to Month view to browse" instead of
+  a dead end (hidden on narrow viewports where the month grid is unavailable). A
+  new optional `onViewChange` prop reports view changes from the toolbar or the
+  prompt. (The agenda window already anchored to today, not `defaultMonth`.)
+- 4e49bc3: Layout components respond to their container, not the viewport (Tailwind v4
+  container queries, no plugin). `FeatureGrid` now picks its column count from its
+  own width, so `columns={4}` in a narrow sidebar collapses to one column even on
+  a wide screen. `Calendar` falls back to the agenda view based on its own width
+  (a ResizeObserver on the calendar element) rather than the viewport, so a
+  calendar in a narrow sidebar on a wide screen still falls back. New
+  narrow-container stories demonstrate both.
+- 446812f: `ScoutThemeProvider` gains an optional `theme` prop: a custom theme layer
+  stamped as `data-theme` alongside `data-program`. The library ships no theme
+  values itself (Scouting America has no dark mode; this package aligns to the
+  official design system), but a unit or project can now layer one, e.g. dark
+  mode, by setting `theme` and supplying `[data-theme]`-scoped token overrides in
+  their own CSS. Crucially, `useProgramStamp` re-stamps `data-theme` onto
+  portalled widgets, so a custom theme applies inside dialogs, menus, and tooltips
+  too, and `applyToDocument` manages it on `<html>`. `useScoutTheme()` exposes the
+  active `theme`.
+- 50aa43b: Email support. Adds a flat hex stylesheet at the `./email.css` subpath
+  (`.{program}-{token}-bg` / `-text` classes, no CSS variables) for HTML email,
+  generated from the tokens, plus `examples/email-template/index.html`: a
+  table-based, inline-hex email (header band, bulletproof CTA button, footer)
+  that marketers can copy and retheme by swapping hex values from
+  `tokens.email.json`. New README "Email" section.
+- 440aedd: `FeatureGrid` gains an optional `renderFeature(feature, index)` prop that
+  replaces the default per-cell card entirely (for teaser tiles, background
+  images, "Learn more" links, extra metadata) while keeping the grid layout. The
+  default rendering is unchanged when the prop is omitted. The `Feature` type is
+  exported for typing the render callback.
+- 32a740c: Expose the design tokens as framework-neutral data so non-Tailwind and non-web
+  consumers can use the exact brand values without hand-copying hex codes.
+  `src/styles/tokens.css` stays the authored source of truth; everything is
+  generated from it. Adds a typed `TOKENS` export (mirroring `SCOUTING_LINKS`)
+  plus three file artifacts shipped as package subpaths: `./tokens.json` (full
+  set, rgb + hex + values), `./tokens.scss` (a Sass color map), and
+  `./tokens.email.json` (hex-only, flat, for email tools that cannot use CSS
+  variables).
+- a0dee50: Per-program motion language. Each program now carries three overridable
+  `--os-motion-*` tokens (easing, base duration, fast duration) so personality is
+  felt, not just static: Cub Scouts overshoots (bounce), Venturing snaps, Sea
+  Scouts glides, Scouts BSA stays steady. They map to `ease-program`,
+  `duration-program`, and `duration-program-fast` utilities (Button uses the fast
+  pair, Card the base), and are retuned per program by overriding the tokens, like
+  colors. `prefers-reduced-motion` still zeroes durations globally.
+- 72d30c9: Open the API for third-party extension. `Program` is now
+  `KnownProgram | (string & {})`, so a consumer can register a custom program by
+  adding a matching `[data-program]` token block, with metadata/icons falling back
+  to a sensible default (new `isKnownProgram`, `resolveKnownProgram`, and
+  `DEFAULT_PROGRAM` helpers). The component style maps are also exported
+  (`buttonVariants`, `badgeVariants`, `cardVariants`, `alertToneStyles`) so
+  variants can be extended from a wrapper without forking.
+- 85c0d02: `ProgramMark` gains `src` and `preferExtension` props to control asset
+  resolution. `src` renders an explicit URL with no extension probing (the fix
+  for SPA-fallback hosts like Netlify/Vercel that return 200 + an app shell for
+  missing files, defeating probe-by-error); `preferExtension` tries one extension
+  first, cutting the common case from up to five requests to one. A zero natural
+  dimension load is now also treated as a miss (so a degenerate 200 falls through
+  to the placeholder). README and public/marks/README document the SPA-fallback
+  behavior and workarounds. Existing default probing and placeholder fallback are
+  unchanged.
+
 All notable changes to this project are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),

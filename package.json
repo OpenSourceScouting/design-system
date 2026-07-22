@@ -1,6 +1,6 @@
 {
   "name": "@opensourcescouting/design-system",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "description": "Reusable design system for Scouting America and its four program sub-brands: Cub Scouts, Scouts BSA, Venturing, Sea Scouts.",
   "license": "MIT",
