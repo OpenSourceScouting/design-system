@@ -63,6 +63,7 @@
     "CHANGELOG.md"
   ],
   "scripts": {
+    "preinstall": "node scripts/check-npm-version.mjs",
     "dev": "vite",
     "build": "tsc -b && vite build && npm run build:css",
     "build:css": "node scripts/build-css.mjs",
@@ -82,12 +83,15 @@
     "release": "npm run build && changeset publish"
   },
   "engines": {
-    "node": ">=22",
-    "npm": ">=10"
+    "node": "^22.12.0 || >=24.0.0",
+    "npm": ">=11"
   },
   "peerDependencies": {
     "react": ">=18",
     "react-dom": ">=18"
+  },
+  "overrides": {
+    "aria-query": "^5.3.2"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
@@ -103,7 +107,7 @@
     "@fontsource-variable/source-serif-4": "^5.2.9",
     "@storybook/addon-a11y": "10.5.2",
     "@storybook/addon-docs": "10.5.2",
-    "@storybook/addon-vitest": "^10.5.2",
+    "@storybook/addon-vitest": "10.5.2",
     "@storybook/react-vite": "10.5.2",
     "@tailwindcss/cli": "^4.3.3",
     "@tailwindcss/vite": "^4.3.3",
@@ -112,9 +116,10 @@
     "@types/node": "^25.9.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "@vitejs/plugin-react": "^4.3.4",
-    "@vitest/browser": "3.2.6",
-    "@vitest/coverage-v8": "3.2.6",
+    "@vitejs/plugin-react": "^5.2.0",
+    "@vitest/browser": "4.1.10",
+    "@vitest/browser-playwright": "4.1.10",
+    "@vitest/coverage-v8": "4.1.10",
     "cross-env": "^10.1.0",
     "jsdom": "^27.0.1",
     "playwright": "^1.61.1",
@@ -124,8 +129,8 @@
     "storybook": "10.5.2",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.6.3",
-    "vite": "^5.4.11",
+    "vite": "^7.3.6",
     "vite-plugin-dts": "^5.0.3",
-    "vitest": "^3.2.6"
+    "vitest": "^4.1.10"
   }
 }

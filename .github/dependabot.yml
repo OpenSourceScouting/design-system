@@ -1,0 +1,97 @@
+# Dependabot configuration.
+#
+# Goal: keep dependencies current with as little PR noise as possible. The
+# levers below follow the noise-reduction practices in
+# https://nesbitt.io/2026/01/10/16-best-practices-for-reducing-dependabot-noise.html
+# that are expressible in config:
+#   - weekly (not daily) schedule, batched into one maintenance window
+#   - cooldown so freshly-published versions bake in the community first
+#   - grouping so related packages land in ONE PR instead of many
+#   - a modest open-PR cap and Conventional Commit prefixes
+#
+# The grouping is deliberate: vite, @vitejs/plugin-react, vitest, and the
+# @vitest/* packages share tight peer-dependency ranges. When Dependabot bumped
+# them in separate PRs they landed as partial, mutually-incompatible sets that
+# all failed CI. Grouping the toolchain forces those peers to move together.
+version: 2
+
+updates:
+  # ---------------------------------------------------------------------------
+  # npm (the library + its dev toolchain)
+  # ---------------------------------------------------------------------------
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 5
+    # Bump the version range in package.json to match the resolved version.
+    versioning-strategy: increase
+    # Let a new release settle before opening a PR for it. Majors wait longer
+    # because they are the most likely to ship breaking changes.
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "build(deps)"
+      prefix-development: "build(deps-dev)"
+      include: "scope"
+    groups:
+      # The Vite/Vitest build + test toolchain. These peer-depend on each other
+      # (vite <-> @vitejs/plugin-react <-> vitest <-> @vitest/*), so any bump,
+      # including majors, must move as one atomic PR.
+      vite-toolchain:
+        patterns:
+          - "vite"
+          - "vite-plugin-*"
+          - "@vitejs/*"
+          - "vitest"
+          - "@vitest/*"
+          - "esbuild"
+      # Storybook ships many packages that must all match the same version.
+      storybook:
+        patterns:
+          - "storybook"
+          - "@storybook/*"
+      # Testing-Library and the browser/DOM test stack.
+      testing:
+        patterns:
+          - "@testing-library/*"
+          - "jsdom"
+          - "playwright"
+      # Catch-all: batch every remaining minor + patch bump into one PR per
+      # run. Remaining majors (rare) still open their own PR so they get a
+      # deliberate, isolated review.
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+
+  # ---------------------------------------------------------------------------
+  # GitHub Actions used by the CI and release workflows
+  # ---------------------------------------------------------------------------
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 5
+    cooldown:
+      default-days: 7
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    groups:
+      # One PR for all action bumps; they rarely interact.
+      github-actions:
+        patterns:
+          - "*"
