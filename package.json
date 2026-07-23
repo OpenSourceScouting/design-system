@@ -59,8 +59,7 @@
   },
   "files": [
     "dist",
-    "NOTICE.md",
-    "CHANGELOG.md"
+    "NOTICE.md"
   ],
   "scripts": {
     "preinstall": "node scripts/check-npm-version.mjs",
@@ -77,10 +76,7 @@
     "lint": "prettier --check .",
     "format": "prettier --write .",
     "clean": "rm -rf dist storybook-static .vite tsconfig.tsbuildinfo tsconfig.node.tsbuildinfo",
-    "maintenance:git": "bash scripts/git-maintenance.sh",
-    "changeset": "changeset",
-    "version-packages": "changeset version",
-    "release": "npm run build && changeset publish"
+    "maintenance:git": "bash scripts/git-maintenance.sh"
   },
   "engines": {
     "node": "^22.12.0 || >=24.0.0",
@@ -102,7 +98,6 @@
     "tailwind-merge": "^2.5.4"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.31.1",
     "@fontsource-variable/montserrat": "^5.2.8",
     "@fontsource-variable/source-serif-4": "^5.2.9",
     "@storybook/addon-a11y": "10.5.2",
@@ -120,12 +115,14 @@
     "@vitest/browser": "4.1.10",
     "@vitest/browser-playwright": "4.1.10",
     "@vitest/coverage-v8": "4.1.10",
+    "conventional-changelog-conventionalcommits": "^10.2.1",
     "cross-env": "^10.1.0",
     "jsdom": "^27.0.1",
     "playwright": "^1.61.1",
     "prettier": "^3.4.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "semantic-release": "^25.0.8",
     "storybook": "10.5.2",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.6.3",

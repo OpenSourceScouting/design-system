@@ -29,6 +29,7 @@ good ADR fits on one screen and states context, decision, and consequences
 - [0004](./0004-adopt-storybook-10.md) - Upgrade to Storybook 10 and adopt the Vitest addon (Accepted)
 - [0005](./0005-accessibility-testing-strategy.md) - Accessibility testing strategy (Accepted; re-derived after ADR 0004)
 - [0006](./0006-defer-dark-mode.md) - Defer first-party dark mode; ship a custom-theme hook instead (Accepted)
+- [0007](./0007-tag-driven-releases-with-semantic-release.md) - Tag-driven releases with semantic-release (Accepted)
 
 Decisions made before this record existed (selected, documented in `CLAUDE.md`
 and code comments instead): CSS-variable theming via `data-program`, real BSA

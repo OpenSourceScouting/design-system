@@ -2,25 +2,34 @@ name: Release
 
 # Deliberate, manually-triggered releases (NOT automatic on merge to main).
 #
-# Merges to main only accumulate changeset files; nothing publishes. When a
-# release is ready, a maintainer runs this workflow from the Actions tab:
+# Version and changelog truth live outside repository files: the version
+# comes from git tags (v*), and the changelog comes from GitHub Releases.
+# Merges to main only accumulate Conventional Commit history (via
+# squash-merge PR titles, validated by pr-title.yml); nothing publishes on
+# merge. When a release is ready, a maintainer runs this workflow from the
+# Actions tab:
 #
 #   1. `verify` re-runs the full CI gate on the exact commit being released.
 #   2. `release` (gated by the `npm-publish` environment, which should be
 #      configured with a required reviewer and restricted to `main`):
-#        a. consumes pending changesets (`changeset version`), commits the
-#           bump + CHANGELOG, and pushes to main
-#        b. builds the library and packs the tarball
+#        a. builds the library
+#        b. runs semantic-release, which inspects commits since the last v*
+#           tag, computes the next version (fix = patch, feat = minor,
+#           feat!/BREAKING CHANGE = major), packs the tarball, publishes to
+#           npm with Sigstore provenance, creates the v* tag, and creates the
+#           GitHub Release with generated notes (currently under the `alpha`
+#           dist-tag and prerelease channel; see ADR 0007)
 #        c. generates a CycloneDX SBOM with Syft
-#        d. publishes to npm with Sigstore provenance (while `.changeset/pre.json`
-#           is present, changesets publishes under the `alpha` dist-tag)
-#        e. attests the tarball + SBOM (GitHub keyless artifact attestations)
-#        f. creates a GitHub Release (marked pre-release for alpha versions)
-#           with the tarball and SBOM attached and the changelog entry as notes
+#        d. attests the tarball + SBOM (GitHub keyless artifact attestations)
+#        e. uploads the tarball and SBOM as assets on the GitHub Release
 #
-# The `dry-run` input runs verify + version + build + pack + SBOM and a
-# `npm publish --dry-run`, but pushes nothing, publishes nothing, and creates
-# no release. Use it to preview exactly what would ship.
+# semantic-release never commits to the repository (no @semantic-release/git
+# plugin), so this workflow needs no bypass of branch protection on main.
+#
+# The `dry-run` input runs verify + build + `semantic-release --dry-run`
+# (which prints the computed version and notes without tagging, publishing,
+# or releasing anything), and the SBOM/attest/upload steps are skipped since
+# there is no tarball to act on.
 #
 # One-time repository setup this workflow depends on:
 #   - an `npm-publish` environment (Settings > Environments) with a required
@@ -28,12 +37,14 @@ name: Release
 #     `NPM_TOKEN` secret (granular npm automation token, publish-only, scoped
 #     to @opensourcescouting/design-system)
 #   - npm provenance requires this repository to be public on GitHub
+#   - see docs/release-migration-plan.md for the remaining one-time setup
+#     (branch/tag rulesets, squash-merge settings, trusted publishing)
 
 on:
   workflow_dispatch:
     inputs:
       dry-run:
-        description: "Preview the release (version, build, pack, SBOM, npm publish --dry-run) without pushing, publishing, or creating a release"
+        description: "Preview the release (build, semantic-release --dry-run) without tagging, publishing, or creating a release"
         type: boolean
         default: false
 
@@ -99,16 +110,17 @@ jobs:
     # mount the credential.
     environment: npm-publish
     permissions:
-      contents: write # push the version commit + tag, create the GitHub Release
+      contents: write # create the v* tag + GitHub Release
       id-token: write # Sigstore keyless signing (npm provenance + attestations)
       attestations: write # GitHub artifact attestations for tarball + SBOM
+    outputs:
+      released: ${{ steps.result.outputs.released }}
+      version: ${{ steps.result.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
         with:
-          # Full history so the version commit sits on real history and
-          # `git push` fast-forwards cleanly.
-          fetch-depth: 0
+          fetch-depth: 0 # semantic-release walks history + tags
 
       - name: Setup Node
         uses: actions/setup-node@v7
@@ -126,126 +138,63 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Consume changesets (version bump + CHANGELOG)
-        run: |
-          npx changeset version
-          # changeset version edits package.json but not the npm lockfile;
-          # sync package-lock.json's own version field without reinstalling.
-          npm install --package-lock-only --ignore-scripts
-
-      - name: Read release version
-        id: meta
-        run: |
-          VERSION=$(node -p "require('./package.json').version")
-          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
-          # A hyphen in the semver marks a prerelease (e.g. 0.2.0-alpha.0).
-          if [[ "${VERSION}" == *-* ]]; then
-            echo "prerelease=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "prerelease=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      # Extract this version's section from CHANGELOG.md for the GitHub
-      # Release notes: everything after the "## <version>" heading up to the
-      # next "## " heading.
-      - name: Extract release notes
-        run: |
-          awk -v ver="${{ steps.meta.outputs.version }}" '
-            $0 == "## " ver { grab = 1; next }
-            grab && /^## /  { exit }
-            grab            { print }
-          ' CHANGELOG.md > RELEASE_NOTES.md
-          if ! [ -s RELEASE_NOTES.md ]; then
-            echo "::error::No CHANGELOG.md section found for ${{ steps.meta.outputs.version }}."
-            exit 1
-          fi
-          cat RELEASE_NOTES.md
-
+      # Build BEFORE semantic-release: the npm plugin packs the tarball
+      # during its prepare step and must see dist/.
       - name: Build library
         run: npm run build
 
-      - name: Pack tarball
-        id: pack
+      - name: Guard, dispatched from main only
+        if: github.ref != 'refs/heads/main'
         run: |
-          TARBALL=$(npm pack --silent | tail -n 1)
-          echo "tarball=${TARBALL}" >> "$GITHUB_OUTPUT"
-          ls -la "${TARBALL}"
+          echo "::error::Releases must be dispatched from main (got ${GITHUB_REF})."
+          exit 1
 
-      # SBOM of the project directory (package-lock resolution), CycloneDX
-      # JSON. This covers the full build environment, a superset of the
-      # published runtime dependencies.
+      - name: semantic-release
+        run: npx semantic-release ${{ inputs.dry-run && '--dry-run' || '' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"
+
+      - name: Detect release result
+        id: result
+        run: |
+          TARBALL=$(ls release-artifacts/*.tgz 2>/dev/null | head -n 1 || true)
+          if [ -n "$TARBALL" ]; then
+            echo "released=true" >> "$GITHUB_OUTPUT"
+            echo "tarball=$TARBALL" >> "$GITHUB_OUTPUT"
+            echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+          else
+            echo "released=false" >> "$GITHUB_OUTPUT"
+            echo "No release was produced (dry run, or no releasable commits)." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
       - name: Generate SBOM (Syft, CycloneDX)
+        if: steps.result.outputs.released == 'true'
         uses: anchore/sbom-action@v0
         with:
           path: .
           format: cyclonedx-json
-          output-file: design-system-${{ steps.meta.outputs.version }}.sbom.cdx.json
+          output-file: design-system-${{ steps.result.outputs.version }}.sbom.cdx.json
           upload-artifact: true
           upload-release-assets: false
 
-      - name: Preview publish (dry run)
-        if: inputs.dry-run
-        run: |
-          npm publish "${{ steps.pack.outputs.tarball }}" --dry-run --tag dry-run
-          echo "Dry run complete: nothing was pushed, published, or released." >> "$GITHUB_STEP_SUMMARY"
-          echo "Would have published v${{ steps.meta.outputs.version }} (prerelease: ${{ steps.meta.outputs.prerelease }})." >> "$GITHUB_STEP_SUMMARY"
-
-      # ---- Mutating steps below run only on a real release ----
-
-      - name: Push version commit
-        if: ${{ !inputs.dry-run }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # Stage ONLY the versioning files. The working tree also holds
-          # build artifacts at this point (RELEASE_NOTES.md, the tarball,
-          # the SBOM) which must not be committed.
-          git add package.json package-lock.json CHANGELOG.md .changeset
-          # If the version bump was already applied and committed (e.g. run
-          # locally and pushed, so CI's `changeset version` was a no-op),
-          # there is nothing to commit; publishing the current version is
-          # still correct, so continue rather than fail.
-          if git diff --cached --quiet; then
-            echo "Version already applied on main; nothing to commit."
-          else
-            git commit -m "chore(release): version packages (v${{ steps.meta.outputs.version }})"
-            git push origin HEAD:main
-          fi
-
-      # `changeset publish` publishes to npm and creates the v{version} git
-      # tag. NPM_CONFIG_PROVENANCE enables Sigstore provenance here in CI
-      # without breaking local `npm run release` (which stays possible but is
-      # discouraged; releases should come from this workflow).
-      - name: Publish to npm (with provenance)
-        if: ${{ !inputs.dry-run }}
-        run: npx changeset publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: "true"
-
-      - name: Push release tag
-        if: ${{ !inputs.dry-run }}
-        run: git push origin --tags
-
       - name: Attest tarball and SBOM
-        if: ${{ !inputs.dry-run }}
+        if: steps.result.outputs.released == 'true'
         uses: actions/attest-build-provenance@v4
         with:
           subject-path: |
-            ${{ steps.pack.outputs.tarball }}
-            design-system-${{ steps.meta.outputs.version }}.sbom.cdx.json
+            ${{ steps.result.outputs.tarball }}
+            design-system-${{ steps.result.outputs.version }}.sbom.cdx.json
 
-      - name: Create GitHub Release
-        if: ${{ !inputs.dry-run }}
+      - name: Upload assets to the GitHub Release
+        if: steps.result.outputs.released == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "v${{ steps.meta.outputs.version }}" \
-            --title "v${{ steps.meta.outputs.version }}" \
-            --notes-file RELEASE_NOTES.md \
-            $([ "${{ steps.meta.outputs.prerelease }}" = "true" ] && echo --prerelease) \
-            "${{ steps.pack.outputs.tarball }}" \
-            "design-system-${{ steps.meta.outputs.version }}.sbom.cdx.json"
+          gh release upload "v${{ steps.result.outputs.version }}" \
+            "${{ steps.result.outputs.tarball }}" \
+            "design-system-${{ steps.result.outputs.version }}.sbom.cdx.json"
 
   # Publish the "latest" Storybook to GitHub Pages after a real release, so the
   # hosted component lab (https://opensourcescouting.github.io/design-system/)
@@ -266,7 +215,7 @@ jobs:
   deploy-storybook:
     name: deploy Storybook to Pages
     needs: release
-    if: ${{ !inputs.dry-run }}
+    if: needs.release.outputs.released == 'true'
     runs-on: ubuntu-latest
     permissions:
       pages: write # deploy to the Pages site

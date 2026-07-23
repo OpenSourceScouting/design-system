@@ -1,0 +1,13 @@
+{
+  "branches": [{ "name": "main", "prerelease": "alpha", "channel": "alpha" }],
+  "tagFormat": "v${version}",
+  "plugins": [
+    ["@semantic-release/commit-analyzer", { "preset": "conventionalcommits" }],
+    ["@semantic-release/release-notes-generator", { "preset": "conventionalcommits" }],
+    ["@semantic-release/npm", { "tarballDir": "release-artifacts" }],
+    [
+      "@semantic-release/github",
+      { "successComment": false, "failComment": false, "failTitle": false }
+    ]
+  ]
+}

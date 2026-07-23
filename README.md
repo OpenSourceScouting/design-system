@@ -702,7 +702,7 @@ Includes Scouting America, BeAScout, the Guide to Safe Scouting, and Safeguardin
 Youth training. These are official **external** resources; this project is not
 affiliated with Scouting America (see `NOTICE.md`), and linking does not imply
 endorsement. URLs are treated as versioned data: when one changes it is updated
-here and noted in the `CHANGELOG.md`.
+here and noted in the GitHub Release notes.
 
 ## Accessibility
 
@@ -735,6 +735,15 @@ The "storybook" Vitest project runs stories in real Chromium, so running
 `npm run test` locally requires a one-time `npx playwright install chromium`
 first.
 
+## Releases
+
+Versions and release notes live in
+[GitHub Releases](https://github.com/OpenSourceScouting/design-system/releases),
+not in this repository. The `version` field in `package.json` is not
+meaningful between releases; the published version is whatever the latest
+release tag and npm dist-tags say. See `docs/releases.md` for the full
+process and ADR 0007 for the rationale.
+
 ## Getting help
 
 - **Something not working, or a bug?** Open an issue:
@@ -743,7 +752,7 @@ first.
 - **Want a new component or feature?** File a feature-request issue with the
   use case.
 - **Contributing code?** Read [`CONTRIBUTING.md`](./.github/CONTRIBUTING.md)
-  first (setup, conventions, and the changeset requirement).
+  first (setup, conventions, and PR title format).
 - **Found a security issue?** Do not open a public issue; follow
   [`SECURITY.md`](./.github/SECURITY.md).
 
