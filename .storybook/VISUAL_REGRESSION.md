@@ -30,5 +30,5 @@ to reclaim space.
 Rebuild it on `@storybook/addon-vitest` using Playwright's own snapshotting
 (`toHaveScreenshot`) inside the browser project, or reintroduce a dedicated
 Playwright screenshot job. Generate baselines in a pinned Linux container so
-font hinting/antialiasing stays deterministic across macOS and CI. Tracked as a
-follow-up in `docs/TODO.md`.
+font hinting/antialiasing stays deterministic across macOS and CI. Tracked as
+[issue #11](https://github.com/OpenSourceScouting/design-system/issues/11).

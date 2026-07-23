@@ -9,9 +9,9 @@ By participating you agree to abide by our
 
 ## Before you start
 
-- Browse the [`TODO.md`](../docs/TODO.md) backlog for ready-to-pick work, or open an
-  issue to discuss a change first. For anything beyond a small fix, an issue
-  saves you from building something we can't merge.
+- Browse [GitHub Issues](https://github.com/OpenSourceScouting/design-system/issues)
+  for ready-to-pick work, or open one to discuss a change first. For anything
+  beyond a small fix, an issue saves you from building something we can't merge.
 - Read [`CLAUDE.md`](../CLAUDE.md). It documents the theming architecture,
   accessibility rules, and brand-asset constraints that every change must
   respect. It is written for AI agents but is the most concise map of the
