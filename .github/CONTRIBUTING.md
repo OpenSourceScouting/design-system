@@ -166,29 +166,32 @@ touching component code. To add one:
 - Respect the accessibility guardrails documented in `CLAUDE.md` and the README
   (contrast tokens, no `variant="accent" size="sm"`, no sub-`/80` text tints).
 
-## Changesets and releases
+## Releases
 
-We use [Changesets](https://github.com/changesets/changesets) to version the
-package and generate release notes, so **any PR that changes published behavior
-must include a changeset**: run `npx changeset`, choose the bump type (`patch`
-for fixes, `minor` for additions; we are pre-1.0, so breaking changes are still
-`minor`), and write a short human-readable summary. That creates a markdown file
-under `.changeset/` which you commit alongside your code. Docs-only,
-tooling-only, and test-only changes do not need a changeset.
+You do not manage versions or changelogs. Versioning and release notes are
+derived automatically from commit history (see ADR 0007 and
+`docs/releases.md`); there is no changeset file to write and no
+`CHANGELOG.md` to edit.
 
-**Releases are deliberate, not automatic.** Merging to `main` only accumulates
-changesets; nothing is published. When a release is ready, a maintainer runs the
-`Release` workflow from the Actions tab (`workflow_dispatch`, main only). The
-workflow re-runs the full CI gate, then (behind the `npm-publish` environment's
-required-reviewer approval) consumes the changesets, commits the version bump
-and `CHANGELOG.md`, publishes to npm with Sigstore provenance, generates a
-CycloneDX SBOM (Syft), attests the tarball and SBOM, and creates a GitHub
-Release with both attached. A `dry-run` input previews the whole release
-(version, build, pack, SBOM, `npm publish --dry-run`) without publishing
-anything. While `.changeset/pre.json` is present the package is in prerelease
-mode and publishes under the `alpha` dist-tag; exit it with
-`npx changeset pre exit` (committed like any change) before cutting a stable
-release.
+The only thing your PR needs is a **Conventional Commit style title**
+(`feat(button): add a loading state`, `fix: correct focus ring on Safari`,
+`feat!: rename the Card prop` for a breaking change). PRs are squash-merged,
+and the PR title becomes the single commit message on `main`, so it is what
+`semantic-release` reads to decide the next version. A required CI check
+(`pr-title.yml`) validates the title format on every PR; a maintainer may
+still adjust the title at merge time if it needs normalizing.
+
+**Releases are deliberate, not automatic.** Merging to `main` does not publish
+anything by itself; commits just accumulate. When a release is ready, a
+maintainer runs the `Release` workflow from the Actions tab
+(`workflow_dispatch`, main only). The workflow re-runs the full CI gate, then
+(behind the `npm-publish` environment's required-reviewer approval) runs
+`semantic-release`, which computes the next version from commits since the
+last `v*` tag, publishes to npm with Sigstore provenance, creates the tag and
+a GitHub Release with generated notes, generates a CycloneDX SBOM (Syft), and
+attests the tarball and SBOM. A `dry-run` input previews the computed version
+and notes without tagging, publishing, or creating anything. See
+`docs/releases.md` for the full process and how version bumps are decided.
 
 ## Housekeeping
 
