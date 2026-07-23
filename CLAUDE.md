@@ -22,7 +22,8 @@ npm run build         # tsc -b && vite build && npm run build:css (use to verify
 npm run build-storybook
 ```
 
-Node >=22, npm >=11 (Node 22 ships npm 10, so upgrade with `npm i -g npm@11`; a
+Node `^22.12.0 || >=24.0.0` (the 22 LTS line, or 24+), npm >=11 (Node 22 ships
+npm 10, so upgrade with `npm i -g npm@11`; a
 `preinstall` guard in `scripts/check-npm-version.mjs` blocks older npm, and CI
 upgrades npm before every install). npm 11 is required because npm 10 has a
 lockfile bug (npm/cli#4828) that drops platform-specific native bindings (e.g.
