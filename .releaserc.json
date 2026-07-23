@@ -1,5 +1,5 @@
 {
-  "branches": [{ "name": "main", "prerelease": "alpha", "channel": "alpha" }],
+  "branches": ["main"],
   "tagFormat": "v${version}",
   "plugins": [
     ["@semantic-release/commit-analyzer", { "preset": "conventionalcommits" }],

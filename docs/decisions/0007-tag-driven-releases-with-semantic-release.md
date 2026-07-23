@@ -88,12 +88,15 @@ for versions and changelogs out of repository files:
   real weight: a mistitled PR produces a wrong (or missing) version bump.
   This is mitigated by the required `pr-title.yml` check and by the
   maintainer normalizing the title at squash-merge time.
-- The project stays in the `alpha` prerelease channel
-  (`.releaserc.json` `prerelease: "alpha"`) to match the current pre-1.0
-  posture. Graduating to a stable release later means removing the
-  `prerelease` and `channel` keys from `.releaserc.json`; the next
-  semantic-release run then cuts the first stable version (expected
-  `1.0.0`, since nothing has published a stable release yet).
+- `main` is configured as a plain release branch (`.releaserc.json`
+  `branches: ["main"]`), publishing `0.x` versions under the `latest` npm
+  dist-tag. semantic-release requires at least one release branch (one with
+  no `prerelease` property), so a "main emits only alpha prereleases" setup
+  is not expressible; a `0.x` major already communicates the pre-1.0,
+  unstable-API posture. The jump to `1.0.0` comes from a `feat!`/`BREAKING
+CHANGE` commit. A dedicated prerelease track (`alpha`/`beta`) would require
+  adding a prerelease branch alongside `main`, which we chose not to do while
+  the package has no published consumers.
 - Contributors lose the ability to write their own release-note summaries at
   PR time (Changesets' per-PR summary file); notes are now generated from
   commit subjects, edited post-publish if a subject reads poorly in the

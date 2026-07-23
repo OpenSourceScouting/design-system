@@ -79,14 +79,15 @@ the last tag:
 If several commits landed since the last tag, the highest-impact one wins
 (one `feat` and several `fix`es still produce a minor bump).
 
-**Current posture: alpha prerelease.** `.releaserc.json` sets
-`"prerelease": "alpha"` and `"channel": "alpha"` on the `main` branch, so
-releases publish as `x.y.z-alpha.N` versions under the `alpha` npm dist-tag,
-matching the pre-1.0 state described in ADR 0007. To graduate to stable
-releases later, remove the `prerelease` and `channel` keys from the `main`
-branch entry in `.releaserc.json`. The next release after that change cuts
-the first stable version (expected `1.0.0`, since no stable version has ever
-published).
+**Current posture: 0.x from main.** `.releaserc.json` sets
+`"branches": ["main"]`, so `main` is a normal release branch: versions
+publish as plain `0.x` semver (`0.2.0`, `0.2.1`, `0.3.0`, ...) under the
+`latest` npm dist-tag. A `0.x` major already signals a pre-1.0, unstable API
+per semver, so no separate prerelease channel is used. The move to `1.0.0`
+happens whenever a `feat!`/`BREAKING CHANGE` commit lands (or you can cut it
+deliberately with one). If you later want a dedicated prerelease track (an
+`alpha`/`beta` channel), add a prerelease branch alongside `main`; see
+ADR 0007 and the semantic-release branch docs.
 
 ## Editing release notes after the fact
 
