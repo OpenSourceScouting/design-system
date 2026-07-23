@@ -6,8 +6,9 @@ Guiding principle throughout: **minimize and codify the deltas from standard
 shadcn** (the delta register in ADR 0002 is the contract).
 
 > **Status: completed and merged.** This is a historical planning artifact. The
-> shadcn/Tailwind v4 re-platform it describes is done (see `docs/TODO.md` and the
-> git history); the Storybook/testing details below (Git LFS baselines,
+> shadcn/Tailwind v4 re-platform it describes is done (see the git history and
+> [GitHub Issues](https://github.com/OpenSourceScouting/design-system/issues)
+> for current backlog); the Storybook/testing details below (Git LFS baselines,
 > `visual.yml`, jest-axe gates, the v3 preset) were later superseded by the
 > Storybook 10 migration (ADR 0004) and the accessibility strategy (ADR 0005).
 > Read it for context on how the re-platform was sequenced, not as current state.
