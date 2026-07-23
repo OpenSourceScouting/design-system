@@ -22,7 +22,12 @@ npm run build         # tsc -b && vite build && npm run build:css (use to verify
 npm run build-storybook
 ```
 
-Node >=22, npm >=10. CI and `.nvmrc` pin the Node 22 LTS (the supported
+Node >=22, npm >=11 (Node 22 ships npm 10, so upgrade with `npm i -g npm@11`; a
+`preinstall` guard in `scripts/check-npm-version.mjs` blocks older npm, and CI
+upgrades npm before every install). npm 11 is required because npm 10 has a
+lockfile bug (npm/cli#4828) that drops platform-specific native bindings (e.g.
+oxc-resolver's `linux-x64-gnu`) when the lock is regenerated on one platform,
+breaking `npm ci` elsewhere. CI and `.nvmrc` pin the Node 22 LTS (the supported
 target). Use Node 22 or 24: Vitest 4 requires `^20 || ^22 || >=24`, so Node 23
 is unsupported (tests warn EBADENGINE and may not run). No pnpm. Restart
 Storybook after `.storybook/*` edits (HMR does not cover preview/main config).

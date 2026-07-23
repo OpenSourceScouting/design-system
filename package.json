@@ -63,6 +63,7 @@
     "CHANGELOG.md"
   ],
   "scripts": {
+    "preinstall": "node scripts/check-npm-version.mjs",
     "dev": "vite",
     "build": "tsc -b && vite build && npm run build:css",
     "build:css": "node scripts/build-css.mjs",
@@ -83,7 +84,7 @@
   },
   "engines": {
     "node": ">=22",
-    "npm": ">=10"
+    "npm": ">=11"
   },
   "peerDependencies": {
     "react": ">=18",

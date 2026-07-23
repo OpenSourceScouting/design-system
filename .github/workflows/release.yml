@@ -62,6 +62,12 @@ jobs:
           node-version: 22
           cache: npm
 
+      # npm 11 fixes the optional-dependency lockfile bug (npm/cli#4828) that
+      # truncated platform-specific native bindings. Required by engines.npm +
+      # .npmrc engine-strict; Node 22 ships npm 10.
+      - name: Upgrade npm
+        run: npm install -g npm@11
+
       - name: Install dependencies
         run: npm ci
 
@@ -110,6 +116,12 @@ jobs:
           node-version: 22
           cache: npm
           registry-url: https://registry.npmjs.org
+
+      # npm 11 fixes the optional-dependency lockfile bug (npm/cli#4828) that
+      # truncated platform-specific native bindings. Required by engines.npm +
+      # .npmrc engine-strict; Node 22 ships npm 10.
+      - name: Upgrade npm
+        run: npm install -g npm@11
 
       - name: Install dependencies
         run: npm ci
@@ -275,6 +287,12 @@ jobs:
         with:
           node-version: 22
           cache: npm
+
+      # npm 11 fixes the optional-dependency lockfile bug (npm/cli#4828) that
+      # truncated platform-specific native bindings. Required by engines.npm +
+      # .npmrc engine-strict; Node 22 ships npm 10.
+      - name: Upgrade npm
+        run: npm install -g npm@11
 
       - name: Install dependencies
         run: npm ci
