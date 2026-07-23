@@ -55,9 +55,10 @@ git history. This supersedes TODO R.1.
 - Accessibility coverage never went dark during the migration: the jsdom suite
   (contrast, parity, unit tests) is Storybook-version-independent and stayed green
   throughout, and the 9 checkpoint remained a shippable fallback.
-- Visual regression is gone until deliberately rebuilt (a follow-up in
-  `docs/TODO.md`). Acceptable pre-1.0; the trade is less pixel coverage for a far
-  smaller, maintained toolchain and ~5 MB reclaimed from history.
+- Visual regression is gone until deliberately rebuilt (tracked as
+  [issue #11](https://github.com/OpenSourceScouting/design-system/issues/11)).
+  Acceptable pre-1.0; the trade is less pixel coverage for a far smaller,
+  maintained toolchain and ~5 MB reclaimed from history.
 - ADR 0005 (accessibility testing strategy) was re-derived for the Vitest addon
   and re-accepted on the new stack (item 2 moved from the retired test-runner
   axe pass to `@storybook/addon-vitest`).
