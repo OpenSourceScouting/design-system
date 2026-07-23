@@ -18,6 +18,10 @@ const config: StorybookConfig = {
   viteFinal: async (viteConfig) => {
     const { default: tailwindcss } = await import("@tailwindcss/vite");
     viteConfig.plugins = [...(viteConfig.plugins ?? []), tailwindcss()];
+    // Serve under a base path when hosting on GitHub Pages (project pages live
+    // at /<repo>/). Local dev and the CI build default to "/". The deploy job
+    // in release.yml sets SB_BASE_PATH=/design-system/.
+    viteConfig.base = process.env.SB_BASE_PATH ?? "/";
     return viteConfig;
   },
   docs: {

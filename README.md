@@ -31,16 +31,17 @@ codebase.
 
 ## Which document do I need?
 
-| I am...                                        | Start here                                                      |
-| ---------------------------------------------- | --------------------------------------------------------------- |
-| A developer installing the package             | This README (you are here)                                      |
-| A designer, marketer, or AI tool               | [`unofficial-brand-guide.md`](./docs/unofficial-brand-guide.md) |
-| Checking trademark or asset license rules      | [`NOTICE.md`](./NOTICE.md)                                      |
-| Wanting to contribute code                     | [`CONTRIBUTING.md`](./.github/CONTRIBUTING.md)                  |
-| Picking up a backlog task                      | [`TODO.md`](./docs/TODO.md)                                     |
-| Understanding why the architecture is this way | [`docs/decisions/`](./docs/decisions/)                          |
-| A coding agent working inside this codebase    | [`CLAUDE.md`](./CLAUDE.md)                                      |
-| Stuck, or reporting a bug                      | [Getting help](#getting-help)                                   |
+| I am...                                        | Start here                                                            |
+| ---------------------------------------------- | --------------------------------------------------------------------- |
+| Browsing the components online                 | [Live Storybook](https://opensourcescouting.github.io/design-system/) |
+| A developer installing the package             | This README (you are here)                                            |
+| A designer, marketer, or AI tool               | [`unofficial-brand-guide.md`](./docs/unofficial-brand-guide.md)       |
+| Checking trademark or asset license rules      | [`NOTICE.md`](./NOTICE.md)                                            |
+| Wanting to contribute code                     | [`CONTRIBUTING.md`](./.github/CONTRIBUTING.md)                        |
+| Picking up a backlog task                      | [`TODO.md`](./docs/TODO.md)                                           |
+| Understanding why the architecture is this way | [`docs/decisions/`](./docs/decisions/)                                |
+| A coding agent working inside this codebase    | [`CLAUDE.md`](./CLAUDE.md)                                            |
+| Stuck, or reporting a bug                      | [Getting help](#getting-help)                                         |
 
 ## Quick start
 

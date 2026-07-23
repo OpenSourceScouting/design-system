@@ -67,9 +67,15 @@ const preview: Preview = {
   },
 
   // SB9: global defaults live in initialGlobals, not globalTypes.defaultValue.
+  // The GitHub Pages deploy build sets VITE_FORCE_PLACEHOLDER_MARKS=true so the
+  // hosted Storybook defaults to placeholder marks: public deployments ship no
+  // licensed BSA marks, so probing /marks/ would only 404. Forcing placeholders
+  // skips the probe, silences the console noise, and is the correct trademark
+  // posture for public sites (see README "forcePlaceholderMarks"). Local dev and
+  // CI leave it off so real marks render when they are present on disk.
   initialGlobals: {
     program: "cub",
-    forcePlaceholderMarks: "off",
+    forcePlaceholderMarks: import.meta.env.VITE_FORCE_PLACEHOLDER_MARKS === "true" ? "on" : "off",
   },
 
   globalTypes: {
