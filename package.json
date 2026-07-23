@@ -95,7 +95,7 @@
     "lucide-react": "^1.17.0",
     "radix-ui": "^1.6.2",
     "sonner": "^2.0.7",
-    "tailwind-merge": "^2.5.4"
+    "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
     "@fontsource-variable/montserrat": "^5.2.8",
