@@ -18,10 +18,19 @@ const config: StorybookConfig = {
   viteFinal: async (viteConfig) => {
     const { default: tailwindcss } = await import("@tailwindcss/vite");
     viteConfig.plugins = [...(viteConfig.plugins ?? []), tailwindcss()];
-    // aria-query is a CJS module whose named exports (e.g. elementRoles) the
-    // vitest browser-mode optimizer does not synthesize when the module is
-    // served raw, breaking the Storybook preview runtime and
-    // @testing-library/dom. Pre-bundling it forces proper ESM interop.
+    // These are CJS modules whose named/default exports the Vitest browser-mode
+    // dep optimizer does not synthesize when they are served raw, which breaks
+    // the Storybook preview runtime and @testing-library/dom (e.g. aria-query
+    // "does not provide an export named 'elementRoles'"). Pre-bundling them
+    // forces proper ESM interop.
+    //
+    // TRACKING: this is also why the project stays on Vite 7. Vite 8 swaps
+    // esbuild for the Rolldown dep optimizer, which makes the same CJS interop
+    // worse: the include list below no longer fixes it and the error cascades
+    // to a hard `exports is not defined`. Filed as vitejs/vite#23030
+    // (https://github.com/vitejs/vite/issues/23030), with a runnable repro on
+    // the repro/vite8-rolldown-cjs-interop branch. Revisit Vite 8 once that
+    // (and rolldown/rolldown#9502) is fixed.
     viteConfig.optimizeDeps = {
       ...viteConfig.optimizeDeps,
       include: [
