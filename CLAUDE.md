@@ -49,6 +49,8 @@ config).
 - The version and changelog are derived automatically from these commits by
   semantic-release (see `docs/releases.md`); there is no `CHANGELOG.md` and no
   version bump to hand-edit.
+- Do not open PRs automatically. Branch, commit, and push are fine, but always
+  ask before running `gh pr create`.
 
 ## Theming architecture (the most important thing)
 
