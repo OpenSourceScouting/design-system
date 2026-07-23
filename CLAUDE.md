@@ -22,9 +22,10 @@ npm run build         # tsc -b && vite build && npm run build:css (use to verify
 npm run build-storybook
 ```
 
-Node >=22, npm >=10. CI and `.nvmrc` pin the Node 22 LTS; developing on 22 or
-23 both work (22 is the supported target). No pnpm. Restart Storybook after `.storybook/*` edits (HMR
-does not cover preview/main config).
+Node >=22, npm >=10. CI and `.nvmrc` pin the Node 22 LTS (the supported
+target). Use Node 22 or 24: Vitest 4 requires `^20 || ^22 || >=24`, so Node 23
+is unsupported (tests warn EBADENGINE and may not run). No pnpm. Restart
+Storybook after `.storybook/*` edits (HMR does not cover preview/main config).
 
 ## Theming architecture (the most important thing)
 
