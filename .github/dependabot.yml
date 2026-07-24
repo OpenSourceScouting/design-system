@@ -37,8 +37,11 @@ updates:
     labels:
       - "dependencies"
     commit-message:
-      prefix: "build(deps)"
-      prefix-development: "build(deps-dev)"
+      # `include: scope` appends the (deps)/(deps-dev) scope automatically based
+      # on dependency type, so the prefix must NOT repeat it (that produced the
+      # doubled `build(deps)(deps)` titles). Prefix is just the Conventional
+      # Commit type; scope is derived. Yields `build(deps):` / `build(deps-dev):`.
+      prefix: "build"
       include: "scope"
     groups:
       # The Vite/Vitest build + test toolchain. These peer-depend on each other
@@ -67,6 +70,8 @@ updates:
       # run. Remaining majors (rare) still open their own PR so they get a
       # deliberate, isolated review.
       minor-and-patch:
+        patterns:
+          - "*"
         update-types:
           - "minor"
           - "patch"
