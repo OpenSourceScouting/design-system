@@ -64,7 +64,29 @@ you: no changeset file, no `CHANGELOG.md` edit.
 6. If a release was actually produced (not a dry run, and there were
    releasable commits), the `deploy-storybook` job publishes the Storybook
    build to GitHub Pages so the hosted component lab matches the version
-   just published.
+   just published. It does this by calling the shared `deploy-docs.yml`
+   reusable workflow (see below), so a release deploy and a manual docs
+   refresh always build the page identically.
+
+## Publishing the docs page on its own
+
+The hosted component lab
+(`https://opensourcescouting.github.io/design-system/`) is built and deployed
+by the reusable **`deploy-docs.yml`** workflow. The release above calls it
+after a real npm release, but you can also publish the page by itself, without
+cutting a release, for docs-only or metadata updates: new social-preview /
+SEO tags, story copy, an Introduction MDX edit, or anything else that only
+changes what the hosted Storybook shows.
+
+To do this, dispatch the **Deploy Docs** workflow from the **Actions** tab on
+`main` (it exposes a `workflow_dispatch` trigger for exactly this). It rebuilds
+Storybook with the Pages subpath config and overwrites the live site. Because
+the page is not versioned, the npm package version is unaffected.
+
+Use this path when your change would not (and should not) produce a version
+bump but still needs to show up on the hosted page. A `docs:`/`chore:` PR
+merged to `main` does not deploy anything on its own; dispatch **Deploy Docs**
+when you want it live.
 
 ## How version bumps are decided
 

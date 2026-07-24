@@ -201,66 +201,21 @@ jobs:
   # matches the version just published to npm. Each deploy overwrites the last;
   # there is no versioned archive (see the plan / ADR backlog if that changes).
   #
-  # This lives inside release.yml (rather than a release-triggered pages.yml)
+  # The build + deploy steps live in the reusable deploy-docs.yml workflow, the
+  # single source of truth for how the docs page is built. The same workflow
+  # can be dispatched manually to refresh the page for docs-only / metadata
+  # changes without cutting an npm release.
+  #
+  # This deploy is wired here (rather than triggered by the release event)
   # because the GitHub Release and tag above are created with GITHUB_TOKEN, and
   # events emitted by GITHUB_TOKEN do not trigger other workflows, so a
-  # release-triggered deploy would silently never run.
-  #
-  # No real BSA marks are deployed: public/marks/ is gitignored, so the CI build
-  # ships none. VITE_FORCE_PLACEHOLDER_MARKS=true makes the hosted Storybook
-  # render the inline placeholder marks and skip the /marks/ probe entirely (no
-  # 404 noise, correct trademark posture). VITE_MARKS_BASE_URL still points at
-  # the subpath so a private fork that ships marks and turns the force flag off
-  # resolves them correctly.
+  # release-event-triggered deploy would silently never run.
   deploy-storybook:
     name: deploy Storybook to Pages
     needs: release
     if: needs.release.outputs.released == 'true'
-    runs-on: ubuntu-latest
     permissions:
+      contents: read # checkout, in the reusable workflow
       pages: write # deploy to the Pages site
       id-token: write # OIDC token the deploy-pages action verifies
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
-    # Serialize Pages deploys independently of the release concurrency group.
-    concurrency:
-      group: pages
-      cancel-in-progress: false
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Setup Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: 22
-          cache: npm
-
-      # npm 11 fixes the optional-dependency lockfile bug (npm/cli#4828) that
-      # truncated platform-specific native bindings. Required by engines.npm +
-      # .npmrc engine-strict; Node 22 ships npm 10.
-      - name: Upgrade npm
-        run: npm install -g npm@11
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build Storybook (Pages subpath)
-        run: npm run build-storybook
-        env:
-          SB_BASE_PATH: /design-system/
-          VITE_MARKS_BASE_URL: /design-system/marks/
-          VITE_FORCE_PLACEHOLDER_MARKS: "true"
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v6
-
-      - name: Upload Storybook artifact
-        uses: actions/upload-pages-artifact@v5
-        with:
-          path: storybook-static
-
-      - name: Deploy to GitHub Pages
-        id: deploy
-        uses: actions/deploy-pages@v5
+    uses: ./.github/workflows/deploy-docs.yml

@@ -1,0 +1,80 @@
+<!--
+  Social + SEO metadata for the hosted Storybook (GitHub Pages).
+
+  Storybook injects this file into the <head> of the manager index.html, which
+  is the URL social crawlers (Discord, Slack, Twitter/X, Facebook, iMessage)
+  actually fetch. Those crawlers do not run JavaScript, so the tags must be
+  static here, and every URL must be ABSOLUTE: a crawler has no page base to
+  resolve a relative path against.
+
+  The absolute origin is the production Pages URL
+  (https://opensourcescouting.github.io/design-system/). The social image is
+  the 1280x640 card served from public/oss/ at /design-system/oss/.
+
+  NOTE: this only controls the card for the hosted Storybook link. The card for
+  the github.com repository link is a separate image uploaded under repo
+  Settings > General > Social preview (there is no code hook for it); use the
+  same public/oss/opensourcescouting-social-preview.png there.
+-->
+
+<!--
+  Favicons and PWA icons. Storybook's default index.html links only
+  ./favicon.ico (which resolves to our public/favicon.ico, copied over
+  Storybook's default via staticDirs). These add the sized PNGs, the Apple
+  touch icon, and the web manifest so browsers and mobile pick the right mark.
+
+  Paths stay relative (./) like Storybook's default link, so they resolve both
+  locally (base /) and on the Pages subpath (base /design-system/); a
+  root-absolute /favicon-32x32.png would 404 on Pages.
+-->
+<link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="48x48" href="./favicon-48x48.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+<link rel="manifest" href="./site.webmanifest" />
+
+<!-- Primary SEO -->
+<meta
+  name="description"
+  content="A React and Tailwind design system that themes Scouting America and its four programs, Cub Scouts, Scouts BSA, Venturing, and Sea Scouts, from one set of brand tokens. Browse every component live across all five brands."
+/>
+<meta name="author" content="Open Source Scouting" />
+<meta name="theme-color" content="#245235" />
+<link rel="canonical" href="https://opensourcescouting.github.io/design-system/" />
+
+<!-- Open Graph (Discord, Slack, Facebook, iMessage, LinkedIn) -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Open Source Scouting Design System" />
+<meta property="og:title" content="Open Source Scouting Design System" />
+<meta
+  property="og:description"
+  content="One component library, five brands. Themes Scouting America, Cub Scouts, Scouts BSA, Venturing, and Sea Scouts from a single set of brand tokens. Explore the live component lab."
+/>
+<meta property="og:url" content="https://opensourcescouting.github.io/design-system/" />
+<meta
+  property="og:image"
+  content="https://opensourcescouting.github.io/design-system/oss/opensourcescouting-social-preview.png"
+/>
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1280" />
+<meta property="og:image:height" content="640" />
+<meta
+  property="og:image:alt"
+  content="Open Source Scouting Design System, an open source component library for Scouting America and its programs."
+/>
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Open Source Scouting Design System" />
+<meta
+  name="twitter:description"
+  content="One component library, five brands. Themes Scouting America, Cub Scouts, Scouts BSA, Venturing, and Sea Scouts from a single set of brand tokens. Explore the live component lab."
+/>
+<meta
+  name="twitter:image"
+  content="https://opensourcescouting.github.io/design-system/oss/opensourcescouting-social-preview.png"
+/>
+<meta
+  name="twitter:image:alt"
+  content="Open Source Scouting Design System, an open source component library for Scouting America and its programs."
+/>
