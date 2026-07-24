@@ -20,18 +20,37 @@ npm run typecheck     # tsc --noEmit, three configs: project + node + test
 npm run test          # Vitest, two projects: jsdom "unit" (contrast, parity, component logic) + browser "storybook" (stories-as-tests + axe in Chromium; needs `npx playwright install chromium`)
 npm run build         # tsc -b && vite build && npm run build:css (use to verify final correctness)
 npm run build-storybook
+npm run lint          # prettier --check . (CI gate; covers .md/.yml/.json too, so doc-only changes can fail it)
+npm run format        # prettier --write; run before committing
 ```
 
-Node `^22.12.0 || >=24.0.0` (the 22 LTS line, or 24+), npm >=11 (Node 22 ships
-npm 10, so upgrade with `npm i -g npm@11`; a
-`preinstall` guard in `scripts/check-npm-version.mjs` blocks older npm, and CI
-upgrades npm before every install). npm 11 is required because npm 10 has a
-lockfile bug (npm/cli#4828) that drops platform-specific native bindings (e.g.
-oxc-resolver's `linux-x64-gnu`) when the lock is regenerated on one platform,
-breaking `npm ci` elsewhere. CI and `.nvmrc` pin the Node 22 LTS (the supported
-target). Use Node 22 or 24: Vitest 4 requires `^20 || ^22 || >=24`, so Node 23
-is unsupported (tests warn EBADENGINE and may not run). No pnpm. Restart
-Storybook after `.storybook/*` edits (HMR does not cover preview/main config).
+Node 22 LTS (CI + `.nvmrc` pin) or 24+; Node 23 is unsupported (Vitest 4
+requires `^20 || ^22 || >=24`). npm >=11, enforced by a `preinstall` guard
+(`scripts/check-npm-version.mjs`): npm 10 regenerates lockfiles without
+platform-specific native bindings (npm/cli#4828), breaking `npm ci` on other
+platforms. Node 22 ships npm 10, so `npm i -g npm@11`. No pnpm.
+
+Restart Storybook after `.storybook/*` edits (HMR does not cover preview/main
+config).
+
+## Git and PR workflow
+
+- Branch off the latest `main` for all new work: `git checkout main && git pull`
+  before creating the branch. `main` is protected (PR required, no direct
+  pushes, no bypass actors); it is never committed to directly.
+- Commit messages and PR titles are concise Conventional Commits
+  (`feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`) that say WHY the
+  change was made, not what: the what is in the diff. A `pr-title.yml` CI check
+  enforces the conventional format on the title.
+- PRs are squash-merged and the PR title + body become the commit on `main`
+  (repo is configured `squash_merge_commit_title=PR_TITLE`,
+  `squash_merge_commit_message=PR_BODY`), so write the PR the same way: a
+  conventional title and a body explaining why.
+- The version and changelog are derived automatically from these commits by
+  semantic-release (see `docs/releases.md`); there is no `CHANGELOG.md` and no
+  version bump to hand-edit.
+- Do not open PRs automatically. Branch, commit, and push are fine, but always
+  ask before running `gh pr create`.
 
 ## Theming architecture (the most important thing)
 
@@ -205,6 +224,9 @@ research/                      ← brand guidelines PDF + extracted text
 - Opacity-tinted text below `/80`. Use the `-muted-foreground` / `-os-on-surface-faint` tokens.
 - `variant="accent" size="sm"` on `Button`. The type system blocks it, but untyped call sites still get a dev-mode console warning.
 - Reintroducing a `tailwind.config.js` or JS preset. v4 is configured in CSS (`theme.css`).
+- Hand-bumping the `package.json` version or adding a `CHANGELOG.md`. Both are
+  derived (git tags / GitHub Releases via semantic-release, see `docs/releases.md`);
+  the in-repo version field is intentionally stale.
 - Bundling a new runtime dependency without deciding externalization. `radix-ui`,
   `sonner`, `lucide-react`, and React are externalized in `vite.config.ts`
   (`rollupOptions.external` + `globals`); `clsx`, `tailwind-merge`, and `cva` are
