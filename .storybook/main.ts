@@ -1,6 +1,10 @@
 import type { StorybookConfig } from "@storybook/react-vite";
 
 const config: StorybookConfig = {
+  // Browser tab / shared-link title. Storybook renders "<title> - Storybook",
+  // so this yields "Open Source Scouting Design System - Storybook" instead of
+  // the default "storybook - Storybook".
+  title: "Open Source Scouting Design System",
   stories: ["../src/**/*.stories.@(ts|tsx|mdx)"],
   addons: ["@storybook/addon-a11y", "@storybook/addon-docs", "@storybook/addon-vitest"],
   // Serve public/ so the manager brand image and favicons resolve at /oss/... etc.
