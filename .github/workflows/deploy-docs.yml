@@ -1,0 +1,79 @@
+name: Deploy Docs
+
+# Builds the Storybook "component lab" and publishes it to GitHub Pages
+# (https://opensourcescouting.github.io/design-system/). This is the single
+# source of truth for HOW the docs page is built and deployed; both entry
+# points below run the exact same steps, so a manual docs refresh and a
+# release-driven deploy always produce an identical site.
+#
+# Two triggers:
+#   - workflow_call: release.yml invokes this after a real npm release, so the
+#     hosted lab matches the version just published.
+#   - workflow_dispatch: a maintainer can publish the page on its own for
+#     docs-only / metadata updates (social preview tags, story copy, README
+#     content surfaced in Storybook, etc.) WITHOUT cutting an npm release.
+#     Dispatch it from the Actions tab on `main`.
+#
+# No real BSA marks are deployed: public/marks/ is gitignored, so the CI build
+# ships none. VITE_FORCE_PLACEHOLDER_MARKS=true makes the hosted Storybook
+# render the inline placeholder marks and skip the /marks/ probe entirely (no
+# 404 noise, correct trademark posture). VITE_MARKS_BASE_URL still points at
+# the subpath so a private fork that ships marks and turns the force flag off
+# resolves them correctly.
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: build and deploy Storybook to Pages
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # checkout
+      pages: write # deploy to the Pages site
+      id-token: write # OIDC token the deploy-pages action verifies
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    # Serialize Pages deploys across every caller (release + manual dispatch)
+    # so two deploys never race to overwrite the site.
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      # npm 11 fixes the optional-dependency lockfile bug (npm/cli#4828) that
+      # truncated platform-specific native bindings. Required by engines.npm +
+      # .npmrc engine-strict; Node 22 ships npm 10.
+      - name: Upgrade npm
+        run: npm install -g npm@11
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Storybook (Pages subpath)
+        run: npm run build-storybook
+        env:
+          SB_BASE_PATH: /design-system/
+          VITE_MARKS_BASE_URL: /design-system/marks/
+          VITE_FORCE_PLACEHOLDER_MARKS: "true"
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload Storybook artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: storybook-static
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v5
