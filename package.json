@@ -92,8 +92,8 @@
   "dependencies": {
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "lucide-react": "^1.17.0",
-    "radix-ui": "^1.6.2",
+    "lucide-react": "^1.27.0",
+    "radix-ui": "^1.6.7",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.6.0"
   },
