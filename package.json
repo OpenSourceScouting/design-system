@@ -92,8 +92,8 @@
   "dependencies": {
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "lucide-react": "^1.17.0",
-    "radix-ui": "^1.6.2",
+    "lucide-react": "^1.28.0",
+    "radix-ui": "^1.6.7",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.6.0"
   },
@@ -108,9 +108,9 @@
     "@tailwindcss/vite": "^4.3.3",
     "@testing-library/jest-dom": "^7.0.0",
     "@testing-library/react": "^16.3.2",
-    "@types/node": "^26.1.1",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
+    "@types/node": "^26.1.2",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.0.4",
     "@vitest/browser": "4.1.10",
     "@vitest/browser-playwright": "4.1.10",
