@@ -1,7 +1,7 @@
 import { useScoutTheme, type Program } from "../lib/theme/ScoutThemeProvider";
 import { cn } from "../lib/utils/cn";
 
-export type MotifName = "diamonds" | "rule" | "chevrons" | "wave";
+export type MotifName = "diamonds" | "rule" | "chevrons" | "wave" | "keyline";
 
 export type DecorativeDividerProps = {
   program?: Program;
@@ -9,10 +9,10 @@ export type DecorativeDividerProps = {
    * Force a specific decorative motif regardless of the active program theme.
    *
    * By default the motif is derived from the program: cub -> diamonds,
-   * scoutsbsa -> rule, venturing -> chevrons, seascouts -> wave. Pass this
-   * prop to pin a particular motif when the component is used outside its
-   * natural program context (e.g. a neutral page section that still wants
-   * branded decoration).
+   * scoutsbsa -> rule, venturing -> chevrons, seascouts -> wave, scouting ->
+   * keyline. Pass this prop to pin a particular motif when the component is
+   * used outside its natural program context (e.g. a neutral page section that
+   * still wants branded decoration).
    *
    * Unrecognised programs also fall back to "rule" automatically; this prop
    * lets a consumer override that fallback.
@@ -28,6 +28,7 @@ export type DecorativeDividerProps = {
  *   scoutsbsa (rule):     double rule with central pip (heritage typography rule)
  *   venturing (chevrons): chevron arrows (expedition / mountain crossbar)
  *   seascouts (wave):     wave glyph (water/nautical)
+ *   scouting (keyline):   single hairline (clean document rule)
  *
  * Unknown or future programs default to the "rule" motif so the component
  * never renders nothing at runtime (even though the Program type union
@@ -53,7 +54,9 @@ export function DecorativeDivider({ program, motif, className }: DecorativeDivid
           ? "chevrons"
           : active === "seascouts"
             ? "wave"
-            : "rule");
+            : active === "scouting"
+              ? "keyline"
+              : "rule");
 
   return (
     <div aria-hidden className={cn("w-full h-4 flex items-center text-os-decor", className)}>
@@ -99,6 +102,7 @@ export function DecorativeDivider({ program, motif, className }: DecorativeDivid
             ))}
           </g>
         )}
+        {resolvedMotif === "keyline" && <rect x={0} y={7.5} width={400} height={1} />}
         {resolvedMotif === "wave" && (
           <path
             d={`M0 8 ${Array.from({ length: 20 })

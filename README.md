@@ -14,6 +14,8 @@
 A React + Tailwind component library that themes the Scouting America parent
 brand and its four program sub-brands: **Cub Scouts**, **Scouts BSA**,
 **Venturing**, and **Sea Scouts**.
+It also ships **Scouting** (`scouting`), a cool blue-and-white theme modeled on
+the scouting.org palette, for screens and generated documents.
 
 Built directly from the [Scouting America 2024 Brand Guidelines](https://pathwaytoadventure.org/wp-content/uploads/2024/05/Scouting-America-Brand-Guidelines-2024-BC.pdf).
 
@@ -401,6 +403,7 @@ You can nest providers; a Venturing card on a Scouts BSA page is supported.
 | Scouts BSA | `#243E2C` | none listed     | `#003F87` | PMS 294        | Crisp, traditional. Display weight 700.    |
 | Venturing  | `#006B3F` | PMS 349         | `#FCD116` | PMS 116        | Sharp, BOLD UPPERCASE. Display weight 800. |
 | Sea Scouts | `#003366` | none listed     | `#FFCC00` | none listed    | Linear, italic editorial. Weight 600.      |
+| Scouting   | `#003F87` | PMS 294         | `#CE1126` | PMS 186        | Cool blue and white, document-ready. 700.  |
 
 Full CMYK and Pantone data (including secondary tans, grays, and mark-reproduction colors) is in [`src/styles/tokens.print.json`](./src/styles/tokens.print.json) and ships in the package at `dist/tokens.print.json`.
 

@@ -50,6 +50,7 @@ const PROGRAM_SELECTORS = [
   '[data-program="scoutsbsa"]',
   '[data-program="venturing"]',
   '[data-program="seascouts"]',
+  '[data-program="scouting"]',
 ];
 
 /**

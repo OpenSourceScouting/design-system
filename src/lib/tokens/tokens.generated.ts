@@ -1044,5 +1044,213 @@ export const TOKENS = {
       "os-display-style": "italic",
       "os-display-transform": "none"
     }
+  },
+  "scouting": {
+    "colors": {
+      "background": {
+        "rgb": [
+          255,
+          255,
+          255
+        ],
+        "hex": "#FFFFFF"
+      },
+      "foreground": {
+        "rgb": [
+          33,
+          33,
+          33
+        ],
+        "hex": "#212121"
+      },
+      "card": {
+        "rgb": [
+          255,
+          255,
+          255
+        ],
+        "hex": "#FFFFFF"
+      },
+      "card-foreground": {
+        "rgb": [
+          33,
+          33,
+          33
+        ],
+        "hex": "#212121"
+      },
+      "popover": {
+        "rgb": [
+          255,
+          255,
+          255
+        ],
+        "hex": "#FFFFFF"
+      },
+      "popover-foreground": {
+        "rgb": [
+          33,
+          33,
+          33
+        ],
+        "hex": "#212121"
+      },
+      "primary": {
+        "rgb": [
+          0,
+          63,
+          135
+        ],
+        "hex": "#003F87"
+      },
+      "primary-foreground": {
+        "rgb": [
+          255,
+          255,
+          255
+        ],
+        "hex": "#FFFFFF"
+      },
+      "secondary": {
+        "rgb": [
+          244,
+          244,
+          244
+        ],
+        "hex": "#F4F4F4"
+      },
+      "secondary-foreground": {
+        "rgb": [
+          33,
+          33,
+          33
+        ],
+        "hex": "#212121"
+      },
+      "muted": {
+        "rgb": [
+          244,
+          244,
+          244
+        ],
+        "hex": "#F4F4F4"
+      },
+      "muted-foreground": {
+        "rgb": [
+          81,
+          83,
+          84
+        ],
+        "hex": "#515354"
+      },
+      "accent": {
+        "rgb": [
+          244,
+          244,
+          244
+        ],
+        "hex": "#F4F4F4"
+      },
+      "accent-foreground": {
+        "rgb": [
+          33,
+          33,
+          33
+        ],
+        "hex": "#212121"
+      },
+      "destructive": {
+        "rgb": [
+          206,
+          17,
+          38
+        ],
+        "hex": "#CE1126"
+      },
+      "destructive-foreground": {
+        "rgb": [
+          255,
+          255,
+          255
+        ],
+        "hex": "#FFFFFF"
+      },
+      "border": {
+        "rgb": [
+          222,
+          226,
+          230
+        ],
+        "hex": "#DEE2E6"
+      },
+      "input": {
+        "rgb": [
+          115,
+          115,
+          115
+        ],
+        "hex": "#737373"
+      },
+      "ring": {
+        "rgb": [
+          6,
+          126,
+          235
+        ],
+        "hex": "#067EEB"
+      },
+      "os-accent": {
+        "rgb": [
+          206,
+          17,
+          38
+        ],
+        "hex": "#CE1126"
+      },
+      "os-accent-foreground": {
+        "rgb": [
+          255,
+          255,
+          255
+        ],
+        "hex": "#FFFFFF"
+      },
+      "os-on-primary-soft": {
+        "rgb": [
+          225,
+          230,
+          240
+        ],
+        "hex": "#E1E6F0"
+      },
+      "os-on-surface-faint": {
+        "rgb": [
+          133,
+          135,
+          135
+        ],
+        "hex": "#858787"
+      },
+      "os-decor": {
+        "rgb": [
+          154,
+          179,
+          213
+        ],
+        "hex": "#9AB3D5"
+      }
+    },
+    "values": {
+      "radius": "0.25rem",
+      "os-rule-weight": "1px",
+      "os-shadow": "0 1px 2px 0 rgb(0 0 0 / 0.06), 0 1px 3px 0 rgb(0 0 0 / 0.08)",
+      "os-motion-easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "os-motion-duration-fast": "120ms",
+      "os-motion-duration-base": "200ms",
+      "os-display-weight": "700",
+      "os-display-tracking": "0em",
+      "os-display-style": "normal",
+      "os-display-transform": "none"
+    }
   }
 } as const;

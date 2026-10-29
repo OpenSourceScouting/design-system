@@ -141,18 +141,31 @@ target.
 
 ## Adding a program
 
-Scouting America's four program sub-brands plus the parent brand are additive:
-adding a fifth program (or a new parent-brand variant) should never require
-touching component code. To add one:
+Programs are additive: colors, type, radius and rules all come from CSS
+variables, so no component logic branches on the program. A few per-program
+registries still need an entry. To add one:
 
 1. Add a `[data-program="..."]` block to `src/styles/tokens.css` with the full
    token set. `tests/token-parity.test.ts` enforces that every program block
    defines an identical set of tokens, so copy an existing block as a starting
-   point and cite the brand-guidelines page number for each value.
+   point and cite the source (brand-guidelines page number, or wherever else
+   the value came from) for each value.
 2. Add the program to `PROGRAMS` and `PROGRAM_META` in
    `src/lib/theme/ScoutThemeProvider.tsx`.
-3. Add it to the palette arrays in the token tests
-   (`tests/contrast.test.ts`, `tests/token-parity.test.ts`).
+3. Add a trademark-safe Lucide glyph to `PROGRAM_ICONS` in
+   `src/components/ProgramIcon.tsx` (TypeScript enforces this). It is also the
+   `ProgramMark` placeholder.
+4. Map it to a motif in `src/components/DecorativeDivider.tsx` (otherwise it
+   falls back to `rule`).
+5. Add it to `PALETTE_SELECTORS` in `scripts/tokens-data.mjs`, run
+   `npm run build:tokens`, and add print entries for any new named colors to
+   `src/styles/tokens.print.json`.
+6. Add it to the palette arrays in the token tests (`tests/contrast.test.ts`,
+   `tests/token-parity.test.ts`, `tests/tokens-artifacts.test.ts`).
+7. Add a `CONTENT` entry in `demo/App.tsx` (typed `Record<Program, ...>`, so
+   TypeScript does NOT catch a missing entry and the demo crashes at runtime),
+   the Storybook toolbar item in `.storybook/preview.tsx`, and its row in
+   `RULE_WEIGHTS` in `src/stories/Colors.stories.tsx` (TypeScript enforces this).
 
 ## Commit and PR conventions
 

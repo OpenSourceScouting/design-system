@@ -1,7 +1,11 @@
 # Open Source Scouting Design System: Claude Context
 
 React + Tailwind component library that themes the Scouting America parent brand
-and four program sub-brands (Cub Scouts, Scouts BSA, Venturing, Sea Scouts).
+and four program sub-brands (Cub Scouts, Scouts BSA, Venturing, Sea Scouts),
+plus **Scouting** (`scouting`), a cool blue-and-white theme modeled on the
+scouting.org palette for screens and generated documents. Its brand name is
+"Scouting", never "Scouting America": no SA logo, mark file, or registered
+tagline belongs to it.
 Built from the official 2024 Brand Guidelines
 (`research/scouting-america-brand-guidelines-2024.pdf`). This is a community
 project by Open Source Scouting: it is not affiliated with, endorsed by, or
@@ -161,7 +165,7 @@ research/                      ← brand guidelines PDF + extracted text
   The `--radius-sm/md/lg/xl` scale exists for recipes that want it, but our
   primitives keep the single brand radius (Sea Scouts stays hairline).
 - `CardEyebrow` uses `border-b-rule` for its bottom keyline; the weight tracks
-  `--os-rule-weight` per program (3px Cub, 2px Scouts BSA + Venturing, 1px Sea Scouts).
+  `--os-rule-weight` per program (3px Cub, 2px Scouts BSA + Venturing, 1px Sea Scouts + Scouting).
 - `Card featured` promotes to raised surface + inset hairline ring; pair with `CardEyebrow` for a "lead story" layout.
 - Form layer keeps the framework-agnostic `Field` context (id / describedBy /
   invalid / required / disabled). shadcn's `Form` (react-hook-form) is NOT
@@ -173,10 +177,13 @@ research/                      ← brand guidelines PDF + extracted text
 - `EventDialog` is built on the shadcn `Dialog` recipe (Radix); Radix supplies the focus trap, ESC, inert background, overlay, and the delta-9 re-stamp. The native `<dialog>` implementation was retired.
 - Status colors (Alert tones) come from the raw `sa-*` palette, not program tokens: system feedback reads the same across programs.
 - All components support theme nesting (a Venturing card inside a Scouts BSA page works).
-- Adding a program is additive: add a `[data-program]` block to `tokens.css` with
-  the full token set (the parity test enforces an identical set), add it to
-  `PROGRAMS` / `PROGRAM_META` in `ScoutThemeProvider`, and to the `PALETTES`
-  arrays in the token tests. No component code changes.
+- Adding a program is additive (no component logic branches on it), but it
+  touches about ten registries: tokens block, `PROGRAMS`/`PROGRAM_META`,
+  `PROGRAM_ICONS`, the `DecorativeDivider` motif, `PALETTE_SELECTORS` +
+  `npm run build:tokens`, `tokens.print.json`, three token tests, the demo
+  `CONTENT`, the Storybook toolbar, and `RULE_WEIGHTS`. The full checklist is in
+  `.github/CONTRIBUTING.md` ("Adding a program"). Trap: demo `CONTENT` is
+  `Record<Program, ...>`, so a missing entry type-checks and crashes at runtime.
 
 ## Testing
 

@@ -87,6 +87,7 @@ const PALETTES: { name: string; selector: string }[] = [
   { name: "scoutsbsa", selector: '[data-program="scoutsbsa"]' },
   { name: "venturing", selector: '[data-program="venturing"]' },
   { name: "seascouts", selector: '[data-program="seascouts"]' },
+  { name: "scouting", selector: '[data-program="scouting"]' },
 ];
 
 describe("tokens.css contrast ratios", () => {
