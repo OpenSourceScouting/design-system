@@ -16,7 +16,8 @@ name: Release
 #        b. runs semantic-release, which inspects commits since the last v*
 #           tag, computes the next version (fix = patch, feat = minor,
 #           feat!/BREAKING CHANGE = major), packs the tarball, publishes to
-#           npm with Sigstore provenance, creates the v* tag, and creates the
+#           npm via trusted publishing (OIDC, no stored token; npm attaches
+#           Sigstore provenance automatically), creates the v* tag, and creates the
 #           GitHub Release with generated notes (currently under the `alpha`
 #           dist-tag and prerelease channel; see ADR 0007)
 #        c. generates a CycloneDX SBOM with Syft
@@ -33,12 +34,18 @@ name: Release
 #
 # One-time repository setup this workflow depends on:
 #   - an `npm-publish` environment (Settings > Environments) with a required
-#     reviewer and deployment branch rule limited to `main`, holding an
-#     `NPM_TOKEN` secret (granular npm automation token, publish-only, scoped
-#     to @opensourcescouting/design-system)
+#     reviewer and deployment branch rule limited to `main`
+#   - a trusted publisher on npmjs.com for @opensourcescouting/design-system
+#     (package Settings > Trusted publishing) naming GitHub Actions,
+#     organization `OpenSourceScouting`, repository `design-system`, workflow
+#     `release.yml`, and environment `npm-publish`. All four must match this
+#     file exactly or the OIDC token exchange is refused. Renaming this file
+#     or the environment means updating the trusted publisher too.
 #   - npm provenance requires this repository to be public on GitHub
-#   - see docs/release-migration-plan.md for the remaining one-time setup
-#     (branch/tag rulesets, squash-merge settings, trusted publishing)
+#
+# There is deliberately no NPM_TOKEN secret: npm now caps token lifetimes, so
+# a stored token silently expires and breaks the next release. OIDC mints a
+# short-lived, single-package credential per run instead.
 
 on:
   workflow_dispatch:
@@ -106,12 +113,12 @@ jobs:
     runs-on: ubuntu-latest
     # The environment is the human approval gate: configure it with a required
     # reviewer so every publish (and dry-run) gets an explicit confirmation
-    # click, and scope NPM_TOKEN to it so PR-triggered workflows can never
-    # mount the credential.
+    # click. The npm trusted publisher is bound to this environment name, so
+    # only a job running in it can mint a publish credential.
     environment: npm-publish
     permissions:
       contents: write # create the v* tag + GitHub Release
-      id-token: write # Sigstore keyless signing (npm provenance + attestations)
+      id-token: write # npm trusted publishing (OIDC) + Sigstore provenance and attestations
       attestations: write # GitHub artifact attestations for tarball + SBOM
     outputs:
       released: ${{ steps.result.outputs.released }}
@@ -122,16 +129,19 @@ jobs:
         with:
           fetch-depth: 0 # semantic-release walks history + tags
 
+      # No `registry-url` here on purpose: it makes setup-node write an .npmrc
+      # with `_authToken=${NODE_AUTH_TOKEN}` (and a placeholder token when the
+      # variable is unset), which npm would try instead of trusted publishing.
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
-          registry-url: https://registry.npmjs.org
 
       # npm 11 fixes the optional-dependency lockfile bug (npm/cli#4828) that
       # truncated platform-specific native bindings. Required by engines.npm +
-      # .npmrc engine-strict; Node 22 ships npm 10.
+      # .npmrc engine-strict; Node 22 ships npm 10. Trusted publishing also
+      # needs npm >= 11.5.1, which this satisfies.
       - name: Upgrade npm
         run: npm install -g npm@11
 
@@ -149,12 +159,13 @@ jobs:
           echo "::error::Releases must be dispatched from main (got ${GITHUB_REF})."
           exit 1
 
+      # @semantic-release/npm (13+) exchanges the job's OIDC token for a
+      # short-lived npm credential; no NPM_TOKEN / NODE_AUTH_TOKEN is set.
+      # Provenance comes with trusted publishing automatically.
       - name: semantic-release
         run: npx semantic-release ${{ inputs.dry-run && '--dry-run' || '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: "true"
 
       - name: Detect release result
         id: result
