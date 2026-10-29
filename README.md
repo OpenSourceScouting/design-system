@@ -476,6 +476,45 @@ styles**. The package ships the brand values in email-ready shapes:
   utility classes (`.{program}-{token}-bg` / `-text`) for the email clients that
   do honor an embedded `<style>` block. Inline styles remain the primary path.
 
+## Print and documents (Markdown to PDF)
+
+`@opensourcescouting/design-system/print.css` styles long-form documents: the
+bare headings, lists, tables, code, blockquotes, and footnotes that a Markdown
+converter emits. It is plain CSS over the token variables (no Tailwind build),
+so it pairs with `tokens` and re-themes per program like everything else. The
+**Scouting** theme (`scouting`) was designed for documents, but any program works.
+
+```html
+<link rel="stylesheet" href="node_modules/@opensourcescouting/design-system/dist/tokens.css" />
+<link rel="stylesheet" href="node_modules/@opensourcescouting/design-system/dist/print.css" />
+
+<article class="os-document" data-program="scouting">
+  <!-- HTML from remark / markdown-it -->
+</article>
+```
+
+- Every element rule is scoped under `.os-document`, so it never restyles the
+  host page. It is **opt-in and not part of `styles.css`**, because it also sets
+  a global `@page` box (US Letter, 0.75in margins); emit your own `@page` after
+  it to change that.
+- Print behavior: headings stay with the paragraph after them; tables, code,
+  blockquotes, and figures avoid splitting across pages; table headers repeat
+  on every page; code wraps instead of being clipped.
+- Authoring helpers for raw HTML in Markdown: `<div class="os-page-break"></div>`
+  forces a new page, and `.os-keep-together` keeps a block on one page.
+- Tunables (override on `.os-document`): `--os-doc-font-size` (11pt),
+  `--os-doc-line-height`, `--os-doc-measure` (screen preview width),
+  `--os-doc-space`, and `--os-doc-font-mono`.
+- Load the fonts too (Montserrat and Source Serif 4; see [Fonts](#fonts)). A
+  headless browser embeds them in the PDF.
+- **Renderer note:** remark-gfm task lists emit an unlabeled checkbox, which
+  fails WCAG's form-label rule. Wrap it:
+  `<li><label><input type="checkbox" disabled> text</label></li>`.
+- `@opensourcescouting/design-system/tokens.print.json` carries the CMYK and
+  Pantone equivalents for offset printing.
+
+See the **Foundations/Document** story for a rendered sample in every program.
+
 ## Configuring where assets are served from
 
 By default, `<ProgramMark>` loads files from `/marks/`. You can override that

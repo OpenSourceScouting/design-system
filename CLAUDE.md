@@ -143,6 +143,7 @@ src/                           ← the published library ONLY
   styles/theme.css             ← v4 @theme mapping + @utility + base layer (the ./theme export)
   styles/globals.css           ← dev/Storybook/demo entry (tailwindcss + tokens + theme)
   styles/library.css           ← published entry (scoped source scan) -> dist/styles.css
+  styles/print.css             ← opt-in `.os-document` prose + @page for Markdown/PDF -> dist/print.css (plain CSS, never in styles.css)
   lib/theme/ScoutThemeProvider ← context + data-attribute; exports useProgramStamp, normalizeBasePath
   lib/utils/{cn,date}          ← tiny helpers (no date-fns / dayjs dependency)
   components/                  ← one file per component, .stories.tsx alongside
