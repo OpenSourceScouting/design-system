@@ -36,6 +36,13 @@ updates:
       semver-major-days: 14
     labels:
       - "dependencies"
+    ignore:
+      # Preset 10.x renders only with conventional-changelog-writer@9, but
+      # @semantic-release/release-notes-generator 14 (latest stable) still
+      # ships writer 8, so a 10.x preset fails the release at generateNotes.
+      # Lift this once release-notes-generator 15 (writer 9) is stable.
+      - dependency-name: "conventional-changelog-conventionalcommits"
+        update-types: ["version-update:semver-major"]
     commit-message:
       # `include: scope` appends the (deps)/(deps-dev) scope automatically based
       # on dependency type, so the prefix must NOT repeat it (that produced the
