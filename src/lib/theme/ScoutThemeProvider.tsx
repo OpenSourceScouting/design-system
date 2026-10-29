@@ -1,12 +1,16 @@
 import { createContext, useContext, useEffect, useMemo, type ReactNode } from "react";
 
-export const PROGRAMS = ["cub", "scoutsbsa", "venturing", "seascouts"] as const;
+export const PROGRAMS = ["cub", "scoutsbsa", "venturing", "seascouts", "scouting"] as const;
 
-/** The four built-in national programs that ship with brand tokens and metadata. */
+/**
+ * The built-in themes that ship with brand tokens and metadata: the four
+ * national youth programs plus `scouting`, a cool blue-and-white theme modeled
+ * on the scouting.org palette (for screens and generated documents).
+ */
 export type KnownProgram = (typeof PROGRAMS)[number];
 
 /**
- * A program identifier. The four national programs autocomplete, but any string
+ * A program identifier. The built-in programs autocomplete, but any string
  * is accepted so a third party can register a custom program (a council youth
  * program, or a future fifth national brand) by adding a matching
  * `[data-program="..."]` block to their own CSS, with no fork of this package.
@@ -15,7 +19,7 @@ export type KnownProgram = (typeof PROGRAMS)[number];
  * `KnownProgram | (string & {})` is the standard TypeScript idiom for a
  * "known literals + any string" union: bare `string` would swallow the literals
  * and kill editor autocomplete, so we intersect the widening arm with `{}` to
- * keep the four literals distinct in the union while still accepting arbitrary
+ * keep the built-in literals distinct in the union while still accepting arbitrary
  * strings at assignment.
  */
 export type Program = KnownProgram | (string & {});
@@ -23,11 +27,11 @@ export type Program = KnownProgram | (string & {});
 /**
  * Fallback used when an unknown (custom) program is active and we need
  * built-in metadata or a placeholder icon. Scouts BSA is the neutral default
- * (see task 2.8): its tokens are the most brand-agnostic of the four.
+ * (see task 2.8): its tokens are the most brand-agnostic of the four youth programs.
  */
 export const DEFAULT_PROGRAM: KnownProgram = "scoutsbsa";
 
-/** Type guard: is this string one of the four built-in programs? */
+/** Type guard: is this string one of the built-in programs? */
 export function isKnownProgram(program: string): program is KnownProgram {
   return (PROGRAMS as readonly string[]).includes(program);
 }
@@ -75,6 +79,14 @@ export const PROGRAM_META: Record<
     tagline: "Live the Adventure. Navigate the World.",
     ageRange: "Ages 14-20",
     platform: "Maritime skills. Lifelong friendships.",
+  },
+  scouting: {
+    label: "Scouting",
+    // Original copy, deliberately not Scouting America's registered tagline:
+    // this theme is "Scouting", not a Scouting America brand.
+    tagline: "Adventure. Leadership. Service.",
+    ageRange: "Ages 5-20",
+    platform: "Programs for every age, one movement.",
   },
 };
 

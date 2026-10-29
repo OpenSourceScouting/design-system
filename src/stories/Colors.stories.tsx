@@ -118,13 +118,14 @@ const RULE_WEIGHTS: Record<
   scoutsbsa: { label: "Scouts BSA", weight: "2px", voice: "traditional" },
   venturing: { label: "Venturing", weight: "2px", voice: "blocky geometric" },
   seascouts: { label: "Sea Scouts", weight: "1px", voice: "drafted hairline" },
+  scouting: { label: "Scouting", weight: "1px", voice: "document hairline" },
 };
 
 /**
  * Every program sets its own `--os-rule-weight`, which drives the keyline under
  * editorial kickers (CardEyebrow) and other rules. Cub reads heaviest at 3px,
- * Scouts BSA and Venturing sit at 2px, and Sea Scouts drops to a 1px drafted
- * hairline. The bars below are literal `border-b-rule` keylines pulling the live
+ * Scouts BSA and Venturing sit at 2px, and Sea Scouts and Scouting drop to a
+ * 1px hairline. The bars below are literal `border-b-rule` keylines pulling the live
  * token per theme, so weight differences are exact, not simulated.
  */
 export const RuleWeight: Story = {

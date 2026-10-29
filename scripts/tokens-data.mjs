@@ -20,13 +20,14 @@
  * shadow, display type, fonts) are carried through verbatim as strings.
  */
 
-/** The five palette blocks, keyed by the name used in the emitted data. */
+/** The palette blocks, keyed by the name used in the emitted data. */
 export const PALETTE_SELECTORS = {
   root: ":root",
   cub: '[data-program="cub"]',
   scoutsbsa: '[data-program="scoutsbsa"]',
   venturing: '[data-program="venturing"]',
   seascouts: '[data-program="seascouts"]',
+  scouting: '[data-program="scouting"]',
 };
 
 /** Convert an 8-bit RGB triplet to an uppercase #RRGGBB hex string. */

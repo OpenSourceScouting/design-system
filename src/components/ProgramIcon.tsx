@@ -1,4 +1,4 @@
-import { Anchor, Mountain, PawPrint, Tent, type LucideIcon } from "lucide-react";
+import { Anchor, Compass, Mountain, PawPrint, Tent, type LucideIcon } from "lucide-react";
 import {
   useScoutTheme,
   PROGRAM_META,
@@ -30,6 +30,9 @@ export const PROGRAM_ICONS: Record<KnownProgram, LucideIcon> = {
   scoutsbsa: Tent,
   venturing: Mountain,
   seascouts: Anchor,
+  // Scouting: a generic wayfinding cue, deliberately not the fleur-de-lis (the
+  // Universal Emblem is a registered mark).
+  scouting: Compass,
 };
 
 // Inherits the shared Icon contract (size, strokeWidth, className, style) and

@@ -89,6 +89,7 @@ const preview: Preview = {
           { value: "scoutsbsa", title: "Scouts BSA" },
           { value: "venturing", title: "Venturing" },
           { value: "seascouts", title: "Sea Scouts" },
+          { value: "scouting", title: "Scouting" },
         ],
         dynamicTitle: true,
       },

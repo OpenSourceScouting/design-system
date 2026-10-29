@@ -192,6 +192,36 @@ const CONTENT: Record<
       },
     ],
   },
+  scouting: {
+    headline: "Find your place in Scouting.",
+    secondaryCta: "Explore the programs",
+    lede: "From Cub Scouts to Sea Scouts, Scouting serves youth from age 5 to 20 with programs built on outdoor adventure, leadership, and service.",
+    eventTitle: "New Leader Training",
+    eventCategory: "Training",
+    eventLocation: "Council Service Center · Springfield, IL",
+    eventDescription:
+      "Position-specific training for new unit leaders and committee members. Course materials and lunch provided.",
+    features: [
+      {
+        title: "Every Age",
+        description:
+          "Four programs, one movement: a path from kindergarten through age 20, with room to grow at every step.",
+        icon: ICONS.adventure,
+      },
+      {
+        title: "Trained Volunteers",
+        description:
+          "Every leader completes youth-protection and position-specific training before working with Scouts.",
+        icon: ICONS.leadership,
+      },
+      {
+        title: "Community Service",
+        description:
+          "Service projects big and small connect Scouts with the neighborhoods and causes around them.",
+        icon: ICONS.service,
+      },
+    ],
+  },
 };
 
 function buildCalendarEvents(content: (typeof CONTENT)[Program]): CalendarEvent[] {

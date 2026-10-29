@@ -74,8 +74,8 @@ function ProgramSwatch({ program }: { program: (typeof PROGRAMS)[number] }) {
 
 /**
  * Every program's rendered contrast, scanned in one axe pass. Nested
- * ScoutThemeProviders re-bind the tokens per block, so a single story covers all
- * four program palettes (the parent brand :root palette is covered by the token
+ * ScoutThemeProviders re-bind the tokens per block, so a single story covers every
+ * built-in program palette (the parent brand :root palette is covered by the token
  * test).
  */
 export const AllPrograms: Story = {

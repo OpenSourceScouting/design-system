@@ -10,6 +10,10 @@ Drop the official Scouting America assets here. They are served by Vite at
 There is intentionally no parent-brand "mark" component: per project decision,
 Scouts BSA carries the historical fleur-de-lis identity for umbrella contexts.
 
+The `scouting` theme has **no mark file by design**. Do not add one: it is not
+a Scouting America brand. `<ProgramMark>` renders its generic Compass
+placeholder for it.
+
 ## These files are gitignored on purpose
 
 SVG/PNG/JPG/EPS/PDF assets in this directory are excluded from version control

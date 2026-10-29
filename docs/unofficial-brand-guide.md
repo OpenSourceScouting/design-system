@@ -27,6 +27,7 @@ before making any design decision; almost every choice below varies by program.
 | Scouts BSA                | Ages 11-17                 | Earnest, capable, traditional. Olive, tan, field-guide calm.     |
 | Venturing                 | Ages 14-20, co-ed          | Bold, peer-led, expedition sharp. Green and trail-marker yellow. |
 | Sea Scouts                | Ages 14-20, co-ed          | Editorial nautical, mature, drafted. Navy and signal yellow.     |
+| Scouting                  | Everyone; screen and print | Clean, cool, document-ready. scouting.org's blue and white.      |
 
 Official taglines (use verbatim, never embellish):
 

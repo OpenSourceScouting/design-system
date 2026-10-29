@@ -19,6 +19,7 @@ export const Default: Story = {
         <option value="scoutsbsa">Scouts BSA</option>
         <option value="venturing">Venturing</option>
         <option value="seascouts">Sea Scouts</option>
+        <option value="scouting">Scouting</option>
       </NativeSelect>
     </div>
   ),

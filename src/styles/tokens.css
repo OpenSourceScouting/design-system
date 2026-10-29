@@ -269,6 +269,57 @@
 }
 
 /* ---------------------------------------------------------------------------
+   Scouting. A cool blue-and-white theme modeled on the scouting.org palette,
+   for screens and generated documents. Primary blue and accent red are the
+   same guideline swatches as :root (p.14-15); the cool neutrals and focus blue
+   are NOT in the guidelines and were taken from the live scouting.org
+   stylesheet (2026-10-29). Its link blue #067EEB measures
+   4.04:1 on white, below AA for text, so it is used only as the focus ring
+   (non-text, 3:1). White paper, near-black text, one deep blue and hairline
+   rules: prints cleanly, including in grayscale.
+   --------------------------------------------------------------------------- */
+[data-program="scouting"] {
+  --background: 255 255 255;
+  --foreground: 33 33 33; /* #212121 scouting.org body text */
+  --card: 255 255 255;
+  --card-foreground: 33 33 33;
+  --popover: 255 255 255;
+  --popover-foreground: 33 33 33;
+  --primary: 0 63 135; /* #003F87, same swatch as :root primary (PMS 294) */
+  --primary-foreground: 255 255 255;
+  --secondary: 244 244 244; /* #F4F4F4 scouting.org panel gray */
+  --secondary-foreground: 33 33 33;
+  --muted: 244 244 244;
+  --muted-foreground: 81 83 84; /* #515354 SA Gray, ~7.0:1 on #F4F4F4 */
+  --accent: 244 244 244; /* delta 4: cool gray WASH, not the brand red */
+  --accent-foreground: 33 33 33;
+  --destructive: 206 17 38;
+  --destructive-foreground: 255 255 255;
+  --border: 222 226 230; /* #DEE2E6 decorative hairline */
+  --input: 115 115 115; /* #737373, ~4.7:1: field edges need 3:1 (WCAG 1.4.11) */
+  --ring: 6 126 235; /* #067EEB scouting.org link blue, 4.04:1 (non-text) */
+  --radius: 0.25rem; /* 4px, crisp */
+
+  --os-accent: 206 17 38; /* BRAND accent: #CE1126, same swatch as :root */
+  --os-accent-foreground: 255 255 255;
+  --os-on-primary-soft: 225 230 240; /* same as :root, AA on SA Blue */
+  --os-on-surface-faint: 133 135 135; /* #858787 SA Pale Gray, >=3:1 */
+  --os-decor: 154 179 213; /* #9AB3D5 SA Pale Blue (guideline parent palette) */
+  --os-rule-weight: 1px; /* document hairline */
+  /* :root's subtle shadow. Elevated cards need it on a white page, and browsers
+     drop box-shadow from print by default, so documents stay clean anyway. */
+  --os-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.06), 0 1px 3px 0 rgb(0 0 0 / 0.08);
+  /* Motion: the neutral :root curve. */
+  --os-motion-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --os-motion-duration-fast: 120ms;
+  --os-motion-duration-base: 200ms;
+  --os-display-weight: 700;
+  --os-display-tracking: 0em;
+  --os-display-style: normal;
+  --os-display-transform: none;
+}
+
+/* ---------------------------------------------------------------------------
    Reduced motion: kill non-essential animation per WCAG 2.3.3
    --------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {

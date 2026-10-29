@@ -65,9 +65,9 @@ export const WithHeaderAndFooter: Story = {
  * CardEyebrow is an editorial kicker riding a bottom keyline. The keyline
  * inherits `--os-rule-weight`, so the same component renders a 3px chunky
  * rule for Cub Scouts, 2px for Scouts BSA and Venturing, and a 1px drafted
- * hairline for Sea Scouts, with no per-program branching in the component. Each
- * panel below forces its own program theme to show the four weights side by
- * side regardless of the toolbar selection.
+ * hairline for Sea Scouts and Scouting, with no per-program branching in the
+ * component. Each panel below forces its own program theme to show each
+ * weight side by side regardless of the toolbar selection.
  */
 export const EyebrowKeylineAcrossPrograms: Story = {
   render: () => (

@@ -237,6 +237,83 @@
       "cmyk": { "c": 34, "m": 17, "y": 0, "k": 7 },
       "source": "p.31: Sea Scouts mark reproduction (light blue component)",
       "_note": "No Pantone listed. CMYK taken from the mark reproduction table; treat as a starting point and verify with print vendor."
+    },
+    {
+      "name": "scouting-blue",
+      "label": "Scouting Blue",
+      "program": "scouting",
+      "role": "primary",
+      "hex": "#003F87",
+      "rgb": { "r": 0, "g": 63, "b": 135 },
+      "pantone": "PMS 294",
+      "cmyk": { "c": 100, "m": 58, "y": 0, "k": 21 },
+      "source": "p.9, p.14: same swatch as sa-blue"
+    },
+    {
+      "name": "scouting-red",
+      "label": "Scouting Red",
+      "program": "scouting",
+      "role": "accent",
+      "hex": "#CE1126",
+      "rgb": { "r": 206, "g": 17, "b": 38 },
+      "pantone": "PMS 186",
+      "cmyk": { "c": 0, "m": 100, "y": 81, "k": 4 },
+      "source": "p.9, p.14: same swatch as sa-red"
+    },
+    {
+      "name": "scouting-text",
+      "label": "scouting.org Body Text",
+      "program": "scouting",
+      "role": "on-surface",
+      "hex": "#212121",
+      "rgb": { "r": 33, "g": 33, "b": 33 },
+      "pantone": null,
+      "cmyk": null,
+      "_note": "Not a brand-guideline color: taken from the live scouting.org stylesheet (2026-10-29). No Pantone or CMYK exists; convert hex with print vendor."
+    },
+    {
+      "name": "scouting-panel-gray",
+      "label": "scouting.org Panel Gray",
+      "program": "scouting",
+      "role": "surface-muted",
+      "hex": "#F4F4F4",
+      "rgb": { "r": 244, "g": 244, "b": 244 },
+      "pantone": null,
+      "cmyk": null,
+      "_note": "Not a brand-guideline color: taken from the live scouting.org stylesheet (2026-10-29). No Pantone or CMYK exists; convert hex with print vendor."
+    },
+    {
+      "name": "scouting-hairline",
+      "label": "scouting.org Hairline",
+      "program": "scouting",
+      "role": "border",
+      "hex": "#DEE2E6",
+      "rgb": { "r": 222, "g": 226, "b": 230 },
+      "pantone": null,
+      "cmyk": null,
+      "_note": "Not a brand-guideline color: taken from the live scouting.org stylesheet (2026-10-29). No Pantone or CMYK exists; convert hex with print vendor. Bootstrap 4 default gray."
+    },
+    {
+      "name": "scouting-input-gray",
+      "label": "Input Edge Gray",
+      "program": "scouting",
+      "role": "input",
+      "hex": "#737373",
+      "rgb": { "r": 115, "g": 115, "b": 115 },
+      "pantone": null,
+      "cmyk": null,
+      "_note": "Not a brand-guideline color: taken from the live scouting.org stylesheet (2026-10-29). No Pantone or CMYK exists; convert hex with print vendor."
+    },
+    {
+      "name": "scouting-link-blue",
+      "label": "scouting.org Link Blue",
+      "program": "scouting",
+      "role": "ring",
+      "hex": "#067EEB",
+      "rgb": { "r": 6, "g": 126, "b": 235 },
+      "pantone": null,
+      "cmyk": null,
+      "_note": "Not a brand-guideline color: taken from the live scouting.org stylesheet (2026-10-29). No Pantone or CMYK exists; convert hex with print vendor. Screen-only focus ring: 4.04:1 on white, below AA for text, so never use it for printed text."
     }
   ],
   "_discrepancies": [

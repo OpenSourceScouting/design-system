@@ -22,6 +22,7 @@ const SELECTORS = {
   scoutsbsa: '[data-program="scoutsbsa"]',
   venturing: '[data-program="venturing"]',
   seascouts: '[data-program="seascouts"]',
+  scouting: '[data-program="scouting"]',
 } as const;
 
 /** Independently extract the color triplets (name -> [r,g,b]) from one block. */
@@ -49,10 +50,11 @@ function toHex([r, g, b]: number[]): string {
 }
 
 describe("token data artifacts", () => {
-  it("exposes the five palettes", () => {
+  it("exposes the six palettes", () => {
     expect(Object.keys(TOKENS).sort()).toEqual([
       "cub",
       "root",
+      "scouting",
       "scoutsbsa",
       "seascouts",
       "venturing",
@@ -75,11 +77,11 @@ describe("token data artifacts", () => {
     });
   }
 
-  it("the four programs share an identical color-token set", () => {
-    const keysOf = (p: "cub" | "scoutsbsa" | "venturing" | "seascouts") =>
+  it("every program shares an identical color-token set", () => {
+    const keysOf = (p: "cub" | "scoutsbsa" | "venturing" | "seascouts" | "scouting") =>
       Object.keys(TOKENS[p].colors).sort();
     const base = keysOf("cub");
-    for (const p of ["scoutsbsa", "venturing", "seascouts"] as const) {
+    for (const p of ["scoutsbsa", "venturing", "seascouts", "scouting"] as const) {
       expect(keysOf(p)).toEqual(base);
     }
   });

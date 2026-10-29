@@ -27,6 +27,7 @@ export const Default: Story = {
         <SelectItem value="scoutsbsa">Scouts BSA</SelectItem>
         <SelectItem value="venturing">Venturing</SelectItem>
         <SelectItem value="seascouts">Sea Scouts</SelectItem>
+        <SelectItem value="scouting">Scouting</SelectItem>
       </Select>
     </div>
   ),

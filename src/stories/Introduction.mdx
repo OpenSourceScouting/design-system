@@ -7,6 +7,8 @@ import { Meta } from "@storybook/addon-docs/blocks";
 A React + Tailwind component library that themes the Scouting America parent
 brand and its four program sub-brands: **Cub Scouts**, **Scouts BSA**,
 **Venturing**, and **Sea Scouts**.
+It also ships **Scouting** (`scouting`), a cool blue-and-white theme modeled on
+the scouting.org palette, for screens and generated documents.
 
 ## How theming works
 
@@ -36,6 +38,10 @@ grammar (spacing, type scale, component anatomy):
 - **Rule weight** (`--os-rule-weight`): 3px bold (Cub) → 2px traditional (Scouts BSA + Venturing) →
   1px hairline (Sea Scouts). Controls the keylines on `CardEyebrow`, section heads, and agenda
   separators via the `border-*-rule` Tailwind utility (defined in `src/styles/theme.css`).
+
+**Scouting** sits apart from the youth programs: white surfaces, cool gray
+panels, one deep blue with a red accent, Montserrat 700, a 4px radius, and
+1px hairline rules. It is built to print cleanly in generated documents.
 
 ## Source of truth
 
