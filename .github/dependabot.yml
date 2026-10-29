@@ -75,6 +75,26 @@ updates:
         update-types:
           - "minor"
           - "patch"
+      # Security updates ignore every group above: `applies-to` defaults to
+      # `version-updates`. Without these mirrors, a storybook advisory opened
+      # separate PRs for storybook and @storybook/addon-vitest, and neither
+      # could install alone (the addon peer-requires the matching storybook),
+      # so the addon PR failed CI and critical alerts stayed open. Only the lockstep
+      # families need a security mirror; other packages patch independently.
+      vite-toolchain-security:
+        applies-to: security-updates
+        patterns:
+          - "vite"
+          - "vite-plugin-*"
+          - "@vitejs/*"
+          - "vitest"
+          - "@vitest/*"
+          - "esbuild"
+      storybook-security:
+        applies-to: security-updates
+        patterns:
+          - "storybook"
+          - "@storybook/*"
 
   # ---------------------------------------------------------------------------
   # GitHub Actions used by the CI and release workflows
