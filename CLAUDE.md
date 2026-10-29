@@ -28,8 +28,8 @@ npm run lint          # prettier --check . (CI gate; covers .md/.yml/.json too, 
 npm run format        # prettier --write; run before committing
 ```
 
-Node 22 LTS (CI + `.nvmrc` pin) or 24+; Node 23 is unsupported (Vitest 4
-requires `^20 || ^22 || >=24`). npm >=11, enforced by a `preinstall` guard
+Node 22.12+ LTS (CI + `.nvmrc` pin), 24, or 26+; the odd releases 23 and 25
+are unsupported (Vitest 5 requires `^22.12.0 || ^24.0.0 || >=26.0.0`). npm >=11, enforced by a `preinstall` guard
 (`scripts/check-npm-version.mjs`): npm 10 regenerates lockfiles without
 platform-specific native bindings (npm/cli#4828), breaking `npm ci` on other
 platforms. Node 22 ships npm 10, so `npm i -g npm@11`. No pnpm.
@@ -40,8 +40,12 @@ config).
 ## Git and PR workflow
 
 - Branch off the latest `main` for all new work: `git checkout main && git pull`
-  before creating the branch. `main` is protected (PR required, no direct
-  pushes, no bypass actors); it is never committed to directly.
+  before creating the branch. `main` is protected by the `protect-main`
+  ruleset: PR required (squash only), required checks `typecheck / test / build`
+  and `conventional-title`, no force-push or deletion. It requires 0 approvals
+  (single maintainer, and GitHub blocks self-approval), so the required checks
+  are the real merge gate. The maintainer account is the one bypass actor.
+  `main` is never committed to directly.
 - Commit messages and PR titles are concise Conventional Commits
   (`feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`) that say WHY the
   change was made, not what: the what is in the diff. A `pr-title.yml` CI check
