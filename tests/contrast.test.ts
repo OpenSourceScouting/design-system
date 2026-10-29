@@ -149,6 +149,10 @@ describe("tokens.css contrast ratios", () => {
           expect(ratio("--secondary-foreground", "--secondary")).toBeGreaterThanOrEqual(4.5);
         });
 
+        it("primary vs background >= 4.5 (document headings and links, print.css)", () => {
+          expect(ratio("--primary", "--background")).toBeGreaterThanOrEqual(4.5);
+        });
+
         it("muted-foreground vs background >= 4.5 (AA muted body text)", () => {
           expect(ratio("--muted-foreground", "--background")).toBeGreaterThanOrEqual(4.5);
         });

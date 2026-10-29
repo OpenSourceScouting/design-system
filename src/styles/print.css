@@ -1,0 +1,287 @@
+/* =============================================================================
+   Document / print styles: long-form prose for rendered Markdown and PDFs.
+
+   Shipped as "@opensourcescouting/design-system/print.css". Plain CSS (no
+   Tailwind build needed) that reads the token variables from tokens.css, so a
+   document re-themes with `data-program` exactly like the components do:
+
+     <link rel="stylesheet" href=".../tokens">       (required: the variables)
+     <link rel="stylesheet" href=".../print.css">
+     <article class="os-document" data-program="scouting"> ...markdown HTML... </article>
+
+   Every element rule is scoped under `.os-document`, because Markdown output is
+   bare h1/p/table tags and unscoped rules would restyle the host app. `@page`
+   cannot be scoped, which is why this file is opt-in and NOT bundled into
+   styles.css: importing it sets the printed page box for the whole document.
+
+   Color pairs (see tests/contrast.test.ts): body text is foreground on
+   background; headings and links are primary on background; code and table
+   headers are secondary-foreground on secondary. Muted text (blockquotes,
+   captions) only ever sits on background: muted-foreground on secondary drops
+   below AA in two programs.
+
+   Tunables are local custom properties on .os-document; override them on the
+   element (or in a later stylesheet) to change type size or measure.
+   ============================================================================= */
+
+/* ---------------------------------------------------------------------------
+   Page box. US Letter with 0.75in margins; a generator can override by
+   emitting its own @page after this file (or via its PDF engine's options).
+   --------------------------------------------------------------------------- */
+@page {
+  size: letter;
+  margin: 0.75in;
+}
+
+/* ---------------------------------------------------------------------------
+   Document root
+   --------------------------------------------------------------------------- */
+.os-document {
+  --os-doc-font-size: 11pt;
+  --os-doc-line-height: 1.55;
+  --os-doc-measure: 46rem; /* screen preview width; print uses the page box */
+  --os-doc-space: 0.75em;
+  --os-doc-font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+
+  font-family: var(--os-font-body);
+  font-size: var(--os-doc-font-size);
+  line-height: var(--os-doc-line-height);
+  color: rgb(var(--foreground));
+  background: rgb(var(--background));
+  /* Keep table-header fills and code panels when printed from a browser
+     dialog (headless engines usually have their own "print background" flag). */
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+  orphans: 3;
+  widows: 3;
+  overflow-wrap: break-word;
+}
+
+@media screen {
+  .os-document {
+    max-width: var(--os-doc-measure);
+    margin-inline: auto;
+  }
+}
+
+.os-document > :first-child {
+  margin-top: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   Headings: display face with the program's display tokens. h1/h2 carry the
+   brand color; h2 gets the program keyline (weight tracks --os-rule-weight).
+   --------------------------------------------------------------------------- */
+.os-document :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--os-font-display);
+  font-weight: var(--os-display-weight);
+  font-style: var(--os-display-style);
+  letter-spacing: var(--os-display-tracking);
+  line-height: 1.2;
+  margin: 1.6em 0 0.5em;
+  break-after: avoid;
+  break-inside: avoid;
+}
+
+.os-document :is(h1, h2) {
+  color: rgb(var(--primary));
+  text-transform: var(--os-display-transform);
+}
+
+.os-document :is(h3, h4, h5, h6) {
+  color: rgb(var(--foreground));
+}
+
+.os-document h1 {
+  font-size: 2em;
+  margin-top: 0;
+}
+
+.os-document h2 {
+  font-size: 1.45em;
+  padding-bottom: 0.25em;
+  border-bottom: var(--os-rule-weight) solid rgb(var(--os-decor));
+}
+
+.os-document h3 {
+  font-size: 1.2em;
+}
+
+.os-document h4 {
+  font-size: 1.05em;
+}
+
+.os-document :is(h5, h6) {
+  font-size: 1em;
+}
+
+/* ---------------------------------------------------------------------------
+   Flow content
+   --------------------------------------------------------------------------- */
+.os-document :is(p, ul, ol, dl, blockquote, pre, table, figure) {
+  margin: 0 0 var(--os-doc-space);
+}
+
+.os-document a {
+  color: rgb(var(--primary));
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.os-document :is(strong, b) {
+  font-weight: 700;
+}
+
+.os-document :is(ul, ol) {
+  padding-left: 1.5em;
+}
+
+.os-document li + li,
+.os-document li > :is(ul, ol) {
+  margin-top: 0.25em;
+}
+
+/* GFM task lists: drop the bullet when the item leads with a checkbox. Raw
+   remark-gfm output has an unlabeled <input> (an axe "label" violation), so
+   renderers should wrap it: <li><label><input type="checkbox" disabled> text</label></li>.
+   Both shapes are matched. */
+.os-document li.task-list-item,
+.os-document li:has(> input[type="checkbox"]:first-child),
+.os-document li:has(> label:first-child > input[type="checkbox"]:first-child) {
+  list-style: none;
+  margin-left: -1.25em;
+}
+
+.os-document dt {
+  font-weight: 700;
+}
+
+.os-document dd {
+  margin: 0 0 0.5em 1.5em;
+}
+
+.os-document blockquote {
+  padding-left: 1em;
+  border-left: calc(var(--os-rule-weight) + 1px) solid rgb(var(--primary));
+  color: rgb(var(--muted-foreground));
+  break-inside: avoid;
+}
+
+.os-document blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.os-document hr {
+  border: 0;
+  border-top: var(--os-rule-weight) solid rgb(var(--os-decor));
+  margin: 1.5em 0;
+}
+
+.os-document :is(img, svg, video) {
+  max-width: 100%;
+  height: auto;
+}
+
+.os-document figure {
+  break-inside: avoid;
+}
+
+.os-document figcaption {
+  margin-top: 0.4em;
+  font-size: 0.85em;
+  color: rgb(var(--muted-foreground));
+}
+
+/* ---------------------------------------------------------------------------
+   Code
+   --------------------------------------------------------------------------- */
+.os-document :is(code, kbd, samp) {
+  font-family: var(--os-doc-font-mono);
+  font-size: 0.88em;
+}
+
+.os-document :not(pre) > code {
+  padding: 0.1em 0.3em;
+  border-radius: calc(var(--radius) * 0.5);
+  background: rgb(var(--secondary));
+  color: rgb(var(--secondary-foreground));
+}
+
+.os-document pre {
+  padding: 0.75em 1em;
+  border: 1px solid rgb(var(--border));
+  border-radius: var(--radius);
+  background: rgb(var(--secondary));
+  color: rgb(var(--secondary-foreground));
+  line-height: 1.45;
+  /* Wrap instead of scrolling: a printed page cannot scroll, so overflow would
+     be clipped. */
+  white-space: pre-wrap;
+  break-inside: avoid;
+}
+
+/* ---------------------------------------------------------------------------
+   Tables. The header row repeats on every printed page.
+   --------------------------------------------------------------------------- */
+.os-document table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95em;
+}
+
+.os-document thead {
+  display: table-header-group;
+}
+
+.os-document tr {
+  break-inside: avoid;
+}
+
+.os-document :is(th, td) {
+  padding: 0.4em 0.6em;
+  border: 1px solid rgb(var(--border));
+  text-align: left;
+  vertical-align: top;
+}
+
+.os-document th {
+  font-family: var(--os-font-display);
+  font-weight: 700;
+  background: rgb(var(--secondary));
+  color: rgb(var(--secondary-foreground));
+}
+
+/* ---------------------------------------------------------------------------
+   Footnotes (GFM `section.footnotes` / `[data-footnotes]`)
+   --------------------------------------------------------------------------- */
+.os-document :is(.footnotes, [data-footnotes]) {
+  margin-top: 2em;
+  padding-top: 0.5em;
+  border-top: var(--os-rule-weight) solid rgb(var(--os-decor));
+  font-size: 0.85em;
+}
+
+/* ---------------------------------------------------------------------------
+   Authoring helpers, usable as raw HTML inside Markdown:
+     <div class="os-page-break"></div>   force a new page
+     <div class="os-keep-together">...</div>   never split this block
+   --------------------------------------------------------------------------- */
+.os-document .os-page-break {
+  break-after: page;
+}
+
+/* Start the new page at the top margin, not one heading-gap below it. */
+.os-document .os-page-break + * {
+  margin-top: 0;
+}
+
+.os-document .os-keep-together {
+  break-inside: avoid;
+}
+
+@media print {
+  .os-document {
+    max-width: none;
+    margin: 0;
+  }
+}

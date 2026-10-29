@@ -20,3 +20,6 @@
 @import "tailwindcss";
 @import "./tokens.css";
 @import "./theme.css";
+/* Document styles, so the Foundations/Document story renders them. Opt-in for
+   consumers (see print.css); NOT part of library.css / dist/styles.css. */
+@import "./print.css";

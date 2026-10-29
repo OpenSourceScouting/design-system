@@ -11,6 +11,9 @@
  *                      "@opensourcescouting/design-system/styles". The source
  *                      scan is scoped to src/ inside library.css, so only the
  *                      shipped components' utilities are emitted.
+ *   dist/print.css:  print.css verbatim: scoped `.os-document` prose styles and
+ *                      the `@page` box, for Markdown/PDF rendering. Plain CSS over
+ *                      the token variables (needs dist/tokens.css, not Tailwind).
  *   dist/tokens.css: tokens.css verbatim (the :root + [data-program] custom
  *                      properties and the plain `.display` rule) for consumers who
  *                      run their own Tailwind build via the shared preset and only
@@ -55,6 +58,9 @@ execFileSync(
 // 2. Ship tokens.css verbatim.
 copyFileSync(path.join(root, "src", "styles", "tokens.css"), path.join(dist, "tokens.css"));
 
+// 2a. Ship the document / print stylesheet verbatim.
+copyFileSync(path.join(root, "src", "styles", "print.css"), path.join(dist, "print.css"));
+
 // 2b. Ship print token data (CMYK / Pantone equivalents) verbatim.
 copyFileSync(
   path.join(root, "src", "styles", "tokens.print.json"),
@@ -74,6 +80,7 @@ copyFileSync(path.join(root, "src", "styles", "theme.css"), path.join(dist, "the
 const cssStub = "// Ambient stub for a side-effect CSS import. No runtime value.\nexport {};\n";
 writeFileSync(path.join(dist, "styles.css.d.ts"), cssStub);
 writeFileSync(path.join(dist, "tokens.css.d.ts"), cssStub);
+writeFileSync(path.join(dist, "print.css.d.ts"), cssStub);
 
 // 4. Framework-neutral token FILE artifacts, for tools that consume tokens by
 //    file rather than by import (Figma/Tokens Studio, SCSS, email builders).
@@ -93,5 +100,5 @@ mkdirSync(emailDir, { recursive: true });
 writeFileSync(path.join(emailDir, "styles.css"), renderEmailCss(tokenData));
 
 console.log(
-  "build-css: wrote dist/styles.css, dist/tokens.css, dist/tokens.print.json, dist/tokens/{tokens.json,tokens.scss,tokens.email.json}, dist/email/styles.css, and .css.d.ts stubs",
+  "build-css: wrote dist/styles.css, dist/tokens.css, dist/print.css, dist/tokens.print.json, dist/tokens/{tokens.json,tokens.scss,tokens.email.json}, dist/email/styles.css, and .css.d.ts stubs",
 );
