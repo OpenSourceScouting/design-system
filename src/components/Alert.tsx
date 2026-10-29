@@ -10,7 +10,7 @@ export type AlertProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 /**
- * Note: tone colors intentionally come from the raw `sa.*` palette, not the
+ * Note: tone colors intentionally come from the raw `scout-*` palette, not the
  * program tokens. System feedback should read the same regardless of which
  * program is theming the surrounding UI (this is why tone is a multi-slot
  * record rather than a cva variant: ring/chip/chipText move together and are
@@ -23,10 +23,14 @@ export type AlertProps = HTMLAttributes<HTMLDivElement> & {
  */
 export const alertToneStyles: Record<AlertTone, { ring: string; chip: string; chipText: string }> =
   {
-    info: { ring: "border-sa-blue/40", chip: "bg-sa-blue", chipText: "text-white" },
-    success: { ring: "border-sa-blue/40", chip: "bg-[#006B3F]", chipText: "text-white" },
-    warning: { ring: "border-[#996633]/40", chip: "bg-[#FCD116]", chipText: "text-sa-dark-gray" },
-    danger: { ring: "border-sa-red/40", chip: "bg-sa-red", chipText: "text-white" },
+    info: { ring: "border-scout-blue/40", chip: "bg-scout-blue", chipText: "text-white" },
+    success: { ring: "border-scout-blue/40", chip: "bg-[#006B3F]", chipText: "text-white" },
+    warning: {
+      ring: "border-[#996633]/40",
+      chip: "bg-[#FCD116]",
+      chipText: "text-scout-dark-gray",
+    },
+    danger: { ring: "border-scout-red/40", chip: "bg-scout-red", chipText: "text-white" },
   };
 
 export function Alert({ tone = "info", title, icon, className, children, ...rest }: AlertProps) {

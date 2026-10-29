@@ -3,7 +3,8 @@ import { useScoutTheme, normalizeBasePath } from "../lib/theme/ScoutThemeProvide
 import { cn } from "../lib/utils/cn";
 
 /**
- * ScoutingAmericaWordmark renders the official Scouting America wordmark.
+ * ParentBrandWordmark renders the official parent-brand wordmark from a
+ * licensed asset you supply (see public/marks/README.md).
  *
  * Unlike ProgramMark, this component has NO placeholder fallback. If the
  * licensed asset cannot be loaded, the component renders null and logs a
@@ -11,12 +12,12 @@ import { cn } from "../lib/utils/cn";
  * Scouting contexts only; we do not invent a generic substitute.
  *
  * Asset path:
- *   /marks/scouting-america-wordmark-{orientation}[-{variant}].{ext}
+ *   /marks/parent-brand-wordmark-{orientation}[-{variant}].{ext}
  *
  * Examples:
- *   scouting-america-wordmark-wide.svg
- *   scouting-america-wordmark-wide-mono.png
- *   scouting-america-wordmark-tall-reversed.jpg
+ *   parent-brand-wordmark-wide.svg
+ *   parent-brand-wordmark-wide-mono.png
+ *   parent-brand-wordmark-tall-reversed.jpg
  *
  * Sizing
  * ------
@@ -26,12 +27,12 @@ import { cn } from "../lib/utils/cn";
  * pixels drive layout.
  */
 
-export type ScoutingAmericaWordmarkOrientation = "wide" | "tall";
-export type ScoutingAmericaWordmarkVariant = "color" | "mono" | "reversed";
+export type ParentBrandWordmarkOrientation = "wide" | "tall";
+export type ParentBrandWordmarkVariant = "color" | "mono" | "reversed";
 
-export type ScoutingAmericaWordmarkProps = {
-  orientation?: ScoutingAmericaWordmarkOrientation;
-  variant?: ScoutingAmericaWordmarkVariant;
+export type ParentBrandWordmarkProps = {
+  orientation?: ParentBrandWordmarkOrientation;
+  variant?: ParentBrandWordmarkVariant;
   /** Rendered height in px. Width auto-derives from the asset's aspect ratio. */
   height?: number;
   className?: string;
@@ -39,13 +40,13 @@ export type ScoutingAmericaWordmarkProps = {
   basePath?: string;
 };
 
-const STEM_BASE = "scouting-america-wordmark";
+const STEM_BASE = "parent-brand-wordmark";
 const EXTENSION_PRIORITY = ["svg", "webp", "png", "jpg", "jpeg"] as const;
 
 // Same blend modes as ProgramMark: keys out the JPG's solid background
 // against the surrounding surface. Transparent (SVG/PNG/WebP) assets are
 // unaffected.
-const BLEND_MODE: Record<ScoutingAmericaWordmarkVariant, "multiply" | "screen" | "normal"> = {
+const BLEND_MODE: Record<ParentBrandWordmarkVariant, "multiply" | "screen" | "normal"> = {
   color: "multiply",
   mono: "multiply",
   reversed: "screen",
@@ -53,22 +54,22 @@ const BLEND_MODE: Record<ScoutingAmericaWordmarkVariant, "multiply" | "screen" |
 
 function buildAssetUrl(
   basePath: string,
-  orientation: ScoutingAmericaWordmarkOrientation,
-  variant: ScoutingAmericaWordmarkVariant,
+  orientation: ParentBrandWordmarkOrientation,
+  variant: ParentBrandWordmarkVariant,
   ext: string,
 ): string {
   const variantSuffix = variant === "color" ? "" : `-${variant}`;
   return `${basePath}${STEM_BASE}-${orientation}${variantSuffix}.${ext}`;
 }
 
-export function ScoutingAmericaWordmark({
+export function ParentBrandWordmark({
   orientation = "wide",
   variant = "color",
   height = 48,
   className,
   style,
   basePath,
-}: ScoutingAmericaWordmarkProps) {
+}: ParentBrandWordmarkProps) {
   const ctx = useScoutTheme();
   const effectiveBasePath = basePath ? normalizeBasePath(basePath) : ctx.marksBasePath;
   const [extIdx, setExtIdx] = useState(0);
@@ -82,7 +83,7 @@ export function ScoutingAmericaWordmark({
   if (exhausted) {
     if (typeof console !== "undefined") {
       console.warn(
-        `[ScoutingAmericaWordmark] no asset found for ` +
+        `[ParentBrandWordmark] no asset found for ` +
           `${orientation}/${variant} at ${effectiveBasePath}. No placeholder will render.`,
       );
     }

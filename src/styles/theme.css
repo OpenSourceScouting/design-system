@@ -9,7 +9,7 @@
    (the multi-program mechanism, ADR 0002).
 
    Two color layers, same as the old preset:
-     1. sa.*      : raw Scouting America palette (fixed; never theme-swapped).
+     1. scout-*   : raw parent-brand palette (fixed; never theme-swapped).
      2. program.* : legacy semantic tokens (still consumed by components until
                     Phases 3-5 port them to the shadcn names below).
    Plus the shadcn + --os-* vocabulary added in Phase 1.
@@ -20,18 +20,18 @@
    --------------------------------------------------------------------------- */
 
 @theme inline {
-  /* --- Raw Scouting America palette (2024 Brand Guidelines p.14-15) ------ */
-  --color-sa-red: #ce1126;
-  --color-sa-blue: #003f87;
-  --color-sa-tan: #d6cebd;
-  --color-sa-gray: #515354;
-  --color-sa-white: #ffffff;
-  --color-sa-pale-blue: #9ab3d5;
-  --color-sa-dark-blue: #003366;
-  --color-sa-light-tan: #e9e9e4;
-  --color-sa-dark-tan: #ad9d7b;
-  --color-sa-pale-gray: #858787;
-  --color-sa-dark-gray: #232528;
+  /* --- Raw parent-brand palette (2024 Brand Guidelines p.14-15) --------- */
+  --color-scout-red: #ce1126;
+  --color-scout-blue: #003f87;
+  --color-scout-tan: #d6cebd;
+  --color-scout-gray: #515354;
+  --color-scout-white: #ffffff;
+  --color-scout-pale-blue: #9ab3d5;
+  --color-scout-dark-blue: #003366;
+  --color-scout-light-tan: #e9e9e4;
+  --color-scout-dark-tan: #ad9d7b;
+  --color-scout-pale-gray: #858787;
+  --color-scout-dark-gray: #232528;
 
   /* --- shadcn vocabulary --------------------------------------------------- */
   --color-background: rgb(var(--background));

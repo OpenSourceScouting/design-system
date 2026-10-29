@@ -82,8 +82,8 @@ export const PROGRAM_META: Record<
   },
   scouting: {
     label: "Scouting",
-    // Original copy, deliberately not Scouting America's registered tagline:
-    // this theme is "Scouting", not a Scouting America brand.
+    // Original copy, deliberately not the parent brand's registered tagline:
+    // this theme is "Scouting", not an official brand.
     tagline: "Adventure. Leadership. Service.",
     ageRange: "Ages 5-20",
     platform: "Programs for every age, one movement.",
@@ -144,8 +144,8 @@ export type ScoutThemeProviderProps = {
    * `<html>` when `applyToDocument`) and re-stamped onto portalled widgets via
    * `useProgramStamp`, so a custom theme survives inside dialogs/menus/tooltips.
    *
-   * The library ships no theme values of its own (Scouting America has no dark
-   * mode, and this package aligns to the official design system). This is the
+   * The library ships no theme values of its own (the official brand guidelines
+   * define no dark mode, and this package aligns to the official design system). This is the
    * hook for a unit or project to add one without forking: set `theme` and
    * supply the token overrides in your own CSS, scoped to `[data-theme]`.
    *

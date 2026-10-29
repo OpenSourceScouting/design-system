@@ -47,7 +47,7 @@ that fails on your machine (or vice versa).
 
 ### Brand assets (important, legal-sensitive)
 
-Real Scouting America / BSA marks are **not** in this repository and must never
+Real BSA marks are **not** in this repository and must never
 be committed. The `.gitignore` blocks `public/marks/*`. Components render
 original placeholder marks by default; drop licensed assets into `public/marks/`
 locally to preview the real thing. See [`NOTICE.md`](../NOTICE.md) for the full

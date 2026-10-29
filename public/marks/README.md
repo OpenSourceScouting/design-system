@@ -1,17 +1,17 @@
 # Program Marks
 
-Drop the official Scouting America assets here. They are served by Vite at
+Drop the official brand assets here. They are served by Vite at
 `/marks/{filename}` and consumed by two components:
 
 - `<ProgramMark>` (`src/components/ProgramMark.tsx`): the four sub-program marks.
-- `<ScoutingAmericaWordmark>` (`src/components/ScoutingAmericaWordmark.tsx`):
+- `<ParentBrandWordmark>` (`src/components/ParentBrandWordmark.tsx`):
   the parent-brand wordmark, in two orientations.
 
 There is intentionally no parent-brand "mark" component: per project decision,
 Scouts BSA carries the historical fleur-de-lis identity for umbrella contexts.
 
 The `scouting` theme has **no mark file by design**. Do not add one: it is not
-a Scouting America brand. `<ProgramMark>` renders its generic Compass
+an official brand. `<ProgramMark>` renders its generic Compass
 placeholder for it.
 
 ## These files are gitignored on purpose
@@ -96,11 +96,11 @@ On such hosts, bypass probing:
 
 ## Wordmark filename convention
 
-`<ScoutingAmericaWordmark>` takes two props: `orientation` (`wide` | `tall`)
+`<ParentBrandWordmark>` takes two props: `orientation` (`wide` | `tall`)
 and `variant` (`color` | `mono` | `reversed`). The file stem combines them:
 
 ```
-scouting-america-wordmark-{orientation}[-{variant}].{ext}
+parent-brand-wordmark-{orientation}[-{variant}].{ext}
 ```
 
 The variant suffix is omitted for `color` (the default), matching how the
@@ -110,8 +110,8 @@ Wordmark file matrix (6 files total):
 
 | Orientation | color (default)                              | mono                                              | reversed                                              |
 | ----------- | -------------------------------------------- | ------------------------------------------------- | ----------------------------------------------------- |
-| Wide        | `scouting-america-wordmark-wide.svg`         | `scouting-america-wordmark-wide-mono.svg`         | `scouting-america-wordmark-wide-reversed.svg`         |
-| Tall        | `scouting-america-wordmark-tall.svg`         | `scouting-america-wordmark-tall-mono.svg`         | `scouting-america-wordmark-tall-reversed.svg`         |
+| Wide        | `parent-brand-wordmark-wide.svg`         | `parent-brand-wordmark-wide-mono.svg`         | `parent-brand-wordmark-wide-reversed.svg`         |
+| Tall        | `parent-brand-wordmark-tall.svg`         | `parent-brand-wordmark-tall-mono.svg`         | `parent-brand-wordmark-tall-reversed.svg`         |
 
 **Wide** is the horizontal lockup (mark beside the text). **Tall** is the
 stacked lockup (mark above the text).
@@ -128,9 +128,9 @@ under the conventional filenames above.
 
 | Brand center label              | Save as                  | Notes                                      |
 | ------------------------------- | ------------------------ | ------------------------------------------ |
-| "...Trademark Full Color RGB"   | `{program}.svg` or `scouting-america-wordmark-{orientation}.svg` | Screen/RGB version is the right one for web. |
-| "...Trademark Reversed RGB"     | `{program}-reversed.svg` or `scouting-america-wordmark-{orientation}-reversed.svg` | The white-on-dark version. |
-| "...Trademark One Color Black"  | `{program}-mono.svg` or `scouting-america-wordmark-{orientation}-mono.svg` | License permits recoloring to any dark color. |
+| "...Trademark Full Color RGB"   | `{program}.svg` or `parent-brand-wordmark-{orientation}.svg` | Screen/RGB version is the right one for web. |
+| "...Trademark Reversed RGB"     | `{program}-reversed.svg` or `parent-brand-wordmark-{orientation}-reversed.svg` | The white-on-dark version. |
+| "...Trademark One Color Black"  | `{program}-mono.svg` or `parent-brand-wordmark-{orientation}-mono.svg` | License permits recoloring to any dark color. |
 
 Other Brand Center exports you can safely ignore for web (still allowed in
 print pipelines if you build them later):
@@ -144,7 +144,7 @@ print pipelines if you build them later):
 
 - **Prefer SVG.** Vector enforces the "no effects, no tints, no truncation"
   rule by construction and supports `currentColor` for the mono variant.
-  `<ProgramMark>` and `<ScoutingAmericaWordmark>` intentionally do not apply
+  `<ProgramMark>` and `<ParentBrandWordmark>` intentionally do not apply
   any color utilities to real assets. They do apply `mix-blend-mode` to JPGs
   to key out the file's solid background against the surrounding surface;
   this alters on-screen compositing but does not modify the source bytes.

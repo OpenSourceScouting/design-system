@@ -46,9 +46,9 @@ Everything a fresh session needs that is not obvious from the code.
   space-separated RGB triplets consumed as `rgb(var(--x))` (v3 preset maps
   them; `bg-program-primary/80` relies on this format). Cite brand-guideline
   page numbers in comments: preserve those citations when porting.
-- Status colors intentionally come from the raw `sa-*` palette (see
+- Status colors intentionally come from the raw `scout-*` palette (see
   `Alert.tsx`), not program tokens: system feedback reads the same across
-  programs. Map `--destructive` from `sa-red`; keep this invariant.
+  programs. Map `--destructive` from `scout-red`; keep this invariant.
 - Brand constants used by MadeWithBadge and the OSS logo: green `#245235`,
   amber `#D0932B` (these are OUR project colors, unrelated to program tokens).
 - `useScoutTheme()` throws without a `ScoutThemeProvider` ancestor. Storybook
@@ -187,7 +187,7 @@ Rebuild on the shadcn recipe (API + `cva`), carrying our values and guards:
 ## Phase 5: Domain components reskinned
 
 - ProgramHero, EventCard, RegistrationCTA, Calendar, DecorativeDivider,
-  ProgramMark, ScoutingAmericaWordmark, MadeWithBadge: swap class references to
+  ProgramMark, ParentBrandWordmark, MadeWithBadge: swap class references to
   the new token names; rebuild `EventDialog` on the Dialog recipe (retiring the
   native `<dialog>` implementation, per ADR 0002).
 - Theme nesting re-verified (a Venturing card inside a Scouts BSA page).

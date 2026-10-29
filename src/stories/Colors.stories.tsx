@@ -8,17 +8,17 @@ export default meta;
 
 type Story = StoryObj;
 
-const SA_PALETTE = [
-  { name: "SA Red", hex: "#CE1126" },
-  { name: "SA Blue", hex: "#003F87" },
-  { name: "SA Tan", hex: "#D6CEBD" },
-  { name: "SA Gray", hex: "#515354" },
-  { name: "SA Pale Blue", hex: "#9AB3D5" },
-  { name: "SA Dark Blue", hex: "#003366" },
-  { name: "SA Light Tan", hex: "#E9E9E4" },
-  { name: "SA Dark Tan", hex: "#AD9D7B" },
-  { name: "SA Pale Gray", hex: "#858787" },
-  { name: "SA Dark Gray", hex: "#232528" },
+const SCOUT_PALETTE = [
+  { name: "Scout Red", hex: "#CE1126" },
+  { name: "Scout Blue", hex: "#003F87" },
+  { name: "Scout Tan", hex: "#D6CEBD" },
+  { name: "Scout Gray", hex: "#515354" },
+  { name: "Scout Pale Blue", hex: "#9AB3D5" },
+  { name: "Scout Dark Blue", hex: "#003366" },
+  { name: "Scout Light Tan", hex: "#E9E9E4" },
+  { name: "Scout Dark Tan", hex: "#AD9D7B" },
+  { name: "Scout Pale Gray", hex: "#858787" },
+  { name: "Scout Dark Gray", hex: "#232528" },
 ];
 
 function Swatch({ name, hex }: { name: string; hex: string }) {
@@ -54,13 +54,14 @@ function TokenRow({ varName, label }: { varName: string; label: string }) {
 export const ParentBrand: Story = {
   render: () => (
     <div>
-      <h3 className="display mb-4 text-xl">Scouting America palette (always available)</h3>
+      <h3 className="display mb-4 text-xl">Scout palette (always available)</h3>
       <p className="font-body mb-4 max-w-2xl text-sm text-muted-foreground">
-        The raw brand palette, exposed as the fixed <code>sa-*</code> utilities (e.g.{" "}
-        <code>bg-sa-blue</code>). These never theme-swap: use them for cross-program UI and status.
+        The raw brand palette, exposed as the fixed <code>scout-*</code> utilities (e.g.{" "}
+        <code>bg-scout-blue</code>). These never theme-swap: use them for cross-program UI and
+        status.
       </p>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
-        {SA_PALETTE.map((c) => (
+        {SCOUT_PALETTE.map((c) => (
           <Swatch key={c.hex} {...c} />
         ))}
       </div>

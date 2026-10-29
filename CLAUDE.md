@@ -1,11 +1,11 @@
 # Open Source Scouting Design System: Claude Context
 
-React + Tailwind component library that themes the Scouting America parent brand
+React + Tailwind component library that themes the Scouting parent brand
 and four program sub-brands (Cub Scouts, Scouts BSA, Venturing, Sea Scouts),
 plus **Scouting** (`scouting`), a cool blue-and-white theme modeled on the
-scouting.org palette for screens and generated documents. Its brand name is
-"Scouting", never "Scouting America": no SA logo, mark file, or registered
-tagline belongs to it.
+scouting.org palette for screens and generated documents. No official logo,
+mark file, or registered tagline belongs to the Scouting theme.
+
 Built from the official 2024 Brand Guidelines
 (`research/scouting-america-brand-guidelines-2024.pdf`). This is a community
 project by Open Source Scouting: it is not affiliated with, endorsed by, or
@@ -14,6 +14,20 @@ sponsored by Scouting America (see `NOTICE.md` and the README notice).
 Built on shadcn/ui patterns (Radix + Tailwind + `cn` + `cva`) on Tailwind v4,
 per ADR 0002 and 0003. The guiding rule is to minimize and codify the deltas
 from stock shadcn: see the delta register in `docs/decisions/0002-adopt-shadcn-patterns.md`.
+
+## Naming rule (enforced by `tests/naming-guard.test.ts`)
+
+- **Never abbreviate the organization's name to its two-letter initialism**,
+  in any case or form: token or utility names, variables, labels, comments,
+  docs. The abbreviation has very bad connotations. The fixed raw palette is
+  `scout-*` (`bg-scout-blue`, `$scout-tokens`, "Scout Blue").
+- **Do not use the organization's full name as a product or naming term**: it
+  is a registered trademark. Use "Scouting", "parent brand", or "official"
+  instead. The full name may appear only where it identifies the
+  organization: the non-affiliation disclaimer, citations of the 2024 Brand
+  Guidelines, ownership and licensing statements, the scouting.org link labels
+  in `src/lib/links.ts`, and the wordmark's `alt` text. The guard test holds
+  the exact allowlist; extend it only for a genuinely new attribution need.
 
 ## Commands
 
@@ -180,7 +194,7 @@ research/                      ← brand guidelines PDF + extracted text
 - `CalendarEvent.featured` renders the program's `DecorativeDivider` motif and increases the title size.
 - Calendar falls back to agenda view below 640px (`showToggle={!narrow}`), built without date-fns (vanilla `Date` math in `lib/utils/date.ts`).
 - `EventDialog` is built on the shadcn `Dialog` recipe (Radix); Radix supplies the focus trap, ESC, inert background, overlay, and the delta-9 re-stamp. The native `<dialog>` implementation was retired.
-- Status colors (Alert tones) come from the raw `sa-*` palette, not program tokens: system feedback reads the same across programs.
+- Status colors (Alert tones) come from the raw `scout-*` palette, not program tokens: system feedback reads the same across programs.
 - All components support theme nesting (a Venturing card inside a Scouts BSA page works).
 - Adding a program is additive (no component logic branches on it), but it
   touches about ten registries: tokens block, `PROGRAMS`/`PROGRAM_META`,
@@ -227,6 +241,7 @@ research/                      ← brand guidelines PDF + extracted text
 
 ## Things to avoid
 
+- The organization's initialism, or its full name as a product term. See "Naming rule".
 - Class-based theming (`.theme-cub`). The system uses `[data-program]` so context cascades through portals/dialogs correctly.
 - `bg-accent` for a brand pop. That is the muted hover wash (delta 4); use `bg-os-accent`.
 - Forgetting `useProgramStamp()` on a new portalled widget's content (delta 9).

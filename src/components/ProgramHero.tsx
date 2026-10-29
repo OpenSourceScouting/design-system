@@ -35,7 +35,7 @@ export type ProgramHeroProps = {
   /**
    * When true, the program tagline from PROGRAM_META (e.g. "Be Prepared.") is
    * rendered under the headline. Defaults to `false` so a consumer's hero never
-   * displays a Scouting America marketing slogan it did not explicitly ask for.
+   * displays an official marketing slogan it did not explicitly ask for.
    */
   showTagline?: boolean;
   /**

@@ -9,7 +9,7 @@ Dark mode was on the backlog (TODO 3.1) as a per-program feature: paired dark
 palettes for all five brands plus a `theme: light | dark` toolbar. Two facts
 argue against building it now:
 
-- **Scouting America has no dark palette.** The 2024 Brand Guidelines define one
+- **The brand guidelines define no dark palette.** The 2024 Brand Guidelines define one
   set of brand colors. This package's guiding rule is to align to the official
   design system and minimize invented deviations (ADR 0002). Shipping opinionated
   dark values for each program would be first-party invention with no brand

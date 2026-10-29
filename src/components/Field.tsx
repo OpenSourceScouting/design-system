@@ -40,7 +40,7 @@ export function controlClasses(invalid?: boolean) {
     "placeholder:text-os-on-surface-faint",
     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
     "disabled:opacity-50 disabled:pointer-events-none",
-    // Validation uses the destructive token (= sa-red value, shadcn-idiomatic);
+    // Validation uses the destructive token (= scout-red value, shadcn-idiomatic);
     // twMerge lets it override the default border-input above.
     invalid && "border-destructive",
   );

@@ -1,6 +1,6 @@
 # Scouting Brand Guide for AI Tools
 
-A self-contained brand reference for generating Scouting America themed
+A self-contained brand reference for generating Scouting-themed
 materials: flyers, web pages, slide decks, email, social graphics, signage.
 It requires nothing else from this repository. Paste this whole file into any
 AI tool along with your task, for example:
@@ -20,14 +20,14 @@ marked MUST. Everything else is strong guidance.
 One parent brand, four programs. Pick the program that matches your audience
 before making any design decision; almost every choice below varies by program.
 
-| Program                   | Audience                   | Identity in one line                                             |
-| ------------------------- | -------------------------- | ---------------------------------------------------------------- |
-| Scouting America (parent) | Everyone                   | Civic, trustworthy, heritage. Red, white, and blue.              |
-| Cub Scouts                | Kids K-5 and their parents | Warm, playful, kid-bold. Blue and gold, like the uniform.        |
-| Scouts BSA                | Ages 11-17                 | Earnest, capable, traditional. Olive, tan, field-guide calm.     |
-| Venturing                 | Ages 14-20, co-ed          | Bold, peer-led, expedition sharp. Green and trail-marker yellow. |
-| Sea Scouts                | Ages 14-20, co-ed          | Editorial nautical, mature, drafted. Navy and signal yellow.     |
-| Scouting                  | Everyone; screen and print | Clean, cool, document-ready. scouting.org's blue and white.      |
+| Program      | Audience                   | Identity in one line                                             |
+| ------------ | -------------------------- | ---------------------------------------------------------------- |
+| Parent brand | Everyone                   | Civic, trustworthy, heritage. Red, white, and blue.              |
+| Cub Scouts   | Kids K-5 and their parents | Warm, playful, kid-bold. Blue and gold, like the uniform.        |
+| Scouts BSA   | Ages 11-17                 | Earnest, capable, traditional. Olive, tan, field-guide calm.     |
+| Venturing    | Ages 14-20, co-ed          | Bold, peer-led, expedition sharp. Green and trail-marker yellow. |
+| Sea Scouts   | Ages 14-20, co-ed          | Editorial nautical, mature, drafted. Navy and signal yellow.     |
+| Scouting     | Everyone; screen and print | Clean, cool, document-ready. scouting.org's blue and white.      |
 
 Official taglines (use verbatim, never embellish):
 
@@ -46,17 +46,17 @@ Each palette is given as roles, not just swatches. "Ink" means body text.
 Surfaces are deliberately warm off-whites, never pure white, except the parent
 brand.
 
-**Scouting America (parent)**
+**Parent brand**
 
-| Role           | Hex                                               | Notes                                                           |
-| -------------- | ------------------------------------------------- | --------------------------------------------------------------- |
-| Primary        | #003F87                                           | Scouting America Blue                                           |
-| Accent         | #CE1126                                           | Scouting America Red. Use sparingly; it reads as alarm in bulk. |
-| Surface        | #FFFFFF                                           | White is an intentional fifth color of the palette              |
-| Ink            | #232528                                           | Dark Gray                                                       |
-| Muted surface  | #E9E9E4                                           | Light Tan                                                       |
-| Border / rules | #D6CEBD                                           | Tan                                                             |
-| Support        | #AD9D7B Dark Tan, #515354 Gray, #858787 Pale Gray | Layering and secondary text                                     |
+| Role           | Hex                                               | Notes                                                |
+| -------------- | ------------------------------------------------- | ---------------------------------------------------- |
+| Primary        | #003F87                                           | Scout Blue                                           |
+| Accent         | #CE1126                                           | Scout Red. Use sparingly; it reads as alarm in bulk. |
+| Surface        | #FFFFFF                                           | White is an intentional fifth color of the palette   |
+| Ink            | #232528                                           | Dark Gray                                            |
+| Muted surface  | #E9E9E4                                           | Light Tan                                            |
+| Border / rules | #D6CEBD                                           | Tan                                                  |
+| Support        | #AD9D7B Dark Tan, #515354 Gray, #858787 Pale Gray | Layering and secondary text                          |
 
 **Cub Scouts**
 
@@ -71,14 +71,14 @@ brand.
 
 **Scouts BSA**
 
-| Role           | Hex     | Notes                                                                                                            |
-| -------------- | ------- | ---------------------------------------------------------------------------------------------------------------- |
-| Primary        | #243E2C | Olive                                                                                                            |
-| Accent         | #003F87 | Scouting America Blue borrowed for digital calm. #CE1126 red stays reserved for true errors and rare print pops. |
-| Surface        | #F5F1E6 | Tan paper                                                                                                        |
-| Ink            | #1A1A14 |                                                                                                                  |
-| Muted surface  | #D6CEBD | Scouts BSA Tan                                                                                                   |
-| Border / rules | #AD9D7B | Dark Tan                                                                                                         |
+| Role           | Hex     | Notes                                                                                                 |
+| -------------- | ------- | ----------------------------------------------------------------------------------------------------- |
+| Primary        | #243E2C | Olive                                                                                                 |
+| Accent         | #003F87 | Scout Blue borrowed for digital calm. #CE1126 red stays reserved for true errors and rare print pops. |
+| Surface        | #F5F1E6 | Tan paper                                                                                             |
+| Ink            | #1A1A14 |                                                                                                       |
+| Muted surface  | #D6CEBD | Scouts BSA Tan                                                                                        |
+| Border / rules | #AD9D7B | Dark Tan                                                                                              |
 
 **Venturing**
 
@@ -120,8 +120,8 @@ hex with your print vendor rather than guessing.
 
 | Color                               | Pantone     | CMYK            |
 | ----------------------------------- | ----------- | --------------- |
-| Scouting America Red #CE1126        | PMS 186     | 0, 100, 81, 4   |
-| Scouting America Blue #003F87       | PMS 294     | 100, 58, 0, 21  |
+| Scout Red #CE1126                   | PMS 186     | 0, 100, 81, 4   |
+| Scout Blue #003F87                  | PMS 294     | 100, 58, 0, 21  |
 | Cub Scouts Blue (mark reproduction) | PMS 294     | 100, 48, 0, 44  |
 | Gold / Yellow family                | PMS 116     | 0, 10, 100, 0   |
 | Venturing Green #006B3F             | PMS 349     | 100, 0, 90, 40  |

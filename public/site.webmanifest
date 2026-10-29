@@ -1,7 +1,7 @@
 {
   "name": "Open Source Scouting Design System",
   "short_name": "OSS Design System",
-  "description": "A React + Tailwind design system for Scouting America and its four programs.",
+  "description": "A React + Tailwind design system for Cub Scouts, Scouts BSA, Venturing, Sea Scouts, and Scouting.",
   "icons": [
     {
       "src": "android-chrome-192x192.png",

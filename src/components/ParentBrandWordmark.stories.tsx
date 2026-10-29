@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ScoutingAmericaWordmark } from "./ScoutingAmericaWordmark";
+import { ParentBrandWordmark } from "./ParentBrandWordmark";
 
-const meta: Meta<typeof ScoutingAmericaWordmark> = {
-  title: "Foundations/ScoutingAmericaWordmark",
-  component: ScoutingAmericaWordmark,
+const meta: Meta<typeof ParentBrandWordmark> = {
+  title: "Foundations/ParentBrandWordmark",
+  component: ParentBrandWordmark,
   parameters: {
     docs: {
       description: {
         component:
-          "Official Scouting America wordmark. Two orientations (wide, tall) " +
-          "× three variants (color, mono, reversed). Loads /marks/scouting-america-" +
+          "Official parent-brand wordmark (licensed asset you supply). Two orientations (wide, tall) " +
+          "× three variants (color, mono, reversed). Loads /marks/parent-brand-" +
           "wordmark-{orientation}[-{variant}].{ext}. NO placeholder fallback: if the " +
           "asset is missing, the component renders nothing and logs a warning. " +
           "Per BSA license, the wordmark is reserved for official Scouting contexts.",
@@ -24,7 +24,7 @@ const meta: Meta<typeof ScoutingAmericaWordmark> = {
 };
 export default meta;
 
-type Story = StoryObj<typeof ScoutingAmericaWordmark>;
+type Story = StoryObj<typeof ParentBrandWordmark>;
 
 export const WideColor: Story = {
   args: { orientation: "wide", variant: "color", height: 64 },
@@ -52,7 +52,7 @@ export const Reversed: Story = {
   args: { orientation: "wide", variant: "reversed", height: 64 },
   render: (args) => (
     <div className="p-6 bg-primary rounded-program inline-flex items-center justify-center">
-      <ScoutingAmericaWordmark {...args} />
+      <ParentBrandWordmark {...args} />
     </div>
   ),
 };
@@ -72,20 +72,16 @@ export const AllCombinations: Story = {
           <h3 className="display text-xs uppercase tracking-widest text-muted-foreground">Wide</h3>
           <div className="grid grid-cols-3 gap-6">
             <div className="flex items-center justify-center" style={{ height: wideCellHeight }}>
-              <ScoutingAmericaWordmark orientation="wide" variant="color" height={wideMarkHeight} />
+              <ParentBrandWordmark orientation="wide" variant="color" height={wideMarkHeight} />
             </div>
             <div className="flex items-center justify-center" style={{ height: wideCellHeight }}>
-              <ScoutingAmericaWordmark orientation="wide" variant="mono" height={wideMarkHeight} />
+              <ParentBrandWordmark orientation="wide" variant="mono" height={wideMarkHeight} />
             </div>
             <div
               className="flex items-center justify-center p-3 bg-primary rounded-program"
               style={{ height: wideCellHeight }}
             >
-              <ScoutingAmericaWordmark
-                orientation="wide"
-                variant="reversed"
-                height={wideMarkHeight}
-              />
+              <ParentBrandWordmark orientation="wide" variant="reversed" height={wideMarkHeight} />
             </div>
           </div>
         </section>
@@ -93,20 +89,16 @@ export const AllCombinations: Story = {
           <h3 className="display text-xs uppercase tracking-widest text-muted-foreground">Tall</h3>
           <div className="grid grid-cols-3 gap-6">
             <div className="flex items-center justify-center" style={{ height: tallCellHeight }}>
-              <ScoutingAmericaWordmark orientation="tall" variant="color" height={tallMarkHeight} />
+              <ParentBrandWordmark orientation="tall" variant="color" height={tallMarkHeight} />
             </div>
             <div className="flex items-center justify-center" style={{ height: tallCellHeight }}>
-              <ScoutingAmericaWordmark orientation="tall" variant="mono" height={tallMarkHeight} />
+              <ParentBrandWordmark orientation="tall" variant="mono" height={tallMarkHeight} />
             </div>
             <div
               className="flex items-center justify-center p-3 bg-primary rounded-program"
               style={{ height: tallCellHeight }}
             >
-              <ScoutingAmericaWordmark
-                orientation="tall"
-                variant="reversed"
-                height={tallMarkHeight}
-              />
+              <ParentBrandWordmark orientation="tall" variant="reversed" height={tallMarkHeight} />
             </div>
           </div>
         </section>

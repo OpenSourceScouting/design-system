@@ -11,7 +11,7 @@
 
 <p align="center">by <strong>Open Source Scouting</strong></p>
 
-A React + Tailwind component library that themes the Scouting America parent
+A React + Tailwind component library that themes the Scouting parent
 brand and its four program sub-brands: **Cub Scouts**, **Scouts BSA**,
 **Venturing**, and **Sea Scouts**.
 It also ships **Scouting** (`scouting`), a cool blue-and-white theme modeled on
@@ -188,7 +188,7 @@ Full list of overridable tokens is in `src/styles/tokens.css` (shipped as
 
 Troubleshooting tell: if accent buttons render RED on a page you expected
 gold, your theming is not wired up. The `:root` fallback palette is the
-parent Scouting America brand, whose accent is SA Red (#CE1126), so a red
+parent brand, whose accent is Scout Red (#CE1126), so a red
 accent means the element has no `data-program` ancestor (missing
 `ScoutThemeProvider`) or the token CSS never loaded.
 
@@ -259,8 +259,8 @@ gets high-contrast support automatically.
 
 ### Custom themes (e.g. dark mode)
 
-The library intentionally ships **no dark mode**: Scouting America has no dark
-palette and this package aligns to the official design system. But because
+The library intentionally ships **no dark mode**: the official brand guidelines define no
+dark palette and this package aligns to the official design system. But because
 theming is just CSS-variable overrides selected by attribute, an individual unit
 or project can layer its own theme without forking. Pass a `theme` to
 `ScoutThemeProvider` and supply the token overrides in your own CSS, scoped to
@@ -351,7 +351,7 @@ src/                       # the published library ONLY
 │   ├── Alert.tsx
 │   ├── ProgramMark.tsx       # Auto-loads from /marks/, falls back to inline placeholder SVGs
 │   ├── ProgramIcon.tsx       # Per-program fallback icons + PROGRAM_ICONS registry
-│   ├── ScoutingAmericaWordmark.tsx  # Parent brand wordmark (wide / tall orientations)
+│   ├── ParentBrandWordmark.tsx  # Parent brand wordmark (wide / tall orientations)
 │   ├── DecorativeDivider.tsx  # Per-program ornamental divider
 │   ├── ProgramHero.tsx       # Marketing patterns
 │   ├── FeatureGrid.tsx
@@ -407,15 +407,15 @@ You can nest providers; a Venturing card on a Scouts BSA page is supported.
 
 Full CMYK and Pantone data (including secondary tans, grays, and mark-reproduction colors) is in [`src/styles/tokens.print.json`](./src/styles/tokens.print.json) and ships in the package at `dist/tokens.print.json`.
 
-### The `sa-red` raw palette utility
+### The `scout-red` raw palette utility
 
-The theme defines a raw Tailwind color `sa-red` (`#CE1126`, Scouting America
+The theme defines a raw Tailwind color `scout-red` (`#CE1126`, Scout
 Red) as a fixed palette entry, separate from the themed tokens. The same value
 also backs `--destructive`. Reserve it for true error and danger states: form
 validation errors, destructive action confirmations, and alert banners that
 signal failure.
 
-Do not use `sa-red` as a general accent or brand color on program pages. The
+Do not use `scout-red` as a general accent or brand color on program pages. The
 parent brand red reads as either an error state or a broken theme, and it is the
 `:root` fallback when no `data-program` ancestor exists. For a program's brand
 accent use `bg-os-accent`; for validation use `text-destructive` /
@@ -449,11 +449,11 @@ color token, as an `{ rgb, hex }` pair) and `values` (non-color tokens such as
 **File artifacts, for tools that read files, not imports.** These ship in the
 package and are addressable by subpath:
 
-| Subpath                                               | What                                              | For                                                                        |
-| ----------------------------------------------------- | ------------------------------------------------- | -------------------------------------------------------------------------- |
-| `@opensourcescouting/design-system/tokens.json`       | full token set per palette (rgb + hex + values)   | Figma / Tokens Studio, general tooling                                     |
-| `@opensourcescouting/design-system/tokens.scss`       | a `$sa-tokens` Sass map of the color tokens (hex) | SCSS/Sass projects                                                         |
-| `@opensourcescouting/design-system/tokens.email.json` | hex-only, flat per program                        | email builders (Mailchimp, Constant Contact) that cannot use CSS variables |
+| Subpath                                               | What                                                 | For                                                                        |
+| ----------------------------------------------------- | ---------------------------------------------------- | -------------------------------------------------------------------------- |
+| `@opensourcescouting/design-system/tokens.json`       | full token set per palette (rgb + hex + values)      | Figma / Tokens Studio, general tooling                                     |
+| `@opensourcescouting/design-system/tokens.scss`       | a `$scout-tokens` Sass map of the color tokens (hex) | SCSS/Sass projects                                                         |
+| `@opensourcescouting/design-system/tokens.email.json` | hex-only, flat per program                           | email builders (Mailchimp, Constant Contact) that cannot use CSS variables |
 
 Print (CMYK/Pantone) equivalents are a separate artifact,
 [`tokens.print.json`](./src/styles/tokens.print.json) (see above).
@@ -561,10 +561,10 @@ otherwise. No code change is required to switch modes.
 1. Confirm you're a registered BSA volunteer or council/national employee and
    have leadership approval for your deployment channel.
 2. Download the official marks from the
-   [Scouting America brand center](https://scouting.webdamdb.com/bp/#/) while
+   [official brand center](https://scouting.webdamdb.com/bp/#/) while
    signed in as yourself.
 3. Drop `cub.svg`, `scoutsbsa.svg`, `venturing.svg`, `seascouts.svg` (and
-   optionally `scouting-america.svg`) into `public/marks/`. These files are
+   optionally the `parent-brand-wordmark-*` files) into `public/marks/`. These files are
    gitignored; they live on your deployment, not in the repo.
 4. Run your dev/build/deploy as normal. `ProgramMark` will pick them up.
 
@@ -725,7 +725,7 @@ upload) are planned; see [GitHub Issues](https://github.com/OpenSourceScouting/d
 
 To keep every site pointing at the same authoritative URLs (instead of drifting,
 hand-typed copies), the package ships a small versioned data module of canonical
-Scouting America links:
+scouting.org links:
 
 ```tsx
 import { SCOUTING_LINKS, SCOUTING_LINK_LIST } from "@opensourcescouting/design-system";
@@ -740,7 +740,7 @@ SCOUTING_LINK_LIST.map((l) => (
 ));
 ```
 
-Includes Scouting America, BeAScout, the Guide to Safe Scouting, and Safeguarding
+Includes the scouting.org home page, BeAScout, the Guide to Safe Scouting, and Safeguarding
 Youth training. These are official **external** resources; this project is not
 affiliated with Scouting America (see `NOTICE.md`), and linking does not imply
 endorsement. URLs are treated as versioned data: when one changes it is updated
@@ -803,7 +803,7 @@ process and ADR 0007 for the rationale.
 - **Software** (React components, tokens, styles, build config, placeholder
   graphics): MIT; see [`LICENSE`](./LICENSE). Reuse it for your own pack,
   troop, crew, ship, council, or any other context.
-- **Official Scouting America / BSA brand assets** (real logos,
+- **Official BSA brand assets** (real logos,
   fleur-de-lis, program marks): governed by the BSA Brand Center license,
   not this MIT License. Real assets are never committed to this repository;
   each user downloads them under their own eligibility. See

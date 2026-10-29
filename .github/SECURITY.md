@@ -30,7 +30,7 @@ authentication surface. The most relevant classes of issue are:
 
 ## A note on brand assets
 
-Official Scouting America / BSA marks and the brand guidelines PDF are **not**
+Official BSA marks and the brand guidelines PDF are **not**
 distributed with this repository by design (see [`NOTICE.md`](../NOTICE.md)). If
 you discover any licensed asset committed to the repository or shipped in the
 npm package, please report it through the process above so it can be removed

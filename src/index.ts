@@ -45,12 +45,12 @@ export type { IconProps } from "./components/Icon";
 export { ProgramIcon, PROGRAM_ICONS } from "./components/ProgramIcon";
 export type { ProgramIconProps } from "./components/ProgramIcon";
 
-export { ScoutingAmericaWordmark } from "./components/ScoutingAmericaWordmark";
+export { ParentBrandWordmark } from "./components/ParentBrandWordmark";
 export type {
-  ScoutingAmericaWordmarkProps,
-  ScoutingAmericaWordmarkOrientation,
-  ScoutingAmericaWordmarkVariant,
-} from "./components/ScoutingAmericaWordmark";
+  ParentBrandWordmarkProps,
+  ParentBrandWordmarkOrientation,
+  ParentBrandWordmarkVariant,
+} from "./components/ParentBrandWordmark";
 
 export { DecorativeDivider } from "./components/DecorativeDivider";
 export type { DecorativeDividerProps } from "./components/DecorativeDivider";
@@ -177,7 +177,7 @@ export type {
   MadeWithBadgeSize,
 } from "./components/MadeWithBadge";
 
-// Canonical Scouting America resource links (authoritative external URLs).
+// Canonical official resource links on scouting.org (authoritative external URLs).
 export { SCOUTING_LINKS, SCOUTING_LINK_LIST } from "./lib/links";
 export type { ScoutingLink, ScoutingLinkKey } from "./lib/links";
 

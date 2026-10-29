@@ -81,7 +81,7 @@ const preview: Preview = {
   globalTypes: {
     program: {
       name: "Program",
-      description: "Active Scouting America program theme",
+      description: "Active program theme",
       toolbar: {
         icon: "paintbrush",
         items: [

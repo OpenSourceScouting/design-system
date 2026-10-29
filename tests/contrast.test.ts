@@ -82,7 +82,7 @@ function parsePalette(css: string, selector: string): Record<string, RGB> {
 }
 
 const PALETTES: { name: string; selector: string }[] = [
-  { name: "root (Scouting America)", selector: ":root" },
+  { name: "root (parent brand)", selector: ":root" },
   { name: "cub", selector: '[data-program="cub"]' },
   { name: "scoutsbsa", selector: '[data-program="scoutsbsa"]' },
   { name: "venturing", selector: '[data-program="venturing"]' },

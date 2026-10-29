@@ -1,12 +1,11 @@
 /* =============================================================================
-   Scouting America Design Tokens
-   Source: Scouting America Brand Guidelines 2024 (May 2024 edition)
+   Open Source Scouting Design Tokens
+   Source: Scouting America 2024 Brand Guidelines (May 2024 edition)
    https://pathwaytoadventure.org/wp-content/uploads/2024/05/Scouting-America-Brand-Guidelines-2024-BC.pdf
 
    Color values are stored as space-separated RGB triplets so Tailwind v4 can
    apply alpha via color-mix (e.g. bg-primary/80). Each program is selected via
-   `data-program="..."` on any ancestor element; :root is the parent Scouting
-   America brand.
+   `data-program="..."` on any ancestor element; :root is the parent brand.
 
    Vocabulary (shadcn re-platform, ADR 0002/0003):
      - shadcn semantic tokens: --background, --foreground, --card, --popover,
@@ -21,30 +20,30 @@
    ============================================================================= */
 
 :root {
-  /* Parent Scouting America brand. Primary Brand palette, guidelines p.14-15. */
+  /* Parent brand. Primary Brand palette, guidelines p.14-15. */
   --background: 255 255 255;
-  --foreground: 35 37 40; /* #232528 Scouting America Dark Gray */
+  --foreground: 35 37 40; /* #232528 Scout Dark Gray */
   --card: 255 255 255;
   --card-foreground: 35 37 40;
   --popover: 255 255 255;
   --popover-foreground: 35 37 40;
-  --primary: 0 63 135; /* #003F87 Scouting America Blue */
+  --primary: 0 63 135; /* #003F87 Scout Blue */
   --primary-foreground: 255 255 255;
   --secondary: 233 233 228; /* #E9E9E4 Light Tan */
-  --secondary-foreground: 81 83 84; /* #515354 Scouting America Gray */
+  --secondary-foreground: 81 83 84; /* #515354 Scout Gray */
   --muted: 233 233 228;
   --muted-foreground: 81 83 84; /* AA >=4.5 muted body text */
   --accent: 233 233 228; /* delta 4: hover wash = muted surface, NOT brand red */
   --accent-foreground: 81 83 84;
-  --destructive: 206 17 38; /* #CE1126 sa-red; status color, identical per program */
+  --destructive: 206 17 38; /* #CE1126 scout-red; status color, identical per program */
   --destructive-foreground: 255 255 255;
-  --border: 214 206 189; /* #D6CEBD Scouting America Tan */
+  --border: 214 206 189; /* #D6CEBD Scout Tan */
   --input: 214 206 189;
   --ring: 0 63 135;
   --radius: 0.375rem;
 
   /* --os-* extended vocabulary */
-  --os-accent: 206 17 38; /* BRAND accent: Scouting America Red #CE1126 */
+  --os-accent: 206 17 38; /* BRAND accent: Scout Red #CE1126 */
   --os-accent-foreground: 255 255 255;
   --os-on-primary-soft: 225 230 240; /* AA >=4.5 muted text on primary */
   --os-on-surface-faint: 133 135 135; /* #858787, >=3:1 inactive/dim text */
@@ -137,8 +136,8 @@
    Accent note: p.26 sanctions Scouts BSA Red (#CE1126) as the action accent,
    but in a digital system the accent appears constantly (badges, chips, focus
    rings), which makes pure red read as confrontational. The same page allows
-   the parent Scouting America palette to unify the portfolio, so we use
-   Scouting America Blue (#003F87) as the digital accent. Print red is preserved
+   the parent palette to unify the portfolio, so we use
+   Scout Blue (#003F87) as the digital accent. Print red is preserved
    for true error/danger via --destructive.
    --------------------------------------------------------------------------- */
 [data-program="scoutsbsa"] {
@@ -163,7 +162,7 @@
   --ring: 0 63 135;
   --radius: 0.25rem; /* 4px, crisp */
 
-  --os-accent: 0 63 135; /* BRAND accent: SA Blue (per accent note) */
+  --os-accent: 0 63 135; /* BRAND accent: Scout Blue (per accent note) */
   --os-accent-foreground: 255 255 255;
   --os-on-primary-soft: 215 220 200; /* #D7DCC8, ~8:1 on olive */
   --os-on-surface-faint: 138 139 124; /* #8A8B7C, ~3.4:1 */
@@ -290,7 +289,7 @@
   --secondary: 244 244 244; /* #F4F4F4 scouting.org panel gray */
   --secondary-foreground: 33 33 33;
   --muted: 244 244 244;
-  --muted-foreground: 81 83 84; /* #515354 SA Gray, ~7.0:1 on #F4F4F4 */
+  --muted-foreground: 81 83 84; /* #515354 Scout Gray, ~7.0:1 on #F4F4F4 */
   --accent: 244 244 244; /* delta 4: cool gray WASH, not the brand red */
   --accent-foreground: 33 33 33;
   --destructive: 206 17 38;
@@ -302,9 +301,9 @@
 
   --os-accent: 206 17 38; /* BRAND accent: #CE1126, same swatch as :root */
   --os-accent-foreground: 255 255 255;
-  --os-on-primary-soft: 225 230 240; /* same as :root, AA on SA Blue */
-  --os-on-surface-faint: 133 135 135; /* #858787 SA Pale Gray, >=3:1 */
-  --os-decor: 154 179 213; /* #9AB3D5 SA Pale Blue (guideline parent palette) */
+  --os-on-primary-soft: 225 230 240; /* same as :root, AA on Scout Blue */
+  --os-on-surface-faint: 133 135 135; /* #858787 Scout Pale Gray, >=3:1 */
+  --os-decor: 154 179 213; /* #9AB3D5 Scout Pale Blue (guideline parent palette) */
   --os-rule-weight: 1px; /* document hairline */
   /* :root's subtle shadow. Elevated cards need it on a white page, and browsers
      drop box-shadow from print by default, so documents stay clean anyway. */

@@ -165,7 +165,7 @@ export function renderScss(data) {
   const header =
     "// GENERATED from src/styles/tokens.css by scripts/build-css.mjs. Do not edit.\n" +
     "// Colors only (hex). Non-color tokens (radius, shadow, fonts) live in tokens.json.\n" +
-    '// Usage: @use "tokens.scss"; map.get(map.get($sa-tokens, "cub"), "primary");\n\n';
+    '// Usage: @use "tokens.scss"; map.get(map.get($scout-tokens, "cub"), "primary");\n\n';
   const blocks = Object.entries(data)
     .map(([palette, block]) => {
       const entries = Object.entries(block.colors)
@@ -174,5 +174,5 @@ export function renderScss(data) {
       return `  "${palette}": (\n${entries}\n  )`;
     })
     .join(",\n");
-  return `${header}$sa-tokens: (\n${blocks}\n);\n`;
+  return `${header}$scout-tokens: (\n${blocks}\n);\n`;
 }
