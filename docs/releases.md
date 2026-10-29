@@ -56,7 +56,9 @@ you: no changeset file, no `CHANGELOG.md` edit.
    deployment when prompted.
 4. `semantic-release` then:
    - computes the next version from commits since the last `v*` tag
-   - publishes the package to npm with Sigstore provenance
+   - publishes the package to npm through trusted publishing (OIDC: the job
+     trades its GitHub identity for a short-lived npm credential, so there is
+     no `NPM_TOKEN` secret to expire) with Sigstore provenance
    - creates the `v*` tag and a GitHub Release with generated notes
 5. The workflow generates a CycloneDX SBOM (Syft), attests the tarball and
    SBOM (GitHub artifact attestations), and uploads both as assets on the
@@ -131,8 +133,9 @@ Release directly on github.com; there is no source file to keep in sync.
 ## One-time setup (not covered here)
 
 Squash-only merge settings, the branch ruleset on `main`, the tag ruleset for
-`v*`, the `npm-publish` environment configuration, the baseline tag, and
-migrating to npm trusted publishing are one-time, admin-level repository
-settings. They are tracked in
-[`docs/release-migration-plan.md`](./release-migration-plan.md) (Phases B and
-C) and are out of scope for this document.
+`v*`, the `npm-publish` environment configuration, and the npm trusted
+publisher are one-time, admin-level settings and are out of scope for this
+document. The trusted publisher (npmjs.com, package Settings > Trusted
+publishing) must name organization `OpenSourceScouting`, repository
+`design-system`, workflow `release.yml`, and environment `npm-publish`; see the
+header comment in `.github/workflows/release.yml`.
